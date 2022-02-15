@@ -5,5 +5,6 @@ Anthony Schiano
 Howie Lin
 =======
 Michael Traynor
+Brian Chen
 
 >>>>>>> 6e67eef52053ddecff4b38ac8969ea25ed433206
