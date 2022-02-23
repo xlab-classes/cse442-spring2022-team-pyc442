@@ -5,3 +5,8 @@ Howie Lin
 Michael Traynor
 Brian Chen
 Michael Lanurias
+
+to run code use the command
+`pip install -r requirments.txt`
+then
+`python main.py`
