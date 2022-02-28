@@ -1,0 +1,13 @@
+h1 {margin-top: 50px; color: Black; font-size: 80px; text-align: center;}
+h2 {margin-left: 30px;}
+label {
+    display: inline-block;
+    width:100px;
+    font-size: 20px;
+    text-align: right;
+    margin-bottom: 20px;
+    color: aliceblue;
+}
+input {text-align: center;}
+form {text-align: center;}
+p {text-align: center;}
