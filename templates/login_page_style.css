@@ -11,3 +11,11 @@ label {
 input {text-align: center;}
 form {text-align: center;}
 p {text-align: center;}
+p.parent{
+    border-radius: 25px;
+    color: black;
+}
+body {
+    border-radius: 25px;
+    color: aquamarine;
+}
