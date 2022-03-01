@@ -2,11 +2,11 @@ version: '3.3'
 services:
 # Change if we're not using mongo. Also need to change the wait_hosts
 # The wait_hosts is the default port for mongo
- mongo:
-  image: mongo:4.2.5
- server:
+# mongo:
+#  image: mongo:4.2.5
+ main:
   build: .
-  environment:
-    WAIT_HOSTS: mongo:27017
+#  environment:
+#    WAIT_HOSTS: mongo:27017
   ports:
     - '8080:8080'

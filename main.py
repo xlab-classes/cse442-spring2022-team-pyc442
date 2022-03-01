@@ -22,4 +22,4 @@ def user():
     return render_template("user.html", title = "User")
 
 if __name__ == "__main__":
-    app.run()
+    app.run(port = 8080, debug = True)
