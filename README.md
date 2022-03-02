@@ -7,6 +7,10 @@ Brian Chen <br>
 Michael Lanurias <br>
 
 to run code use the command
-`pip install -r requirements.txt` or `python -m pip install -r requirements.txt` <br>
-then
-`python main.py`
+Create a virtual environment for python to run <br>
+`python -m venv env` <br>
+Then install the proper libraries <br>
+`pip install -r requirements.txt` <br>
+or `python -m pip install -r requirements.txt` <br>
+then <br>
+`python main.py` <br>
