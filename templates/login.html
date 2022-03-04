@@ -1,4 +1,7 @@
 {% extends "boilerplate.html" %}
+{% block head %}
+   <link rel="stylesheet" href={{ url_for("static", filename="login_page_style.css")}}>
+{% endblock %}
 {% block content %}
 <html>
 <body style="background-color: rgb(54, 122, 248); margin: 100px;">
