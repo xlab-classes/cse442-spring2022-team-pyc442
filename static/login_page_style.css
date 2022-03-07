@@ -8,7 +8,7 @@ label {
     margin-bottom: 20px;
     color: aliceblue;
 }
-input {text-align: center;}
+input {text-align: left;}
 form {text-align: center;}
 p {text-align: center;}
 p.parent{
@@ -18,4 +18,12 @@ p.parent{
 body {
     border-radius: 25px;
     color: aquamarine;
+}
+.login{
+    position: relative;
+    margin: 30px auto;
+    padding: 20px 20px 20px;
+    width: 310px;
+    background: rgb(153, 138, 236);
+    border-radius: 3px;
 }

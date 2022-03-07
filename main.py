@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 
 app = Flask(__name__)
 
@@ -25,7 +25,9 @@ def userRoute():
 def loginRoute():
     print(request.form["username"])
     print(request.form["password"])
-    return request.form["username"]
+    if(request.form["password"]=="wrong"):
+        return redirect("/login")
+    return redirect("/user")
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8080, debug=True)
