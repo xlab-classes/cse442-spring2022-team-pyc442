@@ -9,7 +9,7 @@ class Database:
         host="localhost",
         user="root",
         password="FalaWB@321",
-        database="wireguard"
+        Database="wireguard"
     )
 
     if mydb:
@@ -25,6 +25,21 @@ class Database:
     name = username
     password = hashpass
     is_admin = admin
+
+  def create_database():
+    TABLES = {}
+    TABLES['wireguard'] = (
+      "Create Table Users ("
+      "user_id  varchar(9),"
+      "email   varchar(32),"
+      "username     varchar(32),"
+      "password  varchar(64),"
+      "admin      bool,"
+      "banned   bool,"
+      "PRIMARY KEY (user_id)"
+      ")ENGINE=InnoDB")
+    
+    
 
 if __name__ == "__main__":
   Database.setup_db()
