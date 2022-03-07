@@ -1,16 +1,22 @@
-# cse442-spring2022-team-pyc442
-Pyc442 <br>
-Anthony Schiano <br>
-Howie Lin <br>
-Michael Traynor <br>
-Brian Chen <br>
-Michael Lanurias <br>
+# cse442-spring2022-team-pyc442  
+
+Pyc442  
+Anthony Schiano  
+Howie Lin  
+Michael Traynor  
+Brian Chen  
+Michael Lanurias  
 
 to run code use the command
-Create a virtual environment for python to run <br>
-`python -m venv env` <br>
-Then install the proper libraries <br>
-`pip install -r requirements.txt` <br>
-or `python -m pip install -r requirements.txt` <br>
-then <br>
-`python main.py` <br>
+Create a virtual environment for python to run  
+`python -m venv env`  
+Then install the proper libraries  
+`pip install -r requirements.txt`  
+or `python -m pip install -r requirements.txt`  
+then  
+`python main.py`  
+
+To run test you should run  
+`python -m pytest`  
+while in the same directory as main  
+To create a test add a file under the tests directory using the name of style test_{{name}}.py  
