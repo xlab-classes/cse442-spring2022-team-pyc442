@@ -1,6 +1,6 @@
 from types import NotImplementedType
 import bcrypt
-from user import User
+from src.user import User
 
 #Function for authenticating users, returns a User object if correct info is give returns None if invalid
 def authenticate(username: str, password: str):
