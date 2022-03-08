@@ -1,5 +1,5 @@
-import string
 from flask_login import UserMixin
+
 
 # User class used to store the information
 class User(UserMixin):
@@ -13,8 +13,8 @@ class User(UserMixin):
     @property
     def is_active(self) -> bool:
         return self.isBanned
-    
-    def get_id(self) -> string:
+
+    def get_id(self) -> str:
         return self.userid
 
     @property
