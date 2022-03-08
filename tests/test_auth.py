@@ -2,7 +2,7 @@ from src import auth
 from src.user import User
 from src.auth import authenticate
 
-def correctCreds():
+def test_correct_creds():
     retVal = authenticate("username", "password")
     #Checks to make sure User object was returned
     assert type(retVal) == User
@@ -13,7 +13,7 @@ def correctCreds():
     #Checks to make sure the is_active property is working
     assert retVal.is_active == True
 
-def incorrectCreds():
+def test_incorrect_creds():
     retVal = authenticate("invalUser", "password")
     assert retVal == None
     retVal = authenticate("username", "")
