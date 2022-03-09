@@ -20,6 +20,7 @@ class Database:
 
     mydb.close()
 
+  #Creates the database
   def create_database(self):
     DB_NAME = 'wireguard'
     TABLES = {}
@@ -67,11 +68,7 @@ class Database:
     cnx.close()
   
   #Adds users to the server
-<<<<<<< HEAD
-  def add_users(self):
-=======
   def add_users(id, email, username, password, is_admin, is_banned):
->>>>>>> 40a5e594c915860e8481bc26813ba05385182217
     cnx = mysql.connector.connect(
     host="localhost",
     user="root",
@@ -94,6 +91,7 @@ class Database:
     cursor.close()
     cnx.close()
 
+  #Execute the general query
   def queries(self):
     cnx = mysql.connector.connect(
     host="localhost",
@@ -116,7 +114,7 @@ class Database:
     cursor.close()
     cnx.close()
 
-#get a user entry by user id
+  #Gets a user entry by user id
   def getUserById(self, uid):
     cnx = mysql.connector.connect(
       host="localhost",
@@ -139,7 +137,7 @@ class Database:
     cursor.close()
     cnx.close()
 
-#get a user entry by username
+  #Gets a user entry by username
   def getUserByName(self, uname):
     cnx = mysql.connector.connect(
       host="localhost",
@@ -166,13 +164,15 @@ class Database:
 
 if __name__ == "__main__":
   id = str(uuid.uuid4().fields[-1])[:9]
-  email = " "
-  name = " "
-  password = " "
-  admin = 0
+  email = "test@email.com"
+  name = "test_442"
+  password = "abc123"
+  admin = 1
   banned = 0
 
   Database.setup_db()
   Database.create_database()
   Database.add_users(id, email, name, password, admin, banned)
   Database.queries()
+  Database.getUserById(id)
+  Database.getUserByName(name)
