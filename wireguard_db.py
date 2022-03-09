@@ -125,9 +125,11 @@ class Database:
 
     cursor = cnx.cursor()
 
-    query = ("SELECT * FROM wireguard WHERE user_id = ?", uid)
+    query = ("SELECT * FROM wireguard WHERE user_id = %s")
 
-    cursor.execute(query)
+    user_id = uid
+
+    cursor.execute(query, (user_id,))
 
     for (user_id, email, username, password, admin, banned) in cursor:
       print("{}, {}, {}, {}, {}, {}".format(user_id, email, username, password, admin, banned))
@@ -148,12 +150,31 @@ class Database:
 
     cursor = cnx.cursor()
 
-    query = ("SELECT * FROM wireguard WHERE username = ?", uname)
+    query = ("SELECT * FROM wireguard WHERE username = %s")
 
-    cursor.execute(query)
+    cursor.execute(query, (uname,))
 
     for (user_id, email, username, password, admin, banned) in cursor:
       print("{}, {}, {}, {}, {}, {}".format(user_id, email, username, password, admin, banned))
+
+    cnx.commit()
+
+    cursor.close()
+    cnx.close()
+
+  def deleteTuple():
+    cnx = mysql.connector.connect(
+      host="localhost",
+      user="root",
+      password="FalaWB@321",
+      database="wireguard"
+    )
+
+    cursor = cnx.cursor()
+
+    query = ("DELETE FROM wireguard")
+
+    cursor.execute(query)
 
     cnx.commit()
 
@@ -170,9 +191,11 @@ if __name__ == "__main__":
   admin = 1
   banned = 0
 
-  Database.setup_db()
-  Database.create_database()
+
+  Database.setup_db(Database)
+  Database.create_database(Database)
   Database.add_users(id, email, name, password, admin, banned)
-  Database.queries()
-  Database.getUserById(id)
-  Database.getUserByName(name)
+  Database.queries(Database)
+  Database.getUserById(Database, id)
+  Database.getUserByName(Database, name)
+  Database.deleteTuple()
