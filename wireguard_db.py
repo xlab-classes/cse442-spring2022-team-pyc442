@@ -67,7 +67,7 @@ class Database:
     cnx.close()
   
   #Adds users to the server
-  def add_users():
+  def add_users(id, email, username, password, is_admin, is_banned):
     cnx = mysql.connector.connect(
     host="localhost",
     user="root",
@@ -81,8 +81,7 @@ class Database:
                "(user_id, email, username, password, admin, banned) "
                "VALUES (%s, %s, %s, %s, %s, %s)")
 
-    id = str(uuid.uuid4().fields[-1])[:9]
-    data_user = (id, 'mlanuri10@gmail.com', 'mike10lanurias', '#########', 1, 0)
+    data_user = (id, email, username, password, is_admin, is_banned)
 
     cursor.execute(add_user, data_user)
 
@@ -115,7 +114,14 @@ class Database:
 
 
 if __name__ == "__main__":
+  id = str(uuid.uuid4().fields[-1])[:9]
+  email = " "
+  name = " "
+  password = " "
+  admin = 0
+  banned = 0
+
   Database.setup_db()
   Database.create_database()
-  Database.add_users()
+  Database.add_users(id, email, name, password, admin, banned)
   Database.queries()
