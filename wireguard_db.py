@@ -6,7 +6,7 @@ import uuid
 
 class Database:
   #Sets up the database
-  def setup_db():
+  def setup_db(self):
     mydb = mysql.connector.connect(
         host="localhost",
         user="root",
@@ -20,7 +20,7 @@ class Database:
 
     mydb.close()
 
-  def create_database():
+  def create_database(self):
     DB_NAME = 'wireguard'
     TABLES = {}
     TABLES['wireguard'] = (
@@ -67,7 +67,7 @@ class Database:
     cnx.close()
   
   #Adds users to the server
-  def add_users():
+  def add_users(self):
     cnx = mysql.connector.connect(
     host="localhost",
     user="root",
@@ -91,7 +91,7 @@ class Database:
     cursor.close()
     cnx.close()
 
-  def queries():
+  def queries(self):
     cnx = mysql.connector.connect(
     host="localhost",
     user="root",
@@ -112,6 +112,53 @@ class Database:
 
     cursor.close()
     cnx.close()
+
+#get a user entry by user id
+  def getUserById(self, uid):
+    cnx = mysql.connector.connect(
+      host="localhost",
+      user="root",
+      password="FalaWB@321",
+      database="wireguard"
+    )
+
+    cursor = cnx.cursor()
+
+    query = ("SELECT * FROM wireguard WHERE user_id = " + uid)
+
+    cursor.execute(query)
+
+    for (user_id, email, username, password, admin, banned) in cursor:
+      print("{}, {}, {}, {}, {}, {}".format(user_id, email, username, password, admin, banned))
+
+    cnx.commit()
+
+    cursor.close()
+    cnx.close()
+
+#get a user entry by username
+  def getUserByName(self, uname):
+    cnx = mysql.connector.connect(
+      host="localhost",
+      user="root",
+      password="FalaWB@321",
+      database="wireguard"
+    )
+
+    cursor = cnx.cursor()
+
+    query = ("SELECT * FROM wireguard WHERE username = ?", uname)
+
+    cursor.execute(query)
+
+    for (user_id, email, username, password, admin, banned) in cursor:
+      print("{}, {}, {}, {}, {}, {}".format(user_id, email, username, password, admin, banned))
+
+    cnx.commit()
+
+    cursor.close()
+    cnx.close()
+
 
 
 if __name__ == "__main__":
