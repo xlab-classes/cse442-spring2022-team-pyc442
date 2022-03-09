@@ -1,6 +1,8 @@
 from json.tool import main
 import os
 import mysql.connector
+from mysql.connector import errorcode
+import uuid
 
 class Database:
   #Sets up the database
@@ -18,25 +20,18 @@ class Database:
 
     mydb.close()
 
-  #Adds users to the server
-  def addUsers(username, hashpass, userid, admin):
-    userid = os.random(16) #ID will be randomized
-    name = username
-    password = hashpass
-    is_admin = admin
-
-  def create_database(self):
+  def create_database():
     DB_NAME = 'wireguard'
     TABLES = {}
     TABLES['wireguard'] = (
-      "Create Table Wireguard ("
-      "user_id  varchar(9),"
-      "email   varchar(32),"
-      "username     varchar(32),"
-      "password  varchar(64),"
-      "admin      bool,"
-      "banned   bool,"
-      "PRIMARY KEY (user_id)"
+      "CREATE TABLE `wireguard` ("
+      "   `user_id`  varchar(9) NOT NULL,"
+      "   `email`   varchar(32) NOT NULL,"
+      "   `username`     varchar(32) NOT NULL,"
+      "   `password`  varchar(64) NOT NULL,"
+      "   `admin`      tinyint(1),"
+      "   `banned`   tinyint(1),"
+      "   PRIMARY KEY (`user_id`)"
       ") ENGINE=InnoDB")
     
     cnx = mysql.connector.connect(
@@ -44,28 +39,83 @@ class Database:
         user="root",
         password="FalaWB@321",
     )
-
     cursor = cnx.cursor()
+
+    #checks if database is created
     try:
-          cursor.execute(
-              "CREATE DATABASE {} DEFAULT CHARACTER SET 'utf8'".format(DB_NAME))
+        cursor.execute("CREATE DATABASE {} DEFAULT CHARACTER SET 'utf8'".format(DB_NAME))
     except mysql.connector.Error as err:
         print("Failed creating database: {}".format(err))
-        exit(1)
 
+    cursor.execute("USE {}".format(DB_NAME))
+
+    #checks if the table is existed
+    for table_name in TABLES:
+      table_description = TABLES[table_name]
     try:
-        cursor.execute("USE {}".format(DB_NAME))
+        print("Creating table {}: ".format(table_name), end='')
+        cursor.execute(table_description)
     except mysql.connector.Error as err:
-      print("Database {} does not exists.".format(DB_NAME))
-      if err.errno == mysql.connector.errorcode.ER_BAD_DB_ERROR:
-        self.create_database()
-        print("Database {} created successfully.".format(DB_NAME))
-        cnx.database = DB_NAME
-      else:
-        print(err)
-        exit(1)
+        if err.errno == errorcode.ER_TABLE_EXISTS_ERROR:
+            print("already exists.")
+        else:
+            print(err.msg)
+    else:
+        print("OK")
+    
+    cursor.close()
+    cnx.close()
+  
+  #Adds users to the server
+  def add_users():
+    cnx = mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="FalaWB@321",
+    database="wireguard"
+    )
+
+    cursor = cnx.cursor()
+
+    add_user = ("INSERT INTO wireguard "
+               "(user_id, email, username, password, admin, banned) "
+               "VALUES (%s, %s, %s, %s, %s, %s)")
+
+    id = str(uuid.uuid4().fields[-1])[:9]
+    data_user = (id, 'mlanuri10@gmail.com', 'mike10lanurias', '#########', 1, 0)
+
+    cursor.execute(add_user, data_user)
+
+    cnx.commit()
+
+    cursor.close()
+    cnx.close()
+
+  def queries():
+    cnx = mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="FalaWB@321",
+    database="wireguard"
+    )
+
+    cursor = cnx.cursor()
+
+    query = ("SELECT * FROM wireguard")
+
+    cursor.execute(query)
+
+    for (user_id, email, username, password, admin, banned) in cursor:
+      print("{}, {}, {}, {}, {}, {}".format(user_id, email, username, password, admin, banned))
+
+    cnx.commit()
+
+    cursor.close()
+    cnx.close()
 
 
 if __name__ == "__main__":
   Database.setup_db()
-  Database.create_database(Database)
+  Database.create_database()
+  Database.add_users()
+  Database.queries()
