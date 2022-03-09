@@ -1,7 +1,7 @@
 from turtle import title
 from flask import Flask, render_template, request, redirect, flash
 from flask_login import LoginManager, login_required, login_user
-from src import User
+from src.user import User
 from src.auth import authenticate
 
 
