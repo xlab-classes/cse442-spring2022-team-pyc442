@@ -9,8 +9,6 @@ RUN pip install -r requirements.txt
 
 # Install mysql python connector in the container. Without this, our mysql.connector libraries won't work
 RUN pip install mysql-connector-python
-RUN pip install src
-RUN pip install Flask
 EXPOSE 8080
 
 # Wait until the database server is connected
