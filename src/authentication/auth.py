@@ -1,5 +1,5 @@
 import bcrypt
-from src.user import User
+from src.authentication.user import User
 
 #Function for authenticating users, returns a User object if correct info is give returns None if invalid
 def authenticate(username: str, password: str) -> User:

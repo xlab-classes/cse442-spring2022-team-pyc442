@@ -1,8 +1,8 @@
 from turtle import title
 from flask import Flask, render_template, request, redirect, flash
 from flask_login import LoginManager, login_required, login_user
-from src.user import User
-from src.auth import authenticate
+from src.authentication.user import User
+from src.authentication.auth import authenticate
 
 
 app = Flask(__name__)

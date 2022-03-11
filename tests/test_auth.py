@@ -1,5 +1,5 @@
-from src.user import User
-from src.auth import authenticate
+from src.authentication.user import User
+from src.authentication.auth import authenticate
 
 def test_correct_creds():
     retVal = authenticate("username", "password")
