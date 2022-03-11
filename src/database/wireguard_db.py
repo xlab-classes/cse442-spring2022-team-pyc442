@@ -99,6 +99,8 @@ def queries(self):
       database="wireguard"
       )
 
+      user_data = list(tuple)
+
       cursor = cnx.cursor()
 
       query = ("SELECT * FROM wireguard")
@@ -106,12 +108,14 @@ def queries(self):
       cursor.execute(query)
 
       for (user_id, email, username, password, admin, banned) in cursor:
-        print("{}, {}, {}, {}, {}, {}".format(user_id, email, username, password, admin, banned))
+        user_data.append((user_id, email, username, password, admin, banned))
 
       cnx.commit()
 
       cursor.close()
       cnx.close()
+
+      return user_data[0]
 
     #Gets a user entry by user id
 def getUserById(self, uid):
