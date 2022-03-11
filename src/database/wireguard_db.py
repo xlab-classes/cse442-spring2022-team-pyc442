@@ -126,6 +126,8 @@ def getUserById(self, uid):
         database="wireguard"
       )
 
+      user_data = list(tuple)
+
       cursor = cnx.cursor()
 
       query = ("SELECT * FROM wireguard WHERE user_id = %s")
@@ -135,12 +137,15 @@ def getUserById(self, uid):
       cursor.execute(query, (user_id,))
 
       for (user_id, email, username, password, admin, banned) in cursor:
-        print("{}, {}, {}, {}, {}, {}".format(user_id, email, username, password, admin, banned))
+        user_data.append((user_id, email, username, password, admin, banned))
+
 
       cnx.commit()
 
       cursor.close()
       cnx.close()
+
+      return user_data[0]
 
     #Gets a user entry by username
 def getUserByName(self, uname):
@@ -151,6 +156,8 @@ def getUserByName(self, uname):
         database="wireguard"
       )
 
+      user_data = list(tuple)
+
       cursor = cnx.cursor()
 
       query = ("SELECT * FROM wireguard WHERE username = %s")
@@ -158,12 +165,13 @@ def getUserByName(self, uname):
       cursor.execute(query, (uname,))
 
       for (user_id, email, username, password, admin, banned) in cursor:
-        print("{}, {}, {}, {}, {}, {}".format(user_id, email, username, password, admin, banned))
+        user_data.append((user_id, email, username, password, admin, banned))
 
       cnx.commit()
 
       cursor.close()
       cnx.close()
+      return user_data[0]
 
 def deleteTuple():
       cnx = mysql.connector.connect(
