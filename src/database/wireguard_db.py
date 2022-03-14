@@ -5,7 +5,7 @@ from mysql.connector import errorcode
 import uuid
 
 #Sets up the database
-def setup_db(self):
+def setup_db():
   mydb = mysql.connector.connect(
         host="localhost",
         user="root",
@@ -20,7 +20,7 @@ def setup_db(self):
   mydb.close()
 
 #Creates the database
-def create_database(self):
+def create_database():
   DB_NAME = 'wireguard'
   TABLES = {}
   TABLES['wireguard'] = (
@@ -91,7 +91,7 @@ def add_users(id, email, username, password, is_admin, is_banned):
       cnx.close()
 
     #Execute the general query
-def queries(self):
+def queries():
       cnx = mysql.connector.connect( 
       host="localhost",
       user="root",
@@ -118,7 +118,7 @@ def queries(self):
       return user_data[0]
 
 #Gets a user entry by user id, returns user data as first element of list user_data
-def getUserById(self, uid):
+def getUserById(uid):
       cnx = mysql.connector.connect( #connecting to database
         host="localhost",
         user="root",
@@ -148,7 +148,7 @@ def getUserById(self, uid):
       return user_data[0] #returning first element of user_data
 
 #Gets a user entry by username, returns user data as first element of list user_data
-def getUserByName(self, uname):
+def getUserByName(uname):
       cnx = mysql.connector.connect( #connecting to database
         host="localhost",
         user="root",
@@ -175,7 +175,7 @@ def getUserByName(self, uname):
 
 """
 #change a user's username to newUname, returns user data as first element of list user_data
-def modifyUsername(self, uid, newUname):
+def modifyUsername(uid, newUname):
       cnx = mysql.connector.connect( # connecting to database
         host="localhost",
         user="root",
@@ -205,7 +205,7 @@ def modifyUsername(self, uid, newUname):
       return user_data[0] # returning first element of user_data 
 
 #change a user's ban status, returns user data as first element of list user_data
-def changeBannedStatus(self, uid, newBanStatus)
+def changeBannedStatus(uid, newBanStatus)
       cnx = mysql.connector.connect( # connecting to database
         host="localhost",
         user="root",
