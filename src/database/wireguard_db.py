@@ -68,7 +68,7 @@ def create_database(self):
     
 #Adds users to the server
 def add_users(id, email, username, password, is_admin, is_banned):
-      cnx = mysql.connector.connect(
+      cnx = mysql.connector.connect( # connceting to database
       host="localhost",
       user="root",
       password="FalaWB@321",
@@ -79,7 +79,7 @@ def add_users(id, email, username, password, is_admin, is_banned):
 
       add_user = ("INSERT INTO wireguard "
                 "(user_id, email, username, password, admin, banned) "
-                "VALUES (%s, %s, %s, %s, %s, %s)")
+                "VALUES (%s, %s, %s, %s, %s, %s)") # query to add user
 
       data_user = (id, email, username, password, is_admin, is_banned)
 
@@ -92,7 +92,7 @@ def add_users(id, email, username, password, is_admin, is_banned):
 
     #Execute the general query
 def queries(self):
-      cnx = mysql.connector.connect(
+      cnx = mysql.connector.connect( 
       host="localhost",
       user="root",
       password="FalaWB@321",
@@ -103,7 +103,7 @@ def queries(self):
 
       cursor = cnx.cursor()
 
-      query = ("SELECT * FROM wireguard")
+      query = ("SELECT * FROM wireguard") 
 
       cursor.execute(query)
 
@@ -117,26 +117,26 @@ def queries(self):
 
       return user_data[0]
 
-    #Gets a user entry by user id
+#Gets a user entry by user id, returns user data as first element of list user_data
 def getUserById(self, uid):
-      cnx = mysql.connector.connect(
+      cnx = mysql.connector.connect( #connecting to database
         host="localhost",
         user="root",
         password="FalaWB@321",
         database="wireguard"
       )
 
-      user_data = list(tuple)
+      user_data = list(tuple) #initializing list, first element will be returned
 
       cursor = cnx.cursor()
 
-      query = ("SELECT * FROM wireguard WHERE user_id = %s")
+      query = ("SELECT * FROM wireguard WHERE user_id = %s") #writing query to find user by uid
 
       user_id = uid
 
       cursor.execute(query, (user_id,))
 
-      for (user_id, email, username, password, admin, banned) in cursor:
+      for (user_id, email, username, password, admin, banned) in cursor: # for loop to poulate user_data
         user_data.append((user_id, email, username, password, admin, banned))
 
 
@@ -145,34 +145,97 @@ def getUserById(self, uid):
       cursor.close()
       cnx.close()
 
-      return user_data[0]
+      return user_data[0] #returning first element of user_data
 
-    #Gets a user entry by username
+#Gets a user entry by username, returns user data as first element of list user_data
 def getUserByName(self, uname):
-      cnx = mysql.connector.connect(
+      cnx = mysql.connector.connect( #connecting to database
         host="localhost",
         user="root",
         password="FalaWB@321",
         database="wireguard"
       )
 
-      user_data = list(tuple)
+      user_data = list(tuple) #initializing list, first element will be returned
 
       cursor = cnx.cursor()
 
-      query = ("SELECT * FROM wireguard WHERE username = %s")
+      query = ("SELECT * FROM wireguard WHERE username = %s") #writing query to find a user by username
 
       cursor.execute(query, (uname,))
 
-      for (user_id, email, username, password, admin, banned) in cursor:
+      for (user_id, email, username, password, admin, banned) in cursor: #for loop to populate user_data
         user_data.append((user_id, email, username, password, admin, banned))
 
       cnx.commit()
 
       cursor.close()
       cnx.close()
-      return user_data[0]
+      return user_data[0] #returning first element of user_data
 
+"""
+#change a user's username to newUname, returns user data as first element of list user_data
+def modifyUsername(self, uid, newUname):
+      cnx = mysql.connector.connect( # connecting to database
+        host="localhost",
+        user="root",
+        password="FalaWB@321",
+        database="wireguard"
+      )
+
+      user_data = list(tuple) # initializing list, first element will be returned
+
+      cursor = cnx.cursor()
+
+      query = ("UPDATE wireguard SET username = %s WHERE uid = %s") #writing query to update username
+
+      cursor.execute(query, (newUname, uid))
+
+      query = ("SELECT * FROM wireguard WHERE uid = %s") #write query to get user data
+
+      cursor.execute(query, (uid,))
+
+      for (user_id, email, username, password, admin, banned) in cursor: #for loop to populate user_data
+        user_data.append((user_id, email, username, password, admin, banned))
+
+      cnx.commit()
+
+      cursor.close()
+      cnx.close()
+      return user_data[0] # returning first element of user_data 
+
+#change a user's ban status, returns user data as first element of list user_data
+def changeBannedStatus(self, uid, newBanStatus)
+      cnx = mysql.connector.connect( # connecting to database
+        host="localhost",
+        user="root",
+        password="FalaWB@321",
+        database="wireguard"
+      )
+      user_data = list(tuple) # initializing list, first element will be returned
+
+      cursor = cnx.cursor()
+
+      query = ("UPDATE wireguard SET banned = %i WHERE uid = %s") #writing query to update ban status
+
+      cursor.execute(query, (newBanStatus, uid))
+
+      query = ("SELECT * FROM wireguard WHERE uid = %s") #write query to get user data
+
+      cursor.execute(query, (uid,))
+
+      for (user_id, email, username, password, admin, banned) in cursor: #for loop to populate user_data
+        user_data.append((user_id, email, username, password, admin, banned))
+
+      cnx.commit()
+
+      cursor.close()
+      cnx.close()
+      return user_data[0] # returning first element of user_data
+
+"""
+
+#currently deletes all entries from the database, change to only delete a specified tuple from the database
 def deleteTuple():
       cnx = mysql.connector.connect(
         host="localhost",
@@ -193,7 +256,7 @@ def deleteTuple():
       cnx.close()
 
 
-
+#testing
 """ if __name__ == "__main__":
     id = str(uuid.uuid4().fields[-1])[:9]
     email = "test@email.com"
@@ -208,4 +271,6 @@ def deleteTuple():
     queries()
     getUserById(id)
     getUserByName(name)
+    modifyUsername(id, "new_username_442")
+    changeBannedStatus(id, 1)
     deleteTuple() """
