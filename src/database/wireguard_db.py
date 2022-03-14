@@ -91,7 +91,7 @@ def add_users(id, email, username, password, is_admin, is_banned):
       cnx.close()
 
     #Execute the general query
-def queries():
+def general_query():
       cnx = mysql.connector.connect( 
       host="localhost",
       user="root",
@@ -99,7 +99,7 @@ def queries():
       database="wireguard"
       )
 
-      user_data = list(tuple)
+      user_data = []
 
       cursor = cnx.cursor()
 
@@ -115,7 +115,7 @@ def queries():
       cursor.close()
       cnx.close()
 
-      return user_data[0]
+      return user_data
 
 #Gets a user entry by user id, returns user data as first element of list user_data
 def getUserById(uid):
@@ -126,7 +126,7 @@ def getUserById(uid):
         database="wireguard"
       )
 
-      user_data = list(tuple) #initializing list, first element will be returned
+      user_data = [] #initializing list, first element will be returned
 
       cursor = cnx.cursor()
 
@@ -145,7 +145,7 @@ def getUserById(uid):
       cursor.close()
       cnx.close()
 
-      return user_data[0] #returning first element of user_data
+      return user_data #returning first element of user_data
 
 #Gets a user entry by username, returns user data as first element of list user_data
 def getUserByName(uname):
@@ -156,7 +156,7 @@ def getUserByName(uname):
         database="wireguard"
       )
 
-      user_data = list(tuple) #initializing list, first element will be returned
+      user_data = [] #initializing list, first element will be returned
 
       cursor = cnx.cursor()
 
@@ -171,9 +171,8 @@ def getUserByName(uname):
 
       cursor.close()
       cnx.close()
-      return user_data[0] #returning first element of user_data
+      return user_data #returning first element of user_data
 
-"""
 #change a user's username to newUname, returns user data as first element of list user_data
 def modifyUsername(uid, newUname):
       cnx = mysql.connector.connect( # connecting to database
@@ -183,15 +182,17 @@ def modifyUsername(uid, newUname):
         database="wireguard"
       )
 
-      user_data = list(tuple) # initializing list, first element will be returned
+      user_data = [] # initializing list, first element will be returned
 
       cursor = cnx.cursor()
 
-      query = ("UPDATE wireguard SET username = %s WHERE uid = %s") #writing query to update username
+      query = ("UPDATE wireguard SET username = %s WHERE user_id = %s") #writing query to update username
 
       cursor.execute(query, (newUname, uid))
 
-      query = ("SELECT * FROM wireguard WHERE uid = %s") #write query to get user data
+      cnx.commit()
+
+      query = ("SELECT * FROM wireguard WHERE user_id = %s") #write query to get user data
 
       cursor.execute(query, (uid,))
 
@@ -202,25 +203,27 @@ def modifyUsername(uid, newUname):
 
       cursor.close()
       cnx.close()
-      return user_data[0] # returning first element of user_data 
+      return user_data # returning first element of user_data 
 
 #change a user's ban status, returns user data as first element of list user_data
-def changeBannedStatus(uid, newBanStatus)
+def changeBannedStatus(uid, newBanStatus):
       cnx = mysql.connector.connect( # connecting to database
         host="localhost",
         user="root",
         password="FalaWB@321",
         database="wireguard"
       )
-      user_data = list(tuple) # initializing list, first element will be returned
+      user_data = [] # initializing list, first element will be returned
 
       cursor = cnx.cursor()
 
-      query = ("UPDATE wireguard SET banned = %i WHERE uid = %s") #writing query to update ban status
+      query = ("UPDATE wireguard SET banned = %s WHERE user_id = %s") #writing query to update ban status
 
       cursor.execute(query, (newBanStatus, uid))
 
-      query = ("SELECT * FROM wireguard WHERE uid = %s") #write query to get user data
+      cnx.commit()
+
+      query = ("SELECT * FROM wireguard WHERE user_id = %s") #write query to get user data
 
       cursor.execute(query, (uid,))
 
@@ -231,9 +234,7 @@ def changeBannedStatus(uid, newBanStatus)
 
       cursor.close()
       cnx.close()
-      return user_data[0] # returning first element of user_data
-
-"""
+      return user_data # returning first element of user_data
 
 #currently deletes all entries from the database, change to only delete a specified tuple from the database
 def deleteTuple():
@@ -257,20 +258,39 @@ def deleteTuple():
 
 
 #testing
-""" if __name__ == "__main__":
+if __name__ == "__main__":
     id = str(uuid.uuid4().fields[-1])[:9]
-    email = "test@email.com"
-    name = "test_442"
-    password = "abc123"
+    email = "test3@email.com"
+    name = "test_442_25"
+    password = "abc_123"
     admin = 1
     banned = 0
 
+    print("Setting up the database...")
     setup_db()
+
+    print("Creating the database...")
     create_database()
+
+    print("Adding the user to the database...")
     add_users(id, email, name, password, admin, banned)
-    queries()
-    getUserById(id)
-    getUserByName(name)
-    modifyUsername(id, "new_username_442")
-    changeBannedStatus(id, 1)
-    deleteTuple() """
+
+    print("Printing the query...")
+    print(general_query())
+
+    print("Printing the user by the id...")
+    print(getUserById(id))
+
+    print("Printing the user by the name...")
+    print(getUserByName(name))
+
+    print("Printing the new username...")
+    print(modifyUsername(id, "new_username_442"))
+
+    print("Printing the banned user")
+    print(changeBannedStatus(id, 1))
+
+    print("Deleting all tuples from the database...")
+    deleteTuple()
+
+    print("Done.")
