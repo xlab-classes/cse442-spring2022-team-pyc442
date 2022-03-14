@@ -4,7 +4,7 @@ from src.authentication.auth import authenticate
 def test_correct_creds():
     retVal = authenticate("username", "password")
     #Checks to make sure User object was returned
-    assert type(retVal) == User
+    assert retVal != None
     #Checks to make sure username is correct within user object
     assert retVal.get_username == "username"
     #Checks to make sure the is_authenticated property works
