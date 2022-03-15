@@ -236,8 +236,35 @@ def changeBannedStatus(uid, newBanStatus):
       cnx.close()
       return user_data # returning first element of user_data
 
+def deleteUserByName(uid):
+    cnx = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="FalaWB@321",
+        database="wireguard"
+      )
+
+    user_data = []
+
+    cursor = cnx.cursor()
+
+    query = ("DELETE FROM wireguard WHERE user_id = %s")
+
+    cursor.execute(query, (uid,))
+
+    for (user_id, email, username, password, admin, banned) in cursor: #for loop to populate user_data
+      user_data.append((user_id, email, username, password, admin, banned))
+
+    cnx.commit()
+
+    cursor.close()
+    cnx.close()
+    return user_data
+
+
+
 #currently deletes all entries from the database, change to only delete a specified tuple from the database
-def deleteTuple():
+def deleteAllTuples():
       cnx = mysql.connector.connect(
         host="localhost",
         user="root",
@@ -290,7 +317,10 @@ if __name__ == "__main__":
     print("Printing the banned user")
     print(changeBannedStatus(id, 1))
 
+    print("Deleting user by their name...")
+    print(deleteUserByName(name))
+
     print("Deleting all tuples from the database...")
-    deleteTuple()
+    deleteAllTuples()
 
     print("Done.")
