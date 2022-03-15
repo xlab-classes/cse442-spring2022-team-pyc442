@@ -180,7 +180,7 @@ def getUserByName(uname):
 
       cursor.close()
       cnx.close()
-      return user_data[0] #returning first element of user_data
+      return user_data
 
 #change a user's username to newUname, returns user data as first element of list user_data
 def modifyUsername(uid, newUname):
@@ -212,7 +212,7 @@ def modifyUsername(uid, newUname):
 
       cursor.close()
       cnx.close()
-      return user_data[0] # returning first element of user_data 
+      return user_data 
 
 #change a user's ban status, returns user data as first element of list user_data
 def changeBannedStatus(uid, newBanStatus):
