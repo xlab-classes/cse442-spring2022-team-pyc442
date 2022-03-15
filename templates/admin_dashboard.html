@@ -18,13 +18,19 @@
         <!-- <span class="title">This black background is used for test</span> -->
     </h1>
     <!-- The brown color is used for test.  -->
-    <div style="background-color: brown;" class="menuBar"> 
+    <div style="background-color: rgb(223, 18, 18);" class="menuBar"> 
         <ul class="menuBar">
-            <li><a href="https://www.google.com/"><b>Dashboard:</b></a></li>
-            <li><a href="https://www.google.com/">Configuration:</a></li>
-            <li><a href="https://www.google.com/">Setting:</a></li>
-            <li><a href="https://www.google.com/">Add users:</a></li>
-            <li><a href="#">Help:</a></li>
+            <!-- <li>
+                <form action="/admin_dashboard" id="Dashboard" method="GET">
+                    <input type="submit" value="Post">
+                </form>
+                
+            </li> -->
+            <li><a href="localhost:8080/admin_dashboard"><b>Dashboard:</b></a></li>
+            <li><a href="localhost:8080/admin_configuration">Configuration:</a></li>
+            <li><a href="localhost:8080/admin_settings">Setting:</a></li>
+            <li><a href="localhost:8080/admin_add_users">Add users:</a></li>
+            <li><a href="localhost:8080/admin_help">Help:</a></li>
         </ul>
         
 
@@ -38,7 +44,7 @@
                 </button>
             </div>
             <div class="dataUsage" style="background-color: rgb(88, 11, 230);">
-                <img src="/templates/site_source/cool-background.png" alt="Data Usage" title="Data Usage" class="dataUsage" style="justify-self: right;">
+                <img src="/templates/site_source/cool-background.png" alt="Data Usage" title="Data Usage" style="justify-self: right;">
             </div>
             <p>
 

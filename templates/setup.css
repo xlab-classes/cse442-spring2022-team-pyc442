@@ -55,7 +55,8 @@ div{
 }
 .content{
     margin-left: 220px;
-    background-color: rgb(19, 236, 12);
+    margin-right: 100px;
+    background-color: rgb(231, 238, 230);
     border-radius: 15px;
 }
 .configuration{
@@ -73,10 +74,10 @@ label{
     font-size: 20px;
     text-align: right;
     margin-bottom: 20px;
-    color: rgb(255, 255, 255);
+    color: rgb(17, 17, 17);
 }
 .buttonSubmit{
-    width: 80px;
+    width: 50px;
 
     display: absolute;
     bottom: 0;
@@ -91,7 +92,8 @@ form {
 }
 .dataUsage{
     width: 50%;
-    text-align: right;
+    position: absolute;
+    right: 0;
 }
 /* .button{
     display: block;
@@ -110,9 +112,7 @@ button {
     overflow: hidden;
     border-radius: 40px;
     border: none;
-    margin-right: 50%;
-    margin-left: 20%;
-    margin-top: 10%;
+
 
 }
    
