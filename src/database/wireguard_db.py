@@ -171,7 +171,7 @@ def getUserByName(uname):
 
       cursor.close()
       cnx.close()
-      return user_data #returning first element of user_data
+      return user_data[0] #returning first element of user_data
 
 #change a user's username to newUname, returns user data as first element of list user_data
 def modifyUsername(uid, newUname):
@@ -203,7 +203,7 @@ def modifyUsername(uid, newUname):
 
       cursor.close()
       cnx.close()
-      return user_data # returning first element of user_data 
+      return user_data[0] # returning first element of user_data 
 
 #change a user's ban status, returns user data as first element of list user_data
 def changeBannedStatus(uid, newBanStatus):
@@ -234,7 +234,7 @@ def changeBannedStatus(uid, newBanStatus):
 
       cursor.close()
       cnx.close()
-      return user_data # returning first element of user_data
+      return user_data[0] # returning first element of user_data
 
 def deleteUserByName(name):
     cnx = mysql.connector.connect(
@@ -248,9 +248,15 @@ def deleteUserByName(name):
 
     cursor = cnx.cursor()
 
-    query = ("DELETE FROM wireguard WHERE user_id = %s")
+    query1 = ("DELETE FROM wireguard WHERE username = %s")
 
-    cursor.execute(query, (name,))
+    cursor.execute(query1, (name,))
+
+    cnx.commit()
+
+    query2 = ("SELECT * FROM wireguard WHERE EXISTS (SELECT * FROM wireguard WHERE username = %s)")
+
+    cursor.execute(query2, (name,))
 
     for (user_id, email, username, password, admin, banned) in cursor: #for loop to populate user_data
       user_data.append((user_id, email, username, password, admin, banned))
@@ -259,7 +265,11 @@ def deleteUserByName(name):
 
     cursor.close()
     cnx.close()
-    return user_data
+    if not user_data:
+      return True
+    
+
+
 
 
 
@@ -309,7 +319,7 @@ if __name__ == "__main__":
     print(getUserById(id))
 
     print("Printing the user by the name...")
-    print(getUserByName(name))
+    info1 = getUserByName(name)
 
     print("Printing the new username...")
     print(modifyUsername(id, "new_username_442"))
@@ -318,7 +328,8 @@ if __name__ == "__main__":
     print(changeBannedStatus(id, 1))
 
     print("Deleting user by their name...")
-    print(deleteUserByName(name))
+    if(deleteUserByName(name) is True):
+      print("Done.")
 
     print("Deleting all tuples from the database...")
     deleteAllTuples()
