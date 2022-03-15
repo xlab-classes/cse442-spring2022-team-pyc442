@@ -236,7 +236,7 @@ def changeBannedStatus(uid, newBanStatus):
       cnx.close()
       return user_data # returning first element of user_data
 
-def deleteUserByName(uid):
+def deleteUserByName(name):
     cnx = mysql.connector.connect(
         host="localhost",
         user="root",
@@ -250,7 +250,7 @@ def deleteUserByName(uid):
 
     query = ("DELETE FROM wireguard WHERE user_id = %s")
 
-    cursor.execute(query, (uid,))
+    cursor.execute(query, (name,))
 
     for (user_id, email, username, password, admin, banned) in cursor: #for loop to populate user_data
       user_data.append((user_id, email, username, password, admin, banned))
