@@ -12,7 +12,7 @@ def authenticate(username: str, password: str):
     userInfo = getUserByName(username)
     hashpass = userInfo[3] #need database to use
     #checks if password is correct
-    if bcrypt.checkpw(bytes(password.encode("UTF-8"), "UTF-8"), bytes(hashpass, "UTF-8")):
+    if bcrypt.checkpw(bytes(password, "UTF-8"), bytes(hashpass, "UTF-8")):
         #if password is correct return a user object
         # order of User init is (username: str, userid: str, isAdmin: bool, isBanned: bool)
         return User(userInfo[2], userInfo[0], userInfo[4], userInfo[5]) #Need database to finish here

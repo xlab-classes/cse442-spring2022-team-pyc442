@@ -1,5 +1,24 @@
+import pytest
 from src.authentication.user import User
 from src.authentication.auth import authenticate
+from src.database.wireguard_db import add_users, deleteUserByName, setup_db, create_database
+import bcrypt
+
+#setup database and resets database for tests
+@pytest.fixture()
+def dbsetup():
+    #sets up database
+    setup_db()
+    create_database()
+    #add in correct user
+    add_users("1", "any@any.com", "username", bcrypt.hashpw(b"password", bcrypt.gensalt()), True, False)    
+    #pause until test case is finished
+    yield
+    #remove user from database
+    deleteUserByName("username")
+
+
+
 
 def test_correct_creds():
     retVal = authenticate("username", "password")
