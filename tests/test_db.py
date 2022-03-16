@@ -48,10 +48,10 @@ def test_banned_status():
 #tests for empty password and username on authenticate function
 def test_delete_user():
     retVal = deleteUserByName("username")
-    assert retVal == False
+    assert retVal == True
     retVal = deleteUserByName("changed_20")
-    assert retVal == False
-    retVal = deleteUserByName("username3")
-    assert retVal == False
+    assert retVal == True
     retVal = deleteUserByName("username3")
     assert retVal == True
+    retVal = deleteUserByName("username3")
+    assert retVal == False
