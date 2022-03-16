@@ -1,8 +1,7 @@
 from json.tool import main
-#import os
+import pylint
 import mysql.connector
 from mysql.connector import errorcode
-#import uuid
 import bcrypt
 
 #Sets up the database
