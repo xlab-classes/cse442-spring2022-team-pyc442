@@ -56,4 +56,3 @@ def test_delete_user():
     assert retVal == True
     retVal = deleteUserByName("username3")
     assert retVal == False
-    deleteAllTuples()
