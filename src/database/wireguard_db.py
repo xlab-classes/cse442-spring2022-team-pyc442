@@ -272,7 +272,8 @@ def deleteUserByName(name):
 
     cursor.close()
     cnx.close()
-    if not user_data:
+    
+    if user_data == []:
       return True
     else:
       return False
