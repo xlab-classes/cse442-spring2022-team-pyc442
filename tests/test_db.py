@@ -3,6 +3,7 @@ from src.database.wireguard_db import add_users, changeBannedStatus, deleteUserB
 import bcrypt
 
 def test_adding_more_users():
+    deleteAllTuples()
     setup_db()
     create_database()
 
