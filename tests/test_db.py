@@ -51,5 +51,7 @@ def test_delete_user():
     assert retVal == True
     retVal = deleteUserByName("changed_20")
     assert retVal == True
-    retVal = deleteUserByName("username3") 
+    retVal = deleteUserByName("username3")
+    assert retVal == True
+    retVal = deleteUserByName("username3")
     assert retVal == False
