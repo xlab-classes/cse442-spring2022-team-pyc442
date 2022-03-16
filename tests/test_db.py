@@ -1,5 +1,5 @@
 import pytest
-from src.database.wireguard_db import add_users, deleteUserByName, general_query, getUserById, setup_db, create_database, deleteAllTuples, getUserByName
+from src.database.wireguard_db import add_users, changeBannedStatus, deleteUserByName, general_query, getUserById, modifyUsername, setup_db, create_database, deleteAllTuples, getUserByName
 import bcrypt
 
 def test_adding_more_users():
@@ -31,25 +31,24 @@ def test_for_user_name():
     assert retVal == None
 
 #tests for empty username on authenticate function
-def test_empty_username():
-    deleteAllTuples()
-    add_users("1", "any@any.com", "username", bcrypt.hashpw(b"password", bcrypt.gensalt()), 1, 0)
-    retVal = authenticate("", "password")
-    deleteAllTuples()
+def test_for_modification():
+    retVal = modifyUsername("2", "changed_20")
+    assert retVal != None
+    retVal = modifyUsername("5", "changed_25")
     assert retVal == None
 
 #tests for invalid password on authenticate function
-def test_invalid_password():
-    deleteAllTuples()
-    add_users("1", "any@any.com", "username", bcrypt.hashpw(b"password", bcrypt.gensalt()), 1, 0)
-    retVal = authenticate("username", "invalidPass")
-    deleteAllTuples()
-    assert retVal == None
+def test_banned_status():
+    retVal = changeBannedStatus("2", 0)
+    assert retVal != None
+    retVal = changeBannedStatus("3", 1)
+    assert retVal != None
 
 #tests for empty password and username on authenticate function
-def test_empty_creds():
-    deleteAllTuples()
-    add_users("1", "any@any.com", "username", bcrypt.hashpw(b"password", bcrypt.gensalt()), 1, 0)
-    retVal = authenticate("","")
-    deleteAllTuples()
-    assert retVal == None
+def test_delete_user():
+    retVal = deleteUserByName("username")
+    assert retVal == True
+    retVal = deleteUserByName("changed20")
+    assert retVal == True
+    retVal = deleteUserByName("username3") 
+    assert retVal == False
