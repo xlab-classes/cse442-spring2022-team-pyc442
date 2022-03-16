@@ -39,9 +39,9 @@ def test_for_modification():
 
 #tests for invalid password on authenticate function
 def test_banned_status():
-    retVal = changeBannedStatus("2", 0)
+    retVal = changeBannedStatus("2", 1)
     assert retVal != None
-    retVal = changeBannedStatus("3", 1)
+    retVal = changeBannedStatus("3", 0)
     assert retVal != None
 
 #tests for empty password and username on authenticate function
