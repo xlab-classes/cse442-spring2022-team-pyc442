@@ -1,4 +1,3 @@
-from numpy import delete
 import pytest
 from src.database.wireguard_db import add_users, changeBannedStatus, deleteUserByName, general_query, getUserById, modifyUsername, setup_db, create_database, deleteAllTuples, getUserByName
 import bcrypt
