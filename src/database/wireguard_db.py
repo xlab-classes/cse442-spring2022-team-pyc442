@@ -257,12 +257,6 @@ def deleteUserByName(name):
 
     cursor = cnx.cursor()
 
-    query1 = ("DELETE FROM wireguard WHERE username = %s")
-
-    cursor.execute(query1, (name,))
-
-    cnx.commit()
-
     query2 = ("SELECT * FROM wireguard WHERE EXISTS (SELECT * FROM wireguard WHERE username = %s)")
 
     cursor.execute(query2, (name,))
@@ -270,13 +264,22 @@ def deleteUserByName(name):
     for (user_id, email, username, password, admin, banned) in cursor: #for loop to populate user_data
       user_data.append((user_id, email, username, password, admin, banned))
 
+    if user_data == []:
+      cursor.close()
+      cnx.close()
+      return False
+    
+    query1 = ("DELETE FROM wireguard WHERE username = %s")
+
+    cursor.execute(query1, (name,))
+
+    cnx.commit()
+
+
     cursor.close()
     cnx.close()
 
-    if user_data == []:
-      return False
-    else:
-      return True
+    return True
     
 
 
