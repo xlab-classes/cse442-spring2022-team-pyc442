@@ -10,7 +10,7 @@ def setup_db():
   mydb = mysql.connector.connect(
         host="localhost",
         user="root",
-        password="password",
+        password="FalaWB@321",
     )
 
   if mydb:
@@ -38,7 +38,7 @@ def create_database():
   cnx = mysql.connector.connect(
       host="localhost",
       user="root",
-      password="password")
+      password="FalaWB@321")
 
   cursor = cnx.cursor()
 
@@ -81,7 +81,7 @@ def add_users(id, email, username, password, is_admin, is_banned):
       cnx = mysql.connector.connect( # connceting to database
       host="localhost",
       user="root",
-      password="password",
+      password="FalaWB@321",
       database="wireguard"
       )
 
@@ -105,7 +105,7 @@ def general_query():
       cnx = mysql.connector.connect( 
       host="localhost",
       user="root",
-      password="password",
+      password="FalaWB@321",
       database="wireguard"
       )
 
@@ -130,7 +130,7 @@ def getUserById(uid):
       cnx = mysql.connector.connect( #connecting to database
         host="localhost",
         user="root",
-        password="password",
+        password="FalaWB@321",
         database="wireguard"
       )
 
@@ -157,7 +157,7 @@ def getUserByName(uname):
       cnx = mysql.connector.connect( #connecting to database
         host="localhost",
         user="root",
-        password="password",
+        password="FalaWB@321",
         database="wireguard"
       )
 
@@ -183,7 +183,7 @@ def modifyUsername(uid, newUname):
       cnx = mysql.connector.connect( # connecting to database
         host="localhost",
         user="root",
-        password="password",
+        password="FalaWB@321",
         database="wireguard"
       )
 
@@ -213,7 +213,7 @@ def changeBannedStatus(uid, newBanStatus):
       cnx = mysql.connector.connect( # connecting to database
         host="localhost",
         user="root",
-        password="password",
+        password="FalaWB@321",
         database="wireguard"
       )
       user_data = [] # initializing list, first element will be returned
@@ -242,7 +242,7 @@ def deleteUserByName(name):
     cnx = mysql.connector.connect(
         host="localhost",
         user="root",
-        password="password",
+        password="FalaWB@321",
         database="wireguard"
       )
 
@@ -280,7 +280,7 @@ def deleteAllTuples():
       cnx = mysql.connector.connect(
         host="localhost",
         user="root",
-        password="password",
+        password="FalaWB@321",
         database="wireguard"
       )
 
