@@ -1,15 +1,16 @@
 from json.tool import main
-import os
+#import os
 import mysql.connector
 from mysql.connector import errorcode
-import uuid
+#import uuid
+import bcrypt
 
 #Sets up the database
 def setup_db():
   mydb = mysql.connector.connect(
         host="localhost",
         user="root",
-        password="FalaWB@321",
+        password="password",
     )
 
   if mydb:
@@ -37,7 +38,7 @@ def create_database():
   cnx = mysql.connector.connect(
       host="localhost",
       user="root",
-      password="FalaWB@321")
+      password="password")
 
   cursor = cnx.cursor()
 
@@ -80,7 +81,7 @@ def add_users(id, email, username, password, is_admin, is_banned):
       cnx = mysql.connector.connect( # connceting to database
       host="localhost",
       user="root",
-      password="FalaWB@321",
+      password="password",
       database="wireguard"
       )
 
@@ -104,7 +105,7 @@ def general_query():
       cnx = mysql.connector.connect( 
       host="localhost",
       user="root",
-      password="FalaWB@321",
+      password="password",
       database="wireguard"
       )
 
@@ -117,9 +118,7 @@ def general_query():
       cursor.execute(query)
 
       for (user_id, email, username, password, admin, banned) in cursor:
-        user_data.append((user_id, email, username, password, admin, banned))
-
-      cnx.commit()
+        user_data.append([user_id, email, username, password, admin, banned])
 
       cursor.close()
       cnx.close()
@@ -131,7 +130,7 @@ def getUserById(uid):
       cnx = mysql.connector.connect( #connecting to database
         host="localhost",
         user="root",
-        password="FalaWB@321",
+        password="password",
         database="wireguard"
       )
 
@@ -146,22 +145,19 @@ def getUserById(uid):
       cursor.execute(query, (user_id,))
 
       for (user_id, email, username, password, admin, banned) in cursor: # for loop to poulate user_data
-        user_data.append((user_id, email, username, password, admin, banned))
-
-
-      cnx.commit()
+        user_data.append([user_id, email, username, password, admin, banned])
 
       cursor.close()
       cnx.close()
 
-      return user_data #returning first element of user_data
+      return user_data
 
 #Gets a user entry by username, returns user data as first element of list user_data
 def getUserByName(uname):
       cnx = mysql.connector.connect( #connecting to database
         host="localhost",
         user="root",
-        password="FalaWB@321",
+        password="password",
         database="wireguard"
       )
 
@@ -173,21 +169,19 @@ def getUserByName(uname):
 
       cursor.execute(query, (uname,))
 
-      for (user_id, email, username, password, admin, banned) in cursor: #for loop to populate user_data
-        user_data.append((user_id, email, username, password, admin, banned))
-
-      cnx.commit()
+      for (user_id, email, username, password, admin, banned) in cursor: # for loop to poulate user_data
+        user_data.append([user_id, email, username, password, admin, banned])
 
       cursor.close()
       cnx.close()
-      return user_data
+      return user_data[0] #returning first element of user_data
 
 #change a user's username to newUname, returns user data as first element of list user_data
 def modifyUsername(uid, newUname):
       cnx = mysql.connector.connect( # connecting to database
         host="localhost",
         user="root",
-        password="FalaWB@321",
+        password="password",
         database="wireguard"
       )
 
@@ -205,21 +199,19 @@ def modifyUsername(uid, newUname):
 
       cursor.execute(query, (uid,))
 
-      for (user_id, email, username, password, admin, banned) in cursor: #for loop to populate user_data
-        user_data.append((user_id, email, username, password, admin, banned))
-
-      cnx.commit()
+      for user_id, email, username, password, admin, banned in cursor: #for loop to populate user_data
+        user_data.append([user_id, email, username, password, admin, banned])
 
       cursor.close()
       cnx.close()
-      return user_data 
+      return user_data[0] # returning first element of user_data 
 
 #change a user's ban status, returns user data as first element of list user_data
 def changeBannedStatus(uid, newBanStatus):
       cnx = mysql.connector.connect( # connecting to database
         host="localhost",
         user="root",
-        password="FalaWB@321",
+        password="password",
         database="wireguard"
       )
       user_data = [] # initializing list, first element will be returned
@@ -237,19 +229,18 @@ def changeBannedStatus(uid, newBanStatus):
       cursor.execute(query, (uid,))
 
       for (user_id, email, username, password, admin, banned) in cursor: #for loop to populate user_data
-        user_data.append((user_id, email, username, password, admin, banned))
-
-      cnx.commit()
+        user_data.append([user_id, email, username, password, admin, banned])
 
       cursor.close()
       cnx.close()
-      return user_data[0] # returning first element of user_data
+
+      return user_data
 
 def deleteUserByName(name):
     cnx = mysql.connector.connect(
         host="localhost",
         user="root",
-        password="FalaWB@321",
+        password="password",
         database="wireguard"
       )
 
@@ -270,12 +261,12 @@ def deleteUserByName(name):
     for (user_id, email, username, password, admin, banned) in cursor: #for loop to populate user_data
       user_data.append((user_id, email, username, password, admin, banned))
 
-    cnx.commit()
-
     cursor.close()
     cnx.close()
     if not user_data:
       return True
+    else:
+      return False
     
 
 
@@ -287,7 +278,7 @@ def deleteAllTuples():
       cnx = mysql.connector.connect(
         host="localhost",
         user="root",
-        password="FalaWB@321",
+        password="password",
         database="wireguard"
       )
 
@@ -305,10 +296,11 @@ def deleteAllTuples():
 
 #testing
 if __name__ == "__main__":
-    id = str(uuid.uuid4().fields[-1])[:9]
-    email = "test3@email.com"
-    name = "test_442_25"
-    password = "abc_123"
+    #("1", "any@any.com", "username", bcrypt.hashpw(b"password", bcrypt.gensalt()), 1, 0
+    id = "1"
+    email = "any@any.com"
+    name = "username"
+    password = bcrypt.hashpw(b"password", bcrypt.gensalt())
     admin = 1
     banned = 0
 
@@ -321,20 +313,8 @@ if __name__ == "__main__":
     print("Adding the user to the database...")
     add_users(id, email, name, password, admin, banned)
 
-    print("Printing the query...")
-    print(general_query())
-
-    print("Printing the user by the id...")
-    print(getUserById(id))
-
     print("Printing the user by the name...")
     print(getUserByName(name))
-
-    print("Printing the new username...")
-    print(modifyUsername(id, "new_username_442"))
-
-    print("Printing the banned user")
-    print(changeBannedStatus(id, 1))
 
     print("Deleting user by their name...")
     if(deleteUserByName(name) is True):
