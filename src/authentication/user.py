@@ -10,22 +10,18 @@ class User(UserMixin):
         self.isAdmin = isAdmin
         self.isBanned = isBanned
 
-    @property
     def is_active(self) -> bool:
         return self.isBanned
 
     def get_id(self) -> str:
         return self.userid
 
-    @property
     def is_authenticated(self) -> bool:
         return True
 
-    @property
     def is_anonymous(self):
         return False
 
-    @property
     def is_admin(self):
         return self.isAdmin
 

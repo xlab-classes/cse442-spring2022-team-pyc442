@@ -174,6 +174,8 @@ def getUserByName(uname):
 
       cursor.close()
       cnx.close()
+      if user_data == []:
+        return None
       return user_data[0] #returning first element of user_data
 
 #change a user's username to newUname, returns user data as first element of list user_data

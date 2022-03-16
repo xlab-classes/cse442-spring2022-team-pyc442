@@ -28,11 +28,11 @@ def test_correct_creds():
     #Checks to make sure User object was returned
     assert retVal != None
     #Checks to make sure username is correct within user object
-    assert retVal.get_username == "username"
+    assert retVal.get_username() == "username"
     #Checks to make sure the is_authenticated property works
-    assert retVal.is_authenticated == True
+    assert retVal.is_authenticated() == True
     #Checks to make sure the is_active property is working
-    assert retVal.is_active == True
+    assert retVal.is_active() == False
 
 #tests for incorrect username on authenticate function
 def test_incorrect_username():

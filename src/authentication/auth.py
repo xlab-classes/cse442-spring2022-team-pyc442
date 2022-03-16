@@ -10,9 +10,8 @@ def authenticate(username: str, password: str):
         return None
     # gets user info in a list order of (user_id, email, username, password, admin, banned)
     userInfo = getUserByName(username)
-    if (userInfo == None):
+    if (userInfo == None or userInfo == []):
         return None
-    print(userInfo)
     hashpass = userInfo[3] #need database to use
     #checks if password is correct
     if bcrypt.checkpw(bytes(password, "UTF-8"), bytes(hashpass, "UTF-8")):
