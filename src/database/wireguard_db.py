@@ -272,11 +272,11 @@ def deleteUserByName(name):
 
     cursor.close()
     cnx.close()
-    
+
     if user_data == []:
-      return True
-    else:
       return False
+    else:
+      return True
     
 
 
@@ -306,31 +306,9 @@ def deleteAllTuples():
 
 #testing
 if __name__ == "__main__":
-    #("1", "any@any.com", "username", bcrypt.hashpw(b"password", bcrypt.gensalt()), 1, 0
-    id = "1"
-    email = "any@any.com"
-    name = "username"
-    password = bcrypt.hashpw(b"password", bcrypt.gensalt())
-    admin = 1
-    banned = 0
-
-    print("Setting up the database...")
-    setup_db()
-
-    print("Creating the database...")
-    create_database()
-
-    print("Adding the user to the database...")
-    add_users(id, email, name, password, admin, banned)
-
-    print("Printing the user by the name...")
-    print(getUserByName(name))
-
-    print("Deleting user by their name...")
-    if(deleteUserByName(name) is True):
-      print("Done.")
-
-    print("Deleting all tuples from the database...")
-    deleteAllTuples()
-
-    print("Done.")
+  add_users("1", "any@any.com", "username", bcrypt.hashpw(b"password", bcrypt.gensalt()), 1, 0)
+  add_users("2", "any2@any2.com", "changed_20", bcrypt.hashpw(b"password2", bcrypt.gensalt()), 0, 1)
+  add_users("3", "any3@any3.com", "username3", bcrypt.hashpw(b"password3", bcrypt.gensalt()), 0, 0)
+  print(deleteUserByName("username"))
+  print(deleteUserByName("changed_20"))
+  print(deleteUserByName("username3"))
