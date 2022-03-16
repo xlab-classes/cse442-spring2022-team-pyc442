@@ -49,7 +49,7 @@ def test_banned_status():
 def test_delete_user():
     retVal = deleteUserByName("username")
     assert retVal == True
-    retVal = deleteUserByName("changed20")
+    retVal = deleteUserByName("changed_20")
     assert retVal == True
     retVal = deleteUserByName("username3") 
     assert retVal == False
