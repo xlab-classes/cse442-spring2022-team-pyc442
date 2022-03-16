@@ -122,8 +122,9 @@ def general_query():
 
       cursor.close()
       cnx.close()
-
-      return user_data
+      if user_data == []:
+        return None
+      return user_data[0] #returning first element of user_data
 
 #Gets a user entry by user id, returns user data as first element of list user_data
 def getUserById(uid):
@@ -150,7 +151,9 @@ def getUserById(uid):
       cursor.close()
       cnx.close()
 
-      return user_data
+      if user_data == []:
+        return None
+      return user_data[0] #returning first element of user_data
 
 #Gets a user entry by username, returns user data as first element of list user_data
 def getUserByName(uname):
@@ -206,7 +209,9 @@ def modifyUsername(uid, newUname):
 
       cursor.close()
       cnx.close()
-      return user_data[0] # returning first element of user_data 
+      if user_data == []:
+        return None
+      return user_data[0] #returning first element of user_data # returning first element of user_data 
 
 #change a user's ban status, returns user data as first element of list user_data
 def changeBannedStatus(uid, newBanStatus):
@@ -236,7 +241,9 @@ def changeBannedStatus(uid, newBanStatus):
       cursor.close()
       cnx.close()
 
-      return user_data
+      if user_data == []:
+        return None
+      return user_data[0] #returning first element of user_data
 
 def deleteUserByName(name):
     cnx = mysql.connector.connect(
