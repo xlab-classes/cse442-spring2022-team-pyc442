@@ -1,6 +1,6 @@
 import bcrypt
 from flask import Flask, render_template, request, redirect, flash
-from flask_login import LoginManager, login_required, login_user
+from flask_login import LoginManager, login_required, login_user, current_user
 from src.authentication.user import User
 from src.authentication.auth import authenticate
 from src.database.wireguard_db import getUserById, add_users, getUserByName
@@ -42,10 +42,10 @@ def createApp():
     def userRoute():
         #checks for if admin
         # return tempate page for admin and sets its title to the admins name
-        if User.is_admin:
-            return render_template("user.html", title=User.get_username)
+        if current_user.is_admin:
+            return render_template("user.html", title=current_user.get_username())
         # returns the user template
-        return render_template("user.html", title=User.get_username)
+        return render_template("user.html", title=current_user.get_username())
 
 
     #Route to authenticate a user
@@ -55,8 +55,8 @@ def createApp():
         user =  authenticate(request.form["username"], request.form["password"])
         # Checks to make sure user was 
         if(user != None):
-            if(request.form["rememberUser"]==True):
-                login_user(user, remember="True")
+            if(request.form.get("rememberUser")):
+                login_user(user, remember=True)
                 return redirect("/user")
             else:
                 login_user(user, remember=False)
