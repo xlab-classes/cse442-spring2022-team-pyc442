@@ -30,17 +30,19 @@ def createApp():
         #creates user object and returns it
         #formate of init for User is username: str, userid: str, isAdmin: bool, isBanned: bool
         return User(userInfo[2], userInfo[0], userInfo[4], userInfo[5])
+
     # error 404 handleing 
     @app.errorhandler(404)
     def fourzerofour(error):
         return render_template("404.html"), 404
+
     # route is used to server login pages
     @app.route("/")
     def rootRoute():
         return render_template('login.html', title="Login")
 
 
-    # route used to server user interface TODO add in check for if post or get and add in below
+    # route used to server user interface 
     @app.route("/user")
     # checks for auth and redirect to root if not
     @login_required
@@ -49,17 +51,31 @@ def createApp():
         # return tempate page for admin and sets its title to the admins name
         if current_user.is_admin:
             return redirect("/admin/dashboard")
-        # returns the user template
+        # returns redirect to correct location of user dashboard
         else:
             return render_template("user.html", title=current_user.get_username())
 
+    # route used to serve webpages to normal users
+    @app.route("/user/<path>")
+    @login_required
+    def serveRoute(path):
+        #determine the path and return the correct user page
+        if path == "dashboard":
+            return render_template("users_page/user_dashboard.html", username=current_user.get_username(), title="Dashboard")
+        if path == "guide":
+            return render_template("users_page/user_guide.html", username=current_user.get_username(), title="Guide")
+        if path == "settings":
+            return render_template("users_page/user_settings.html", username=current_user.get_username(), title="Settings")
+        abort(404)
 
     #Route to authenticate a user
     @app.route("/login", methods=["POST"])
     def loginRoute():
         # authenticates the user or returns none if invalid
         user =  authenticate(request.form.get("username"), request.form.get("password"))
-        # Checks to make sure user was 
+        if current_user.is_authenticated():
+            return redirect("/user")
+        # Checks to make sure user was authenticated
         if(user != None):
             if(request.form.get("rememberUser")):
                 login_user(user, remember=True)
@@ -68,7 +84,7 @@ def createApp():
                 login_user(user, remember=False)
                 return redirect("/user")
         else:
-            flash("Invalid password")
+            flash("Invalid password", "error")
             return
 
     @app.route("/adduser", methods=["POST"])
@@ -93,6 +109,7 @@ def createApp():
     #route used to configure the server
     @app.route("/config")
     def configRoute():
+        #get all the information from configuration and check what to do
         if request.form.get("vpnprotocol"):
             print("Change vpn protocol")
         if request.form.get("hostname"):
@@ -112,7 +129,9 @@ def createApp():
     @app.route("/admin/<path>")
     @login_required
     def adminPages(path):
+        #check if the user is an admin
         if current_user.is_admin(): 
+            #if user is an admin send them to the correct page
             if(path == "configuration"):
                 return render_template("admin_configuration.html", title="Configuartion")
             elif path == "settings":
@@ -124,7 +143,9 @@ def createApp():
             elif path == "dashboard":
                 return render_template("admin_dashboard.html", username=current_user.get_username(), information="Server information goes here", title="Dashboard" )
             else:
+                #abort if path is not found and send back error 404
                 abort(404)
+        #if user is not an admin send them back to normal user space
         return redirect("/user")
 
 
