@@ -35,7 +35,7 @@
             <b>Manage Users</b>
         </p>
         <div class="manage_user_box">
-            <div class="users_box" style="background-color: rgb(70, 245, 35);">
+            <div class="users_box" style="background-color: rgb(70, 245, 35);"> 
                 <p class="box_title">Added Users</p>
                 <!-- Maximum display 9 users. User can use "search" to find other users. This function will be added later -->
                 <!-- The below part show be hosted using dynamic method. -->
@@ -62,17 +62,23 @@
                         User2
                     </button>
                 </form>
-                <form action="/adduser" method="GET" class="user_form">
-                    <label for="adduser">Add User</label>
-                    <input type="text" name="adduser" id="adduser">
-                    <button value="add">Add</button><br>
-                </form>
+                <form action="/adduser" method="GET" class="user_form" style="margin:auto; width:auto;">
+                    <H2 style="text-align: center;">Add User</H2>
+                    <label for="username" style="margin-left: 0%;">Username</label>
+                    <input type="text" name="username" id="username" style="margin-left:0%;">
+                    <label for="password" style="margin-left: 0%;">Password</label>
+                    <input type="password" name="password" id="password"><br>
+                    <div class="wrapper" style="text-align: center;">
+                    <button value="add" style="text-align: center;">Add</button><br>
+                    </div>
+                </form>  
                 <!-- <form action="/{{username}}" method="GET" class="">
                     <label for="search">Search:</label>
                     <input id="search" type="text" name="search"><br/>
 
                 </form> -->
             </div>
+            
             <div class="users_box" style="background-color: rgb(236, 91, 171);">
                 <p class="box_title">Blocked Users</p>
                 <!--{{loop_blocked_user}} -->
@@ -93,10 +99,12 @@
                         User2
                     </button>
                 </form>
-                <form action="/blockuser" method="GET" class="user_form">
+                <form action="/blockuser" method="GET" class="user_form" style="margin:auto; width:auto;">
                     <label for="blockuser">Block User: </label>
                     <input type="text" name="adduser" id="blockuser">
+                    <div class="wrapper" style="text-align:center;">
                     <button value="Search">Block</button><br>
+                    </div>
                 </form>
             </div>
         </div>
