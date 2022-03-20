@@ -1,4 +1,3 @@
-import pytest
 from src.authentication.user import User
 from src.authentication.auth import authenticate
 from src.database.wireguard_db import add_users, deleteUserByName, setup_db, create_database, deleteAllTuples

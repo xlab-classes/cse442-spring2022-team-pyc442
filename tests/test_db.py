@@ -1,6 +1,4 @@
-import pytest
 import bcrypt
-import pylint
 import src.database.wireguard_db as db
 
 def test_adding_more_users():
