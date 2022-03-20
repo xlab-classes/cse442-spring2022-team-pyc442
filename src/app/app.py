@@ -1,8 +1,9 @@
+import bcrypt
 from flask import Flask, render_template, request, redirect, flash
 from flask_login import LoginManager, login_required, login_user
 from src.authentication.user import User
 from src.authentication.auth import authenticate
-from src.database.wireguard_db import getUserById
+from src.database.wireguard_db import getUserById, add_users, getUserByName
 
 def createApp():
     app = Flask(__name__)
@@ -10,6 +11,10 @@ def createApp():
     app.secret_key = b'f4d3d3349255d55d17dcec79f4b63395'
     #flask login information
     loginManager = LoginManager()
+    #add default admin user
+    if(getUserByName("admin") == None):
+        add_users(1,"admin@admin.com", "admin", bcrypt.hashpw(b"password", bcrypt.gensalt()),1,0)
+
 
     loginManager.init_app(app)
     loginManager.login_view = "/"
@@ -50,11 +55,11 @@ def createApp():
         user =  authenticate(request.form["username"], request.form["password"])
         # Checks to make sure user was 
         if(user != None):
-            if(request.form["rememberUser"]=="True"):
+            if(request.form["rememberUser"]==True):
                 login_user(user, remember="True")
                 return redirect("/user")
             else:
-                login_user(user)
+                login_user(user, remember=False)
                 return redirect("/user")
         else:
             flash("Invalid password")
