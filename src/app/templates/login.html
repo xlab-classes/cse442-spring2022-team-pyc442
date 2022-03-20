@@ -1,0 +1,28 @@
+{% extends "boilerplate.html" %}
+{% block head %}
+   <link rel="stylesheet" href={{ url_for("static", filename="login_page_style.css")}}>
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+{% endblock %}
+{% block content %}
+<html>
+<body style="background-color: rgb(40, 40, 41); margin: 100px;">
+    <p class="parent">
+        <h1>Welcome to Wireguard Hub</h1>
+        <div class="login">
+        <form action="/login" method="POST">
+            <label for="username">Username:  </label>
+            <input id="username" type="text" name="username"><br/>
+       
+            <label for="password">Password:  </label>
+            <input id="password" type="password" name="password"><br/>
+            <input id="rememberUserButton" type="checkbox" name="rememberUser" class="rememberButton" value="True">
+            <label for="rememberUserButton" class="rememberButton">Remember Me</label><br>
+            <input class= "buttonSubmit" type="submit" value="login">
+        </form>
+
+    </p>
+    </div>
+</body>
+</html>
+
+{% endblock %}
