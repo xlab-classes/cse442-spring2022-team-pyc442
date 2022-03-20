@@ -1,0 +1,48 @@
+h1 {margin-top: 50px; color: rgb(255, 255, 255); font-size: 80px; text-align: center;}
+h2 {margin-left: 30px;}
+label {
+    display: inline-block;
+    width:100px;
+    font-size: 20px;
+    color: rgb(255, 255, 255);
+}
+form {text-align: center;}
+p {text-align: center;}
+p.parent{
+    border-radius: 25px;
+    color: black;
+}
+body {
+    border-radius: 25px;
+    color: rgb(46, 44, 53);
+}
+
+.login{
+    position: relative;
+    margin: 30px auto;
+    padding: 20px 20px 20px;
+    width: 400px;
+    background: rgb(63, 62, 66);
+    border-radius: 4px;
+}
+
+input{
+    padding: 8px;
+    border: none;
+    border-radius: 4px;
+    margin: 5px -10px;
+    display: inline-block;
+    font-size: 17px;
+    line-height: 20px;
+    text-decoration: none;
+    box-sizing: border-box;
+    text-align: left;
+}
+.rememberButton{
+    margin: 0;
+    font-size: 15px;
+    text-align:center;
+}
+
+
+
