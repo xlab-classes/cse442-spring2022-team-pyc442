@@ -5,7 +5,7 @@ from flask import Flask, render_template, request, redirect, flash, abort
 from flask_login import LoginManager, login_required, login_user, current_user
 from src.authentication.user import User
 from src.authentication.auth import authenticate
-from src.database.wireguard_db import getUserById, add_users, getUserByName, modifyUsername
+from src.database.wireguard_db import changeBannedStatus, getUserById, add_users, getUserByName, modifyUsername
 
 def createApp():
     app = Flask(__name__)
@@ -78,6 +78,13 @@ def createApp():
                 uid = os.random(9)
             password = request.form.get("password")
             add_users(str(uid),"user@user.com", user_name, bcrypt.hashpw(password, bcrypt.gensalt()),0,0) 
+        return 
+    @app.route("/blockuser")
+    def adduserRoute():
+        user_name = request.form.get("blockuser")
+        if (getUserByName(user_name) != None):
+            uid = getUserByName(user_name)
+            changeBannedStatus(uid, 1)
         return 
 
     #route used to configure the server
