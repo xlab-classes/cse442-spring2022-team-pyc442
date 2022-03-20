@@ -1,4 +1,3 @@
-import pylint
 import mysql.connector
 from mysql.connector import errorcode
 
@@ -30,7 +29,7 @@ def create_database():
       "   `admin`      tinyint(1),"
       "   `banned`   tinyint(1),"
       "   PRIMARY KEY (`user_id`)"
-      ") ENGINE=InnoDB")    
+      ") ENGINE=InnoDB")
     cnx = mysql.connector.connect(
         host="localhost",
         user="root",
