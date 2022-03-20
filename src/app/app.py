@@ -50,7 +50,8 @@ def createApp():
         if current_user.is_admin:
             return redirect("/admin/dashboard")
         # returns the user template
-        return render_template("user.html", title=current_user.get_username())
+        else:
+            return render_template("user.html", title=current_user.get_username())
 
 
     #Route to authenticate a user
@@ -69,7 +70,8 @@ def createApp():
         else:
             flash("Invalid password")
             return
-    @app.route("/adduser")
+
+    @app.route("/adduser", methods=["POST"])
     def adduserRoute():
         user_name = request.form.get("username")
         if (getUserByName(user_name) == None): # checks to see if username already exists
@@ -79,8 +81,9 @@ def createApp():
             password = request.form.get("password")
             add_users(str(uid),"user@user.com", user_name, bcrypt.hashpw(password, bcrypt.gensalt()),0,0) #adding user to db
         return 
-    @app.route("/blockuser")
-    def adduserRoute():
+
+    @app.route("/blockuser", methods=["POST"])
+    def blockuserRoute():
         user_name = request.form.get("blockuser")
         if (getUserByName(user_name) != None): # makes sure the user exists
             uid = getUserByName(user_name)[0] #gets user's uid 
@@ -98,6 +101,12 @@ def createApp():
             modifyUsername(current_user.get_id(), request.form["username"])
         if request.form.get("password"):
             print("Change password")
+    
+    # route for enabling 2 factor authentication, will most likely not be done during semester
+    @app.route("/2fa")
+    def twofactorRoute():
+        print("Error two factor authentication is not implemented")
+        return redirect("/admin/configuration")
 
     #route used to serve pages to admin users
     @app.route("/admin/<path>")
@@ -116,12 +125,7 @@ def createApp():
                 return render_template("admin_dashboard.html", username=current_user.get_username(), information="Server information goes here", title="Dashboard" )
             else:
                 abort(404)
-
-    @app.route("/admin/add_users")
-    def add_usersRoute():
-        user_name = request.form["adduser"]
-        new_user = authenticate(user_name, "password")
-        add_users(111,"user@user.com", user_name, bcrypt.hashpw(b"password", bcrypt.gensalt()),0,0) 
+        return redirect("/user")
 
 
     return app
