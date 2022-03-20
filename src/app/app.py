@@ -1,3 +1,4 @@
+import os
 import re
 import bcrypt
 from flask import Flask, render_template, request, redirect, flash, abort
@@ -70,8 +71,14 @@ def createApp():
             return
     @app.route("/adduser")
     def adduserRoute():
-        #if request.form.get():
-        return
+        user_name = request.form.get("username")
+        if (getUserByName(user_name) == None):
+            uid = os.random(9)
+            while (getUserById(uid) != None):
+                uid = os.random(9)
+            password = request.form.get("password")
+            add_users(str(uid),"user@user.com", user_name, bcrypt.hashpw(password, bcrypt.gensalt()),0,0) 
+        return 
 
     #route used to configure the server
     @app.route("/config")
@@ -102,6 +109,13 @@ def createApp():
                 return render_template("admin_dashboard.html", username=current_user.get_username(), information="Server information goes here", title="Dashboard" )
             else:
                 abort(404)
+
+    @app.route("/admin/add_users")
+    def add_usersRoute():
+        user_name = request.form["adduser"]
+        new_user = authenticate(user_name, "password")
+        add_users(111,"user@user.com", user_name, bcrypt.hashpw(b"password", bcrypt.gensalt()),0,0) 
+
 
     return app
 
