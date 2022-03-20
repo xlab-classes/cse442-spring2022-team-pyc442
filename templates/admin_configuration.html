@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1,user-scalable=no">
     <!-- Change this to the title you want -->
-    <title>Change this to the title you want</title>
+    <title>{{Page_Title}}</title>
     <link rel="stylesheet" href="/templates/setup.css">
 </head>
-<body style="background-color: aqua; background-image: url(/templates/site_source/cool-background.png);">
+<body style="background-image: url(/templates/site_source/cool-background.png);">
     <!-- If you wanna change the top's background color, change the "background-color" in CSS -->
     <h1>
         <!-- Change our icon "#" here. You must have a picture first. A sample path is "/myImages/myIcon.png" -->
@@ -17,24 +17,24 @@
         <br>
         <!-- <span class="title">This black background is used for test</span> -->
     </h1>
-    <!-- The brown color is used for test.  -->
-    <div style="background-color: brown;" class="menuBar"> 
+    <!-- style="background-color: rgb(223, 18, 18);" this is used for test -->
+    <div class="menuBar"> 
         <ul class="menuBar">
-            <li><a href="https://www.google.com/"><b>Dashboard:</b></a></li>
-            <li><a href="https://www.google.com/">Configuration:</a></li>
-            <li><a href="https://www.google.com/">Setting:</a></li>
-            <li><a href="https://www.google.com/">Add users:</a></li>
-            <li><a href="#">Help:</a></li>
+            <!-- Each option will direct the user to corresponded page via http link -->
+            <li><a href="localhost:8080/admin_dashboard"><b>Dashboard:</b></a></li>
+            <li><a href="localhost:8080/admin_configuration">Configuration:</a></li>
+            <li><a href="localhost:8080/admin_settings">Setting:</a></li>
+            <li><a href="localhost:8080/admin_add_users">Add users:</a></li>
+            <li><a href="localhost:8080/admin_help">Help:</a></li>
         </ul>
         
 
     </div>
-    <div class="content">
-        <br>
-        <p style="text-align: center;">
-            Configuration
+    <div class="content configuration">                
+        <p class="header">
+            <b>Configuration</b>
         </p>
-        <form action="/login" method="POST">
+        <form action="/config" method="POST" class="configBox">
             <label for="vpnprotocal">VPN protocol:</label>
             <input id="vpnprotocal" type="text" name="VPN protocol"><br/>
             <label for="name">Name:</label>
@@ -50,15 +50,20 @@
        
             <input class= "buttonSubmit" type="submit" value="Apply">
         </form>
+        <form action="/2fa authenticator" method="GET">
+            <button class="FAbutton">
+                Enable 2FA Authenticator
+            </button>
+        </form>
         <!-- The below parts are just used to show the menu bar function. Can be edeleted -->
+        <!-- <p style="height: 300px;">1</p>
         <p style="height: 300px;">1</p>
         <p style="height: 300px;">1</p>
         <p style="height: 300px;">1</p>
         <p style="height: 300px;">1</p>
         <p style="height: 300px;">1</p>
         <p style="height: 300px;">1</p>
-        <p style="height: 300px;">1</p>
-        <p style="height: 300px;">1</p>
+        <p style="height: 300px;">1</p> -->
     </div>
     
 </body>

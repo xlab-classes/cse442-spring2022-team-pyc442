@@ -9,6 +9,10 @@
     margin-right: 25%;
     position: absolute;
 }
+.header{
+    text-align: center;
+    font-size: larger;
+}
 .text_body{
     margin-left: 10%;
     margin-right: 10%;
@@ -64,6 +68,12 @@ div{
     border-radius: 15px;
 }
 .configuration{
+    height: 700px;
+}
+.configBox{
+    margin-top: 8%;
+}
+.configurationInfo{
     width: 100%;
     display: inline-block;
 }
@@ -72,16 +82,17 @@ div{
     height: 100%;
 }
 /* .test{
-    display: inline-block;
+    position: relative;
     width: 200px;
     height: 100px;
     background-color: aqua;
-    padding: 0;
+    align-self: right;
+    bottom: 0;
 } */
 a{
     text-decoration: none;
 }
-.configuration, .dataUsage, .buttonBox{
+.configurationInfo, .dataUsage, .buttonBox{
     display: inline-block;
     height: 400px;
     /* padding: 0 0 0 0;
@@ -91,6 +102,13 @@ a{
     background-color: #f1f1f1;
     text-align: center;
     /* vertical-align: middle; */
+}
+.start_button{
+    margin-top: 180px;
+}
+.FAbutton{
+    margin: 2% 10%;
+    background-color: #e752ce;
 }
 .dataUsage, .buttonBox{
     width: 50%;
@@ -106,10 +124,7 @@ label{
 }
 .buttonSubmit{
     width: 50px;
-
-    display: absolute;
-    bottom: 0;
-    right: 0;
+    margin-left: 40%;
 }
 input {
     text-align: left;
@@ -136,7 +151,7 @@ button {
     overflow: hidden;
     border-radius: 40px;
     border: none;
-    margin-top: 180px;
+    /* margin-top: 180px; */
 
 
 }
