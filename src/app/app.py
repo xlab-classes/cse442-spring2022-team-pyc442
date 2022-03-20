@@ -1,9 +1,10 @@
+import re
 import bcrypt
 from flask import Flask, render_template, request, redirect, flash, abort
 from flask_login import LoginManager, login_required, login_user, current_user
 from src.authentication.user import User
 from src.authentication.auth import authenticate
-from src.database.wireguard_db import getUserById, add_users, getUserByName
+from src.database.wireguard_db import getUserById, add_users, getUserByName, modifyUsername
 
 def createApp():
     app = Flask(__name__)
@@ -55,7 +56,7 @@ def createApp():
     @app.route("/login", methods=["POST"])
     def loginRoute():
         # authenticates the user or returns none if invalid
-        user =  authenticate(request.form["username"], request.form["password"])
+        user =  authenticate(request.form.get("username"), request.form.get("password"))
         # Checks to make sure user was 
         if(user != None):
             if(request.form.get("rememberUser")):
@@ -67,7 +68,24 @@ def createApp():
         else:
             flash("Invalid password")
             return
+    @app.route("/adduser")
+    def adduserRoute():
+        #if request.form.get():
+        return
 
+    #route used to configure the server
+    @app.route("/config")
+    def configRoute():
+        if request.form.get("vpnprotocol"):
+            print("Change vpn protocol")
+        if request.form.get("hostname"):
+            print("Change hostname")
+        if request.form.get("username"):
+            modifyUsername(current_user.get_id(), request.form["username"])
+        if request.form.get("password"):
+            print("Change password")
+
+    #route used to serve pages to admin users
     @app.route("/admin/<path>")
     @login_required
     def adminPages(path):
