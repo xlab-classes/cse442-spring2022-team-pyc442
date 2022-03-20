@@ -50,8 +50,12 @@ def createApp():
         user =  authenticate(request.form["username"], request.form["password"])
         # Checks to make sure user was 
         if(user != None):
-            login_user(user)
-            return redirect("/user")
+            if(request.form["rememberUser"]=="True"):
+                login_user(user, remember="True")
+                return redirect("/user")
+            else:
+                login_user(user)
+                return redirect("/user")
         else:
             flash("Invalid password")
             return

@@ -10,25 +10,16 @@
         <h1>Welcome to Wireguard Hub</h1>
         <div class="login">
         <form action="/login" method="POST">
-            <label for="username">Username:</label>
+            <label for="username">Username:  </label>
             <input id="username" type="text" name="username"><br/>
        
-            <label for="password">Password:</label>
+            <label for="password">Password:  </label>
             <input id="password" type="password" name="password"><br/>
-       
+            <input id="rememberUserButton" type="checkbox" name="rememberUser" class="rememberButton" value="True">
+            <label for="rememberUserButton" class="rememberButton">Remember Me</label><br>
             <input class= "buttonSubmit" type="submit" value="login">
         </form>
-        <p style="font-size: 20px; color: white;">or</p>
-        <p class = "loginGoogle">
-            <a href="" class="buttonGoogle">
-                <i class="fa fa-brands fa-google"></i> Login with Google
-            </a>
-        </p>
-        <p class = "loginFB">
-            <a href="" class="buttonFB">
-                <i class="fa fa-brands fa-facebook-f"></i> Login with Facebook
-            </a>
-        </p>
+
     </p>
     </div>
 </body>
