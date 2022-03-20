@@ -37,26 +37,57 @@
         <div class="manage_user_box">
             <div class="users_box" style="background-color: rgb(70, 245, 35);">
                 <p class="box_title">Added Users</p>
-                <!-- Maximum display 9 users. User can use "search" to find other users. -->
-                <form action="/{{username}}" method="GET" class="user_box">
-                    <input class= "user_submit" type="submit" value="User1">
+                <!-- Maximum display 9 users. User can use "search" to find other users. This function will be added later -->
+                <!-- The below part show be hosted using dynamic method. -->
+                {{loop_added_user}}
+                <form action="/{{username}}" method="GET" class="user_form">
+                    <button class="user_box">
+                        User1
+                    </button>
                 </form>
-                <input class= "user_submit" type="submit" value="User1">
-                <p class="user_box">user2</p>
-                <p class="user_box">user3</p>
-                <p class="user_box">user4</p>
-                <p class="user_box">user5</p>
-                <p class="user_box">user6</p>
-                <p class="user_box">user7</p>
-                <p class="user_box">user8</p>
-                <p class="user_box">user9</p>
+                {{end_loop_added_user}}
+                <!-- This is just a example showing what it looks like when we have multiple added users -->
+                <form action="/{{username}}" method="GET" class="user_form">
+                    <button class="user_box button">
+                        User2
+                    </button>
+                </form>
+                <form action="/{{username}}" method="GET" class="user_form">
+                    <button class="user_box button">
+                        User2
+                    </button>
+                </form>
+                <form action="/{{username}}" method="GET" class="user_form">
+                    <button class="user_box button">
+                        User2
+                    </button>
+                </form>
+                <!-- <form action="/{{username}}" method="GET" class="">
+                    <label for="search">Search:</label>
+                    <input id="search" type="text" name="search"><br/>
+
+                </form> -->
             </div>
             <div class="users_box" style="background-color: rgb(236, 91, 171);">
                 <p class="box_title">Blocked Users</p>
-                <p class="user_box">user1</p>
-                <p class="user_box">user1</p>
-                <p class="user_box">user1</p>
-                <p class="user_box">user1</p>
+                {{loop_blocked_user}}
+                <form action="/{{username}}" method="GET" class="user_form">
+                    <button class="user_box button">
+                        User2
+                    </button>
+                </form>
+                {{end_loop_blocked_user}}
+                <!-- This is just a example showing what it looks like when we have multiple added users -->
+                <form action="/{{username}}" method="GET" class="user_form">
+                    <button class="user_box button">
+                        User2
+                    </button>
+                </form>
+                <form action="/{{username}}" method="GET" class="user_form">
+                    <button class="user_box button">
+                        User2
+                    </button>
+                </form>
             </div>
         </div>
     </div>

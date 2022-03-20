@@ -98,6 +98,7 @@ div{
 .users_box{
     width: 50%;
     border-radius: 20px;
+    margin: 20px;
 }
 .box_title{
     text-align: center;
@@ -109,13 +110,19 @@ div{
     border-radius: 20px;
     width: 50%;
     text-align: center;
+    cursor: pointer;
 }
 .add_users{
     height: 900px;
 }
 .user_submit{
     outline: none;
+    border: none;
     background-color: #e752ce;
+}
+.user_form{
+    margin-left: 20%;
+    width: 120%;
 }
 a{
     text-decoration: none;
@@ -137,6 +144,7 @@ a{
 .FAbutton{
     margin: 2% 10%;
     background-color: #e752ce;
+    cursor: pointer;
 }
 .dataUsage, .buttonBox{
     width: 50%;
