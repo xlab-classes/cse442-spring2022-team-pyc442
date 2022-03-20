@@ -82,13 +82,41 @@ div{
     height: 100%;
 }
 /* .test{
-    position: relative;
-    width: 200px;
-    height: 100px;
-    background-color: aqua;
-    align-self: right;
-    bottom: 0;
+    display: flex;
+    width: 100%;
+    margin: -1px;
+    padding: 0;
+    height: 300px;
+    background-color: #e752ce;
 } */
+.manage_user_box{
+    display: flex;
+    width: 100%;
+    margin: -1px;
+    padding: 0;
+}
+.users_box{
+    width: 50%;
+    border-radius: 20px;
+}
+.box_title{
+    text-align: center;
+}
+.user_box{
+    margin: 0 auto 10px auto;
+    padding: 20px;
+    background-color: #30b7ec;
+    border-radius: 20px;
+    width: 50%;
+    text-align: center;
+}
+.add_users{
+    height: 900px;
+}
+.user_submit{
+    outline: none;
+    background-color: #e752ce;
+}
 a{
     text-decoration: none;
 }

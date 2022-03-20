@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1,user-scalable=no">
     <!-- Change this to the title you want -->
-    <title>Change this to the title you want</title>
+    <title>{{Page_Title}}</title>
     <link rel="stylesheet" href="/templates/setup.css">
 </head>
-<body style="background-color: aqua; background-image: url(/templates/site_source/cool-background.png);">
+<body style="background-image: url(/templates/site_source/cool-background.png);">
     <!-- If you wanna change the top's background color, change the "background-color" in CSS -->
     <h1>
         <!-- Change our icon "#" here. You must have a picture first. A sample path is "/myImages/myIcon.png" -->
@@ -17,35 +17,50 @@
         <br>
         <!-- <span class="title">This black background is used for test</span> -->
     </h1>
-    <!-- The brown color is used for test.  -->
-    <div style="background-color: brown;" class="menuBar"> 
+    <!-- style="background-color: rgb(223, 18, 18);" this is used for test -->
+    <div class="menuBar"> 
         <ul class="menuBar">
-            <li><a href="https://www.google.com/"><b>Dashboard:</b></a></li>
-            <li><a href="https://www.google.com/">Configuration:</a></li>
-            <li><a href="https://www.google.com/">Setting:</a></li>
-            <li><a href="https://www.google.com/">Add users:</a></li>
-            <li><a href="#">Help:</a></li>
+            <!-- Each option will direct the user to corresponded page via http link -->
+            <li><a href="localhost:8080/admin_dashboard">Dashboard:</a></li>
+            <li><a href="localhost:8080/admin_configuration">Configuration:</a></li>
+            <li><a href="localhost:8080/admin_settings">Setting:</a></li>
+            <li><a href="localhost:8080/admin_add_users"><b>Add users:</b></a></li>
+            <li><a href="localhost:8080/admin_help">Help:</a></li>
         </ul>
         
 
     </div>
-    <div class="content">
-        <div style="display: inline-block; width: 49%;">
-            <p>Users</p>
-            <p>user1</p>
-            <p>user1</p>
-            <p>user1</p>
-            <p>user1</p>
+    <div class="content add_users">                
+        <p class="header">
+            <b>Manage Users</b>
+        </p>
+        <div class="manage_user_box">
+            <div class="users_box" style="background-color: rgb(70, 245, 35);">
+                <p class="box_title">Added Users</p>
+                <!-- Maximum display 9 users. User can use "search" to find other users. -->
+                <form action="/{{username}}" method="GET" class="user_box">
+                    <input class= "user_submit" type="submit" value="User1">
+                </form>
+                <input class= "user_submit" type="submit" value="User1">
+                <p class="user_box">user2</p>
+                <p class="user_box">user3</p>
+                <p class="user_box">user4</p>
+                <p class="user_box">user5</p>
+                <p class="user_box">user6</p>
+                <p class="user_box">user7</p>
+                <p class="user_box">user8</p>
+                <p class="user_box">user9</p>
+            </div>
+            <div class="users_box" style="background-color: rgb(236, 91, 171);">
+                <p class="box_title">Blocked Users</p>
+                <p class="user_box">user1</p>
+                <p class="user_box">user1</p>
+                <p class="user_box">user1</p>
+                <p class="user_box">user1</p>
+            </div>
         </div>
-        <div style="display: inline-block; width: 49%">
-            <P>Blokced Users</P>
-            <p>user1</p>
-            <p>user1</p>
-            <p>user1</p>
-            <p>user1</p>
-        </div>
-        <!-- The below parts are just used to show the menu bar function. Can be edeleted -->
     </div>
+    
     
 </body>
 </html>

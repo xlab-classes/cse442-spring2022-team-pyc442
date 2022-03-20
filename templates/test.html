@@ -1,16 +1,23 @@
 <!doctype html>
 <title>Test</title>
 <style>
-    div{
-        display: inline-block;
-        width: 200px;
-        height: 100px;
-        background-color: aqua;
+    .div{
+        display: flex;
+        width: 100%;
+        flex-direction: row;
         padding: 0;
+    }
+    test{
+        width: 50%;
+        height: 300px;
+        padding: 0;
+        margin: 0;
     }
 </style>
 <body>
     <h1>Hello World</h1>
-    <div>test1</div>
-    <div>test2</div>
+    <div class="div">
+        <div style="background-color: aqua;" class="test">test1</div>
+        <div style="background-color: aquamarine;" class="test">test2</div>
+    </div>
 </body>
