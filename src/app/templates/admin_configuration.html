@@ -5,10 +5,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1,user-scalable=no">
     <!-- Change this to the title you want -->
-    <title>{{Page_Title}}</title>
-    <link rel="stylesheet" href="/templates/setup.css">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href={{ url_for("static", filename="setup.css") }}>
 </head>
-<body style="background-image: url(/templates/site_source/cool-background.png);">
+<body style="background-image: url({{ url_for('static', filename='cool-background.png') }});">
     <!-- If you wanna change the top's background color, change the "background-color" in CSS -->
     <h1>
         <!-- Change our icon "#" here. You must have a picture first. A sample path is "/myImages/myIcon.png" -->

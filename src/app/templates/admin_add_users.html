@@ -5,15 +5,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1,user-scalable=no">
     <!-- Change this to the title you want -->
-    <title>{{Page_Title}}</title>
-    <link rel="stylesheet" href="/templates/setup.css">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href= {{ url_for('static', filename='setup.css')}}>
 </head>
-<body style="background-image: url(/templates/site_source/cool-background.png);">
+<body style='background-image: url({{ url_for("static", filename="cool-background.png") }});'>
     <!-- If you wanna change the top's background color, change the "background-color" in CSS -->
     <h1>
         <!-- Change our icon "#" here. You must have a picture first. A sample path is "/myImages/myIcon.png" -->
         <img src="#" alt="My icon" class="icon" title="Wirguard Icon">
-        <span class="title">{{Username}}</span>
+        <span class="title">{{ username }}</span>
         <br>
         <!-- <span class="title">This black background is used for test</span> -->
     </h1>
@@ -70,13 +70,13 @@
             </div>
             <div class="users_box" style="background-color: rgb(236, 91, 171);">
                 <p class="box_title">Blocked Users</p>
-                {{loop_blocked_user}}
+                <!--{{loop_blocked_user}} -->
                 <form action="/{{username}}" method="GET" class="user_form">
                     <button class="user_box button">
                         User2
                     </button>
                 </form>
-                {{end_loop_blocked_user}}
+                <!--{{end_loop_blocked_user}}-->
                 <!-- This is just a example showing what it looks like when we have multiple added users -->
                 <form action="/{{username}}" method="GET" class="user_form">
                     <button class="user_box button">

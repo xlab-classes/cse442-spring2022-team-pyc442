@@ -1,5 +1,5 @@
 import bcrypt
-from flask import Flask, render_template, request, redirect, flash
+from flask import Flask, render_template, request, redirect, flash, abort
 from flask_login import LoginManager, login_required, login_user, current_user
 from src.authentication.user import User
 from src.authentication.auth import authenticate
@@ -28,7 +28,10 @@ def createApp():
         #creates user object and returns it
         #formate of init for User is username: str, userid: str, isAdmin: bool, isBanned: bool
         return User(userInfo[2], userInfo[0], userInfo[4], userInfo[5])
-
+    # error 404 handleing 
+    @app.errorhandler(404)
+    def fourzerofour(error):
+        return render_template("404.html"), 404
     # route is used to server login pages
     @app.route("/")
     def rootRoute():
@@ -43,7 +46,7 @@ def createApp():
         #checks for if admin
         # return tempate page for admin and sets its title to the admins name
         if current_user.is_admin:
-            return render_template("user.html", title=current_user.get_username())
+            return redirect("/admin/dashboard")
         # returns the user template
         return render_template("user.html", title=current_user.get_username())
 
@@ -64,4 +67,23 @@ def createApp():
         else:
             flash("Invalid password")
             return
+
+    @app.route("/admin/<path>")
+    @login_required
+    def adminPages(path):
+        if current_user.is_admin(): 
+            if(path == "configuration"):
+                return render_template("admin_configuration.html", title="Configuartion")
+            elif path == "settings":
+                return render_template("admin_settings.html", title="Settings", information="Server information goes here", username=current_user.get_username())
+            elif path == "help":
+                return render_template("admin_help.html", username=current_user.get_username())
+            elif path == "add_users":
+                return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username())
+            elif path == "dashboard":
+                return render_template("admin_dashboard.html", username=current_user.get_username(), information="Server information goes here", title="Dashboard" )
+            else:
+                abort(404)
+
     return app
+
