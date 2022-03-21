@@ -1,0 +1,250 @@
+.title{
+    color: rgb(117, 31, 216);
+    text-align: left;
+    /* display:center */
+    /* background-color: black; */
+    font-size: auto;
+    margin-top: 20px;
+    margin-left: 28%;
+    margin-right: 25%;
+    position: absolute;
+}
+.header{
+    text-align: center;
+    font-size: larger;
+}
+.text_body{
+    margin-left: 10%;
+    margin-right: 10%;
+}
+h1{
+    /* text-align: center; */
+    height:100px;
+    width: 85%;
+    font-size: auto;
+    background-color: #f1f1f1;
+    margin-left: 10%;
+    display: table;
+    /* margin-left: 25%; */
+    clear: both;
+    overflow: hidden;
+    border-radius: 10px;
+    /* position: fixed; */
+}
+.icon{
+    margin-top: 10px;
+    margin-left: 100px;
+    height: 80px;
+}
+.menuBar{
+    margin-top: 20px;
+    position:fixed;
+    left:100px;
+    /* background-color: #f1f1f1; */
+    border-radius: 10px;
+    width: 100px;
+    background: #f1f1f1;
+    box-shadow:  -6px 6px 11px #cacaca,
+                 6px -6px 11px #ffffff;
+}
+ul{
+    padding-left: 10px;
+    text-align: right;
+    padding-right: 10px;
+}
+li{
+    padding-bottom: 10px;
+    padding-top: 5px;
+    list-style-type: none;
+}
+div{
+    clear: both;
+    overflow: hidden;
+}
+.content{
+    margin-left: 220px;
+    margin-right: 100px;
+    background-color: rgb(231, 238, 230);
+    border-radius: 15px;
+}
+.configuration{
+    height: 700px;
+}
+.configBox{
+    margin-top: 8%;
+}
+.configurationInfo{
+    width: 100%;
+    display: inline-block;
+}
+.dataGraph{
+    width: 100%;
+    height: 100%;
+}
+/* .test{
+    display: flex;
+    width: 100%;
+    margin: -1px;
+    padding: 0;
+    height: 300px;
+    background-color: #e752ce;
+} */
+.manage_user_box{
+    display: flex;
+    width: 100%;
+    margin: -1px;
+    padding: 0;
+}
+.users_box{
+    width: 50%;
+    border-radius: 20px;
+    margin: 20px;
+}
+.box_title{
+    text-align: center;
+}
+.user_box{
+    margin: 0 auto 10px auto;
+    padding: 20px;
+    background-color: #30b7ec;
+    border-radius: 20px;
+    width: 50%;
+    text-align: center;
+    cursor: pointer;
+}
+.add_users{
+    height: 900px;
+}
+.user_submit{
+    outline: none;
+    border: none;
+    background-color: #e752ce;
+}
+.user_form{
+    margin-left: 20%;
+    width: 120%;
+}
+a{
+    text-decoration: none;
+}
+.configurationInfo, .dataUsage, .buttonBox{
+    display: inline-block;
+    height: 400px;
+    /* padding: 0 0 0 0;
+    margin: 0 0 0 0; */
+}
+.buttonBox{
+    background-color: #f1f1f1;
+    text-align: center;
+    /* vertical-align: middle; */
+}
+.start_button{
+    margin-top: 180px;
+}
+.FAbutton{
+    margin: 2% 10%;
+    background-color: #e752ce;
+    cursor: pointer;
+}
+.dataUsage, .buttonBox{
+    width: 50%;
+    margin: -1px
+}
+label{
+    display: inline-block;
+    width:200px;
+    font-size: 20px;
+    text-align: right;
+    margin-bottom: 20px;
+    color: rgb(17, 17, 17);
+}
+.buttonSubmit{
+    width: 50px;
+    margin-left: 40%;
+}
+input {
+    text-align: left;
+    width: 60%;
+}
+form {
+    margin-left: 10%;
+}
+
+/* .button{
+    display: block;
+    margin: 0 auto;
+    width:50%;
+    height: 200px;
+    background-color: aqua;
+} */
+/* From cssbuttons.io by @westitan */
+button {
+    position: relative;
+    padding: 19px 36px;
+    display: inline-block;
+    text-decoration: none;
+    text-transform: uppercase;
+    overflow: hidden;
+    border-radius: 40px;
+    border: none;
+    /* margin-top: 180px; */
+
+
+}
+   
+button span {
+    position: relative;
+    color: #fff;
+    font-family: Arial;
+    letter-spacing: 8px;
+    z-index: 1;
+}
+   
+button .liquid {
+    position: absolute;
+    top: -80px;
+    left: 0;
+    width: 100%;
+    height: 200px;
+    background: #10aeec;
+    box-shadow: inset 0 0 50px rgba(56, 240, 154, 0.5);
+    transition: .5s;
+}
+   
+button .liquid::after,
+button .liquid::before {
+    content: '';
+    width: 200%;
+    height: 200%;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -75%);
+    background: #fff;
+}
+   
+button .liquid::before {
+    border-radius: 45%;
+    background: rgba(20, 20, 20, 1);
+    animation: animate 5s linear infinite;
+}
+   
+button .liquid::after {
+    border-radius: 40%;
+    background: rgba(20, 20, 20, .5);
+    animation: animate 10s linear infinite;
+}
+   
+button:hover .liquid {
+    top: -120px;
+}
+   
+@keyframes animate {
+    0% {
+        transform: translate(-50%, -75%) rotate(0deg);
+    }
+   
+    100% {
+        transform: translate(-50%, -75%) rotate(360deg);
+    }
+}
