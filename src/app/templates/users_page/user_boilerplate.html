@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Change this to the title you want -->
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href={{ url_for("static", filename="setup.css")}}>
+</head>
+<body style="background-color: aqua; background-image: url({{ url_for('static', filename='cool-background.png')}});">
+    <!-- If you wanna change the top's background color, change the "background-color" in CSS -->
+    <h1>
+        <!-- Change our icon "#" here. You must have a picture first. A sample path is "/myImages/myIcon.png" -->
+        <img src="#" alt="My icon" class="icon" title="Wirguard Icon">
+        <span class="title">{{ username }}</span>
+        <br>
+        <!-- <span class="title">This black background is used for test</span> -->
+    </h1>
+    <!-- The brown color is used for test.  -->
+    <div style="background-color: brown;" class="menuBar"> 
+        <ul class="menuBar">
+            <li><a href="/user/dashboard"><b>Dashboard:</b></a></li>
+            <li><a href="/user/guide">Guide:</a></li>
+            <li><a href="/user/settings">Setting:</a></li>
+        </ul>
+        
+
+    </div>
+    <div class="content">
+        {% block content %}{% endblock %}
+        <div class="configuration" style="background-color: blueviolet;"> 
+        </div>
+    </div>
+    
+</body>
+</html>
