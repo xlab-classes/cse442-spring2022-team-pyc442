@@ -1,4 +1,4 @@
-import os
+import random
 import re
 import bcrypt
 from flask import Flask, render_template, request, redirect, flash, abort
@@ -89,18 +89,18 @@ def createApp():
 
     @app.route("/adduser", methods=["POST"])
     def adduserRoute():
-        user_name = request.form.get("username")
+        user_name = request.form["username"]
         if (getUserByName(user_name) == None): # checks to see if username already exists
-            uid = os.random(9) # using random number generator to get user id
-            while (getUserById(uid) != None): # loop to find user id that doesn't already exist
-                uid = os.random(9)
-            password = request.form.get("password")
-            add_users(str(uid),"user@user.com", user_name, bcrypt.hashpw(password, bcrypt.gensalt()),0,0) #adding user to db
-        return 
+            uid = random.randint(1,100) # using random number generator to get user id
+            while (getUserById(str(uid)) != None): # loop to find user id that doesn't already exist
+                uid = random.randint(1,100)
+            password = request.form["password"]
+            add_users(str(uid),"user@user.com", request.form.get("username"), bcrypt.hashpw(bytes(request.form.get("password"), "utf-8"), bcrypt.gensalt()),0,0) #adding user to db
+        return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username())
 
     @app.route("/blockuser", methods=["POST"])
     def blockuserRoute():
-        user_name = request.form.get("blockuser")
+        user_name = request.form["blockuser"]
         if (getUserByName(user_name) != None): # makes sure the user exists
             uid = getUserByName(user_name)[0] #gets user's uid 
             changeBannedStatus(uid, 1) #change banned status to true
