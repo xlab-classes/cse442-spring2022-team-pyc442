@@ -6,6 +6,8 @@ from src.database.wireguard_db import getUserByName
 # @param1 username stores the username of the user to authenticate (will be used to get info from database)
 # @param2 password store the password to be hashed and checked
 def authenticate(username: str, password: str):
+    if(username == None or password == None):
+        return None
     if(len(username) < 1):
         return None
     # gets user info in a list order of (user_id, email, username, password, admin, banned)
