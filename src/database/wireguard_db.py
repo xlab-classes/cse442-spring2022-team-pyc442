@@ -1,3 +1,4 @@
+from pickle import TRUE
 import mysql.connector
 from mysql.connector import errorcode
 
@@ -29,6 +30,12 @@ def create_database():
       "   `admin`      tinyint(1),"
       "   `banned`   tinyint(1),"
       "   PRIMARY KEY (`user_id`)"
+      ") ENGINE=InnoDB")
+    TABLES['serverInfo'] = (
+      "CREATE TABLE `wireguard` ("
+      "   `vpn_protocol`  varchar(32) NOT NULL,"
+      "   `host_name`   varchar(32) NOT NULL,"
+      "   PRIMARY KEY (`host_name`)"
       ") ENGINE=InnoDB")
     cnx = mysql.connector.connect(
         host="localhost",
@@ -92,6 +99,30 @@ def add_users(uid, email, username, password, is_admin, is_banned):
 
     cursor.close()
     cnx.close()
+
+def add_server(vpn_protocol, host_name):
+    cnx = mysql.connector.connect( # connceting to database
+      host="localhost",
+      user="root",
+      password="FalaWB@321",
+      database="wireguard"
+      )
+
+    cursor = cnx.cursor()
+
+    add_server = ("INSERT INTO serverInfo "
+                "(vpn_protocol, host_name) "
+                "VALUES (%s, %s)") # query to add user
+
+    data_server = (vpn_protocol, host_name)
+
+    cursor.execute(add_server, data_server)
+
+    cnx.commit()
+
+    cursor.close()
+    cnx.close()
+    return True
 
     #Execute the general query
 def general_query():
@@ -293,8 +324,3 @@ def deleteAllTuples():
 
     cursor.close()
     cnx.close()
-
-if __name__ == "__main__":
-    deleteAllTuples()
-    setup_db()
-    create_database()
