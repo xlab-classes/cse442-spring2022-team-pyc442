@@ -293,3 +293,8 @@ def deleteAllTuples():
 
     cursor.close()
     cnx.close()
+
+if __name__ == "__main__":
+    deleteAllTuples()
+    setup_db()
+    create_database()
