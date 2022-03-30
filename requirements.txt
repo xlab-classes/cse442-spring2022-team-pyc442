@@ -1,7 +1,1 @@
 flask
-flask-login
-pytest
-bcrypt
-mysql-connector-python
-pylint
-yapf
