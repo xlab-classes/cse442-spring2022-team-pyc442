@@ -84,7 +84,7 @@ def createApp():
                 return redirect("/user")
         else:
             flash("Invalid password", "error")
-            return
+            return render_template('login.html', title="Login")
 
     @app.route("/adduser", methods=["POST"])
     def adduserRoute():
