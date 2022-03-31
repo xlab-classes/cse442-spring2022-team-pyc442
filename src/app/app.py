@@ -103,7 +103,7 @@ def createApp():
         if (getUserByName(user_name) != None): # makes sure the user exists
             uid = getUserByName(user_name)[0] #gets user's uid 
             changeBannedStatus(uid, 1) #change banned status to true
-        return 
+        return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username())
 
     #route used to configure the server
     @app.route("/config")
