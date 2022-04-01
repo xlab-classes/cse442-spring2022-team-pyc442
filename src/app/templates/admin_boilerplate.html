@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href={{ url_for("static", filename='setup.css') }}>
+    <script src="https://kit.fontawesome.com/befe61a94b.js" crossorigin="anonymous"></script>
+    {% block head %}{% endblock %}
+</head>
+<body style="background-image: url({{ url_for('static', filename='cool-background.png') }});">
+    <!-- If you wanna change the top's background color, change the "background-color" in CSS -->
+    <h1>
+        <!-- Change our icon "#" here. You must have a picture first. A sample path is "/myImages/myIcon.png" -->
+        <img src="#" alt="My icon" class="icon" title="Wirguard Icon">
+        <span class="title">{{ username }}</span>
+        <!-- This logout button will send GET request with path "/logout" to the server. -->
+        <form action="/logout" method="POST" class="signout">
+            <button type="submit" name="signout" class="fa-solid fa-arrow-right-from-bracket">
+            </button>
+            
+        </form>
+        <br>
+        <!-- <span class="title">This black background is used for test</span> -->
+    </h1>
+    <!-- style="background-color: rgb(223, 18, 18);" this is used for test -->
+    <div class="menuBar"> 
+        <ul class="menuBar">
+            {% block menubar %}{% endblock %}
+        </ul>
+        
+
+    </div>
+{% block content %}{% endblock %}

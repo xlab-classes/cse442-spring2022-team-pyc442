@@ -36,6 +36,13 @@ h1{
     margin-left: 100px;
     height: 80px;
 }
+.signout{
+    cursor: pointer;
+    float: right;
+    background-color: #f9dddd;
+    color: rgb(99, 66, 94);
+    border-radius: 10px;
+}
 .menuBar{
     margin-top: 20px;
     position:fixed;
@@ -82,12 +89,10 @@ div{
     height: 100%;
 }
 /* .test{
-    display: flex;
-    width: 100%;
-    margin: -1px;
-    padding: 0;
-    height: 300px;
+    float: right;
     background-color: #e752ce;
+    bottom: 0;
+    cursor: pointer;
 } */
 .manage_user_box{
     display: flex;
