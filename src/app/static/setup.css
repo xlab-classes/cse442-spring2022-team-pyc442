@@ -124,6 +124,9 @@ div{
 .add_users{
     height: 900px;
 }
+.searchBox{
+    width: 200px;
+}
 .user_submit{
     outline: none;
     border: none;
