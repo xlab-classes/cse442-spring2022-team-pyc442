@@ -36,12 +36,16 @@ h1{
     margin-left: 100px;
     height: 80px;
 }
+.signoutForm{
+    cursor: pointer;
+    float: right;
+    border-radius: 10px;
+    align-items: right;
+}
 .signout{
     cursor: pointer;
     float: right;
-    background-color: #f9dddd;
-    color: rgb(99, 66, 94);
-    border-radius: 10px;
+    border: solid;
 }
 .menuBar{
     margin-top: 20px;
