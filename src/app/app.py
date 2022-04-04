@@ -39,6 +39,8 @@ def createApp():
     # route is used to server login pages
     @app.route("/")
     def rootRoute():
+        if current_user.is_authenticated:
+            return redirect("/user")
         return render_template('login.html', title="Login")
 
 
@@ -77,6 +79,7 @@ def createApp():
         # Checks to make sure user was authenticated
         if(user != None):
             if(request.form.get("rememberUser")):
+                print("here")
                 login_user(user, remember=True)
                 return redirect("/user")
             else:
