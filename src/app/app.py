@@ -83,8 +83,8 @@ def createApp():
                 login_user(user, remember=False)
                 return redirect("/user")
         else:
-            flash("Invalid password", "error")
-            return
+            Error = "Invalid username and/or password"
+            return render_template('login.html', title="Login", error=Error)
 
     @app.route("/adduser", methods=["POST"])
     def adduserRoute():
@@ -145,7 +145,7 @@ def createApp():
                 #abort if path is not found and send back error 404
                 abort(404)
         #if user is not an admin send them back to normal user space
-        return redirect("/user")
+        return render_template('user.html', title="USER")
 
 
     return app
