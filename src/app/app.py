@@ -2,7 +2,7 @@ import random
 import re
 import bcrypt
 from flask import Flask, render_template, request, redirect, flash, abort
-from flask_login import LoginManager, login_required, login_user, current_user
+from flask_login import LoginManager, login_required, login_user, current_user, logout_user
 from src.authentication.user import User
 from src.authentication.auth import authenticate
 from src.database.wireguard_db import changeBannedStatus, getUserById, add_users, getUserByName, modifyUsername
@@ -39,6 +39,8 @@ def createApp():
     # route is used to server login pages
     @app.route("/")
     def rootRoute():
+        if current_user.is_authenticated:
+            return redirect("/user")
         return render_template('login.html', title="Login")
 
 
@@ -77,14 +79,15 @@ def createApp():
         # Checks to make sure user was authenticated
         if(user != None):
             if(request.form.get("rememberUser")):
+                print("here")
                 login_user(user, remember=True)
                 return redirect("/user")
             else:
                 login_user(user, remember=False)
                 return redirect("/user")
         else:
-            flash("Invalid password", "error")
-            return render_template('login.html', title="Login")
+            Error = "Invalid username and/or password"
+            return render_template('login.html', title="Login", error=Error)
 
     @app.route("/adduser", methods=["POST"])
     def adduserRoute():
@@ -146,6 +149,12 @@ def createApp():
                 abort(404)
         #if user is not an admin send them back to normal user space
         return render_template("user.html", username=current_user.get_username(), information="Server information goes here", title="Dashboard" )
+
+    @app.route("/logout", methods=["POST"])
+    def logoutRoute():
+        if current_user.is_authenticated:
+           logout_user(current_user) 
+        return redirect("/")
 
 
     return app
