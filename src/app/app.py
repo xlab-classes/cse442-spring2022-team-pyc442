@@ -2,7 +2,7 @@ import random
 import re
 import bcrypt
 from flask import Flask, render_template, request, redirect, flash, abort
-from flask_login import LoginManager, login_required, login_user, current_user
+from flask_login import LoginManager, login_required, login_user, current_user, logout_user
 from src.authentication.user import User
 from src.authentication.auth import authenticate
 from src.database.wireguard_db import changeBannedStatus, getUserById, add_users, getUserByName, modifyUsername
@@ -149,6 +149,12 @@ def createApp():
                 abort(404)
         #if user is not an admin send them back to normal user space
         return redirect("/user")
+
+    @app.route("/logout", method=["POST"])
+    def logoutRoute():
+        if current_user.is_authenticated:
+           logout_user(current_user) 
+        return redirect("/")
 
 
     return app
