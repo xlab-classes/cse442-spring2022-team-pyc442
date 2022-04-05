@@ -145,7 +145,7 @@ def createApp():
                 #abort if path is not found and send back error 404
                 abort(404)
         #if user is not an admin send them back to normal user space
-        return redirect("/user")
+        return render_template('user.html', title="USER")
 
 
     return app
