@@ -73,9 +73,6 @@ def createApp():
     def loginRoute():
         # authenticates the user or returns none if invalid
         user =  authenticate(request.form.get("username"), request.form.get("password"))
-        if current_user.is_authenticated():
-            return redirect("/user")
-        # Checks to make sure user was authenticated
         if(user != None):
             if(request.form.get("rememberUser")):
                 login_user(user, remember=True)
