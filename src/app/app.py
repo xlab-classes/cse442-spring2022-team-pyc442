@@ -106,7 +106,7 @@ def createApp():
         if (getUserByName(user_name) != None): # makes sure the user exists
             uid = getUserByName(user_name)[0] #gets user's uid 
             changeBannedStatus(uid, 1) #change banned status to true
-        return 
+        return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username())
 
     #route used to configure the server
     @app.route("/config")
@@ -148,7 +148,7 @@ def createApp():
                 #abort if path is not found and send back error 404
                 abort(404)
         #if user is not an admin send them back to normal user space
-        return render_template('user.html', title="USER")
+        return render_template("user.html", username=current_user.get_username(), information="Server information goes here", title="Dashboard" )
 
     @app.route("/logout", methods=["POST"])
     def logoutRoute():

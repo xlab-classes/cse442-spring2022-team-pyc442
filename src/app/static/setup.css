@@ -36,6 +36,17 @@ h1{
     margin-left: 100px;
     height: 80px;
 }
+.signoutForm{
+    cursor: pointer;
+    float: right;
+    border-radius: 10px;
+    align-items: right;
+}
+.signout{
+    cursor: pointer;
+    float: right;
+    border: solid;
+}
 .menuBar{
     margin-top: 20px;
     position:fixed;
@@ -82,12 +93,10 @@ div{
     height: 100%;
 }
 /* .test{
-    display: flex;
-    width: 100%;
-    margin: -1px;
-    padding: 0;
-    height: 300px;
+    float: right;
     background-color: #e752ce;
+    bottom: 0;
+    cursor: pointer;
 } */
 .manage_user_box{
     display: flex;
@@ -114,6 +123,9 @@ div{
 }
 .add_users{
     height: 900px;
+}
+.searchBox{
+    width: 200px;
 }
 .user_submit{
     outline: none;
