@@ -150,7 +150,7 @@ def createApp():
         #if user is not an admin send them back to normal user space
         return redirect("/user")
 
-    @app.route("/logout", method=["POST"])
+    @app.route("/logout", methods=["POST"])
     def logoutRoute():
         if current_user.is_authenticated:
            logout_user(current_user) 
