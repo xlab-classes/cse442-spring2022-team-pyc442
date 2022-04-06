@@ -69,6 +69,9 @@ def create_database():
             print("OK")
     cursor.close()
     cnx.close()
+
+#need to create table for server info
+
 #Adds users to the server
 def add_users(uid, email, username, password, is_admin, is_banned):
     cnx = mysql.connector.connect( # connceting to database
