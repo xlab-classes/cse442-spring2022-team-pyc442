@@ -30,6 +30,15 @@ def create_database():
       "   `banned`   tinyint(1),"
       "   PRIMARY KEY (`user_id`)"
       ") ENGINE=InnoDB")
+    TABLES['server'] = (
+      "CREATE TABLE `server` ("
+      "   `uid` varchar(9) NOT NULL,"
+      "   `private_key` varchar(256) NOT NULL,"
+      "   `public_key` varchar(256) NOT NULL,"
+      "   PRIMARY KEY (`uid`),"
+      "   CONSTRAINT `server_id` FOREIGN KEY (`uid`)"
+      "        REFERENCES `wireguard` (`user_id`) ON DELETE CASCADE"
+      ") ENGINE=InnoDB")
     cnx = mysql.connector.connect(
         host="localhost",
         user="root",
