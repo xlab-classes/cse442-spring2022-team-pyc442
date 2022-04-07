@@ -60,3 +60,19 @@ def test_add_server_user():
     test14 = db.add_user_server("1")
     assert test14 is True
     db.deleteAllTuples()
+
+def test_add_priv_key():
+    db.add_users("1", "any@any.com", "username", bcrypt.hashpw(b"pwd", bcrypt.gensalt()), 1, 0)
+    db.add_user_server("1")
+    key = "testKey"
+    test15 = db.addPrivateKey("1", key)
+    assert test15[1] == key
+    db.deleteAllTuples()
+
+def test_add_pub_key():
+    db.add_users("1", "any@any.com", "username", bcrypt.hashpw(b"pwd", bcrypt.gensalt()), 1, 0)
+    db.add_user_server("1")
+    key = "testKey"
+    test15 = db.addPublicKey("1", key)
+    assert test15[2] == key
+    db.deleteAllTuples()

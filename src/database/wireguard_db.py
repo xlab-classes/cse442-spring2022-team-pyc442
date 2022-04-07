@@ -374,6 +374,7 @@ def addPublicKey(uid, publickey):
         return None
     return user_data[0] #returning first element of user_data
 
+"""
 def getPrivateKey(uid, privatekey):
     cnx = mysql.connector.connect( # connecting to database
       host="localhost",
@@ -423,6 +424,7 @@ def getPublicKey(uid, publickey):
     if user_data == []:
         return None
     return user_data[0][2] #returning the private key
+"""
 
 #deletes all entries from the database
 def deleteAllTuples():
