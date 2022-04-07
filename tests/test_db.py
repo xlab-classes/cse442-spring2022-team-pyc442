@@ -68,7 +68,7 @@ def test_add_priv_key():
     db.addPrivateKey("1", key)
     test15 = db.getPrivateKey("1")
     db.deleteAllTuples()
-    assert test15[1] == key
+    assert test15 == key
 
 def test_add_pub_key():
     db.add_users("1", "any@any.com", "username", bcrypt.hashpw(b"pwd", bcrypt.gensalt()), 1, 0)
