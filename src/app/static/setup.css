@@ -9,6 +9,9 @@
     margin-right: 25%;
     position: absolute;
 }
+p{
+    margin-left: 20px
+}
 .header{
     text-align: center;
     font-size: larger;
@@ -35,17 +38,6 @@ h1{
     margin-top: 10px;
     margin-left: 100px;
     height: 80px;
-}
-.signoutForm{
-    cursor: pointer;
-    float: right;
-    border-radius: 10px;
-    align-items: right;
-}
-.signout{
-    cursor: pointer;
-    float: right;
-    border: solid;
 }
 .menuBar{
     margin-top: 20px;
@@ -99,10 +91,12 @@ div{
     height: 100%;
 }
 /* .test{
-    float: right;
+    display: flex;
+    width: 100%;
+    margin: -1px;
+    padding: 0;
+    height: 300px;
     background-color: #e752ce;
-    bottom: 0;
-    cursor: pointer;
 } */
 .manage_user_box{
     display: flex;
@@ -129,9 +123,6 @@ div{
 }
 .add_users{
     height: 900px;
-}
-.searchBox{
-    width: 200px;
 }
 .user_submit{
     outline: none;
@@ -257,6 +248,15 @@ button:hover .liquid {
     top: -120px;
 }
    
+@keyframes animate {
+    0% {
+        transform: translate(-50%, -75%) rotate(0deg);
+    }
+   
+    100% {
+        transform: translate(-50%, -75%) rotate(360deg);
+    }
+}  
 @keyframes animate {
     0% {
         transform: translate(-50%, -75%) rotate(0deg);
