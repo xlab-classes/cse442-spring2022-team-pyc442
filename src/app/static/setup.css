@@ -68,6 +68,12 @@ li{
     padding-top: 5px;
     list-style-type: none;
 }
+.example{
+    text-align: center;
+}
+.text_body{
+    font-size: 15px;
+}
 div{
     clear: both;
     overflow: hidden;
