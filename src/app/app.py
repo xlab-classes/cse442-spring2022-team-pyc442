@@ -51,11 +51,11 @@ def createApp():
     def userRoute():
         #checks for if admin
         # return tempate page for admin and sets its title to the admins name
-        if current_user.is_admin:
+        if current_user.is_admin():
             return redirect("/admin/dashboard")
         # returns redirect to correct location of user dashboard
         else:
-            return render_template("user.html", title=current_user.get_username())
+            return redirect("/user/dashboard")
 
     # route used to serve webpages to normal users
     @app.route("/user/<path>")
@@ -153,7 +153,7 @@ def createApp():
     @app.route("/logout", methods=["POST"])
     def logoutRoute():
         if current_user.is_authenticated:
-           logout_user(current_user) 
+           logout_user() 
         return redirect("/")
 
 
