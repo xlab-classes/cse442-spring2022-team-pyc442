@@ -34,7 +34,7 @@ def createApp():
         #formate of init for User is username: str, userid: str, isAdmin: bool, isBanned: bool
         return User(userInfo[2], userInfo[0], userInfo[4], userInfo[5])
 
-    # error 404 handleing 
+    # error 404 handleing
     @app.errorhandler(404)
     def fourzerofour(error):
         return render_template("404.html"), 404
@@ -47,7 +47,7 @@ def createApp():
         return render_template('login.html', title="Login")
 
 
-    # route used to server user interface 
+    # route used to server user interface
     @app.route("/user")
     # checks for auth and redirect to root if not
     @login_required
@@ -123,7 +123,6 @@ def createApp():
             modifyUsername(current_user.get_id(), request.form["username"])
         if request.form.get("password"):
             print("Change password")
-    
     # route for enabling 2 factor authentication, will most likely not be done during semester
     @app.route("/2fa")
     def twofactorRoute():
@@ -146,7 +145,7 @@ def createApp():
             elif path == "add_users":
                 return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username())
             elif path == "dashboard":
-                return render_template("admin_dashboard.html", username=current_user.get_username(), information="Server information goes here", title="Dashboard" )
+                return render_template("admin_dashboard.html", username=current_user.get_username(), information="Server information goes here", title="Dashboard", start_button=("Stop" if wireguard_server.is_running() else "Start"))
             else:
                 #abort if path is not found and send back error 404
                 abort(404)
