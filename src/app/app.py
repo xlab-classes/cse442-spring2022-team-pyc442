@@ -159,13 +159,14 @@ def createApp():
         return redirect("/")
 
     @app.route("/togglewg", methods=["POST"])
+    @login_required
     def toggle_wg_route():
-        if wireguard_server.is_running():
-            wireguard_server.stop()
-        else:
-            wireguard_server.start()
-
-        return redirect("/admin/dashboard")
+        if current_user.is_admin():
+            if wireguard_server.is_running():
+                wireguard_server.stop()
+            else:
+                wireguard_server.start()
+            return redirect("/admin/dashboard")
 
     return app
 
