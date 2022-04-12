@@ -16,22 +16,27 @@
     <div class="content">
         <div class="configurationInfo">
             <div style="display: inline-block;" class="buttonBox">
-                <button class="button start_button">
+                <form action="/togglewg" method="POST"><!--  class="user_form"> -->
+                    <button class="button start_button">
+                        <span>{{ start_button }}</span>
+                        <div class="liquid">Starts</div>
+                    </button>
+                </form>
+                <!-- <button class="button start_button"> -->
                     <!-- this button will redirect the user to configuration page. -->
-                    <a href="/admin/configuration"><span>Starts</span></a>
-                    <div class="liquid">Starts</div>
-                </button>
+                <!-- <a href="/admin/configuration"><span>Starts</span></a> -->
+                <!-- <div class="liquid">Starts</div> -->
+                <!-- </button> -->
             </div>
             <div class="dataUsage" style="background-color: rgb(88, 11, 230);">
                 <img src={{ url_for("static", filename="data_usage.png") }} alt="Data Usage" title="Data Usage" style="justify-self: right;" class="dataGraph">
-            </div> -->
+            </div>
 
             <p>
 
             </p>
         </div>
-        
-        
+
         <p class="header">
             <b>Configuration</b>
         </p>
@@ -46,7 +51,7 @@
         <p style="height: 300px;">1</p>
         <p style="height: 300px;">1</p>
     </div>
-    
+
 </body>
 </html>
 {% endblock %}
