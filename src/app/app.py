@@ -6,6 +6,7 @@ from flask_login import LoginManager, login_required, login_user, current_user, 
 from src.authentication.user import User
 from src.authentication.auth import authenticate
 from src.database.wireguard_db import changeBannedStatus, getUserById, add_users, getUserByName, modifyUsername
+from src.wireguard import wireguard_server as wg
 
 def createApp():
     app = Flask(__name__)
@@ -16,6 +17,8 @@ def createApp():
     #add default admin user
     if(getUserByName("admin") == None):
         add_users(1,"admin@admin.com", "admin", bcrypt.hashpw(b"password", bcrypt.gensalt()),1,0)
+
+    wireguard_server = wg.Wireguard_Server()
 
 
     loginManager.init_app(app)
@@ -50,7 +53,7 @@ def createApp():
     @login_required
     def userRoute():
         #checks for if admin
-        # return tempate page for admin and sets its title to the admins name
+        # return template page for admin and sets its title to the admins name
         if current_user.is_admin:
             return redirect("/admin/dashboard")
         # returns redirect to correct location of user dashboard
@@ -75,7 +78,7 @@ def createApp():
     def loginRoute():
         # authenticates the user or returns none if invalid
         user =  authenticate(request.form.get("username"), request.form.get("password"))
-        
+
         # Checks to make sure user was authenticated
         if(user != None):
             if(request.form.get("rememberUser")):
@@ -132,7 +135,7 @@ def createApp():
     @login_required
     def adminPages(path):
         #check if the user is an admin
-        if current_user.is_admin(): 
+        if current_user.is_admin():
             #if user is an admin send them to the correct page
             if(path == "configuration"):
                 return render_template("admin_configuration.html", title="Configuartion")
@@ -148,14 +151,22 @@ def createApp():
                 #abort if path is not found and send back error 404
                 abort(404)
         #if user is not an admin send them back to normal user space
-        return render_template("user.html", username=current_user.get_username(), information="Server information goes here", title="Dashboard" )
+        return redirect("/user") # render_template("user.html", username=current_user.get_username(), information="Server information goes here", title="Dashboard" )
 
     @app.route("/logout", methods=["POST"])
     def logoutRoute():
         if current_user.is_authenticated:
-           logout_user(current_user) 
+           logout_user(current_user)
         return redirect("/")
 
+    @app.route("/togglewg", methods=["POST"])
+    def toggle_wg_route():
+        if wireguard_server.is_running():
+            wireguard_server.stop()
+        else:
+            wireguard_server.start()
+
+        return redirect("/admin/dashboard")
 
     return app
 
