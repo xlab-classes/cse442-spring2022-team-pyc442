@@ -1,8 +1,8 @@
-import os
+import random
 import re
 import bcrypt
 from flask import Flask, render_template, request, redirect, flash, abort
-from flask_login import LoginManager, login_required, login_user, current_user
+from flask_login import LoginManager, login_required, login_user, current_user, logout_user
 from src.authentication.user import User
 from src.authentication.auth import authenticate
 from src.database.wireguard_db import changeBannedStatus, getUserById, add_users, getUserByName, modifyUsername
@@ -39,6 +39,8 @@ def createApp():
     # route is used to server login pages
     @app.route("/")
     def rootRoute():
+        if current_user.is_authenticated:
+            return redirect("/user")
         return render_template('login.html', title="Login")
 
 
@@ -73,35 +75,38 @@ def createApp():
     def loginRoute():
         # authenticates the user or returns none if invalid
         user =  authenticate(request.form.get("username"), request.form.get("password"))
+        
+        # Checks to make sure user was authenticated
         if(user != None):
             if(request.form.get("rememberUser")):
+                print("here")
                 login_user(user, remember=True)
                 return redirect("/user")
             else:
                 login_user(user, remember=False)
                 return redirect("/user")
         else:
-            flash("Invalid password", "error")
-            return
+            Error = "Invalid username and/or password"
+            return render_template('login.html', title="Login", error=Error)
 
     @app.route("/adduser", methods=["POST"])
     def adduserRoute():
-        user_name = request.form.get("username")
+        user_name = request.form["username"]
         if (getUserByName(user_name) == None): # checks to see if username already exists
-            uid = os.random(9) # using random number generator to get user id
-            while (getUserById(uid) != None): # loop to find user id that doesn't already exist
-                uid = os.random(9)
-            password = request.form.get("password")
-            add_users(str(uid),"user@user.com", user_name, bcrypt.hashpw(password, bcrypt.gensalt()),0,0) #adding user to db
-        return 
+            uid = random.randint(1,100) # using random number generator to get user id
+            while (getUserById(str(uid)) != None): # loop to find user id that doesn't already exist
+                uid = random.randint(1,100)
+            password = request.form["password"]
+            add_users(str(uid),"user@user.com", request.form.get("username"), bcrypt.hashpw(bytes(request.form.get("password"), "utf-8"), bcrypt.gensalt()),0,0) #adding user to db
+        return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username())
 
     @app.route("/blockuser", methods=["POST"])
     def blockuserRoute():
-        user_name = request.form.get("blockuser")
+        user_name = request.form["blockuser"]
         if (getUserByName(user_name) != None): # makes sure the user exists
             uid = getUserByName(user_name)[0] #gets user's uid 
             changeBannedStatus(uid, 1) #change banned status to true
-        return 
+        return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username())
 
     #route used to configure the server
     @app.route("/config")
@@ -143,7 +148,13 @@ def createApp():
                 #abort if path is not found and send back error 404
                 abort(404)
         #if user is not an admin send them back to normal user space
-        return redirect("/user")
+        return render_template("user.html", username=current_user.get_username(), information="Server information goes here", title="Dashboard" )
+
+    @app.route("/logout", methods=["POST"])
+    def logoutRoute():
+        if current_user.is_authenticated:
+           logout_user(current_user) 
+        return redirect("/")
 
 
     return app

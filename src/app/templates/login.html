@@ -8,6 +8,9 @@
 <body style="background-color: rgb(40, 40, 41); margin: 100px;">
     <p class="parent">
         <h1>Welcome to Wireguard Hub</h1>
+        {% if error %}
+            <p style="color:red" class=error> <strong>Error: </strong> {{ error }}
+        {% endif %}
         <div class="login">
         <form action="/login" method="POST">
             <label for="username">Username:  </label>
