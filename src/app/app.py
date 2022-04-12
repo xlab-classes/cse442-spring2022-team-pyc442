@@ -65,6 +65,7 @@ def createApp():
         if path == "dashboard":
             return render_template("users_page/user_dashboard.html", username=current_user.get_username(), title="Dashboard")
         if path == "guide":
+            print(path)
             return render_template("users_page/user_guide.html", username=current_user.get_username(), title="Guide")
         if path == "settings":
             return render_template("users_page/user_settings.html", username=current_user.get_username(), title="Settings")
