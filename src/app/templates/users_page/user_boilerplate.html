@@ -16,21 +16,21 @@
         <img src="#" alt="My icon" class="icon" title="Wirguard Icon">
         <span class="title">{{ username }}</span>
         <!-- This logout button will send GET request with path "/logout" to the server. -->
-        <form action="/logout" method="POST" class="signoutForm">
-            <button type="submit" name="signout" class="fa-solid fa-arrow-right-from-bracket signout">
-                <small>Log out</small>
-            </button>
-            
-        </form>
+            <form action="/logout" method="POST" class="signoutForm">
+                <button type="submit" name="signout" class="fa-solid fa-arrow-right-from-bracket signout">
+                    <small>Log out</small>
+                </button>
+            </form>
         <br>
         <!-- <span class="title">This black background is used for test</span> -->
     </h1>
-    <!-- style="background-color: rgb(223, 18, 18);" this is used for test -->
-    <div class="menuBar"> 
-        <ul class="menuBar">
-            {% block menubar %}{% endblock %}
-        </ul>
-        
-
-    </div>
-{% block content %}{% endblock %}
+    <!-- The brown color is used for test.  -->
+    <div style="background-color: brown;" class="menuBar"> 
+        <div class="menuBar"> 
+            <ul class="menuBar">
+                {% block menubar %}{% endblock %}
+            </ul>
+            
+    
+        </div>
+    {% block content %}{% endblock %}

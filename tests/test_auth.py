@@ -20,6 +20,7 @@ def test_correct_creds():
     db.setup_db()
     db.create_database()
 
+    db.deleteAllTuples()
     db.add_users("1", "any@any.com", "username", bcrypt.hashpw(b"password", bcrypt.gensalt()), 1, 0)
     rv1 = authenticate("username", "password")
     db.deleteAllTuples()
