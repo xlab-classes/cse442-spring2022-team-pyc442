@@ -75,15 +75,15 @@ def test_add_pub_key():
     db.add_user_server("1")
     key = "testKey"
     db.addPublicKey("1", key)
-    test15 = db.getPublicKey("1")
+    test16 = db.getPublicKey("1")
     db.deleteAllTuples()
-    assert test15 == key
+    assert test16 == key
 
 def test_change_pass():
     originalpassword = bcrypt.hashpw(b"pwd", bcrypt.gensalt())
     db.add_users("1", "any@any.com", "username", bcrypt.hashpw(b"pwd", bcrypt.gensalt()), 1, 0)
     db.add_user_server("1")
     newpassword = bcrypt.hashpw(b"password", bcrypt.gensalt())
-    test16 = db.changePassword("username", newpassword)
+    test17 = db.changePassword("username", newpassword)
     db.deleteAllTuples()
-    assert test16 is not None
+    assert test17 is not None
