@@ -78,3 +78,11 @@ def test_add_pub_key():
     test15 = db.getPublicKey("1")
     db.deleteAllTuples()
     assert test15 == key
+
+def test_add_pub_key():
+    db.add_users("1", "any@any.com", "username", bcrypt.hashpw(b"pwd", bcrypt.gensalt()), 1, 0)
+    db.add_user_server("1")
+    newpassword = "password"
+    test15 = db.changePassword("username", bcrypt.hashpw(b"password", bcrypt.gensalt()))
+    db.deleteAllTuples()
+    assert test15 is not None
