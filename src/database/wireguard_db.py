@@ -35,7 +35,8 @@ def create_database():
       "   `uid` varchar(9) NOT NULL,"
       "   `private_key` varchar(256) NOT NULL,"
       "   `public_key` varchar(256) NOT NULL,"
-      "   PRIMARY KEY (`uid`),"
+      "   `ip` int(32),"
+      "   PRIMARY KEY (`uid`, `ip`),"
       "   CONSTRAINT `server_id` FOREIGN KEY (`uid`)"
       "        REFERENCES `wireguard` (`user_id`) ON DELETE CASCADE"
       ") ENGINE=InnoDB")
