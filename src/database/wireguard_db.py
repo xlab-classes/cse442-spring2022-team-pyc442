@@ -287,7 +287,7 @@ def deleteUserByName(name):
 
     return True
 
-def add_user_server(uid):
+def add_user_server(uid, priv, pub, ipadrr):
     cnx = mysql.connector.connect( # connceting to database
       host="localhost",
       user="root",
@@ -298,10 +298,10 @@ def add_user_server(uid):
     cursor = cnx.cursor()
 
     add_user = ("INSERT INTO server "
-                "(uid, private_key, public_key) "
-                "VALUES (%s, %s, %s)") # query to add user
+                "(uid, private_key, public_key, ip) "
+                "VALUES (%s, %s, %s, %s)") # query to add user
 
-    data_user = (uid, "0", "0")
+    data_user = (uid, priv, pub, ipadrr)
 
     cursor.execute(add_user, data_user)
 
@@ -312,70 +312,7 @@ def add_user_server(uid):
 
     return True
 
-
-def addPrivateKey(uid, privatekey):
-    cnx = mysql.connector.connect( # connecting to database
-      host="localhost",
-      user="root",
-      password="password",
-      database="wireguard"
-    )
-    user_data = [] # initializing list, first element will be returned
-
-    cursor = cnx.cursor()
-
-    query = ("UPDATE server SET private_key = %s WHERE uid = %s") #to update private_key
-
-    cursor.execute(query, (privatekey, uid))
-
-    cnx.commit()
-
-    query = ("SELECT * FROM server WHERE uid = %s") #write query to get user data
-
-    cursor.execute(query, (uid,))
-
-    for (uid, private_key, public_key) in cursor: #populate user_data
-        user_data.append([uid, private_key, public_key])
-
-    cursor.close()
-    cnx.close()
-
-    if user_data == []:
-        return None
-    return user_data[0] #returning first element of user_data
-
-def addPublicKey(uid, publickey):
-    cnx = mysql.connector.connect( # connecting to database
-      host="localhost",
-      user="root",
-      password="password",
-      database="wireguard"
-    )
-    user_data = [] # initializing list, first element will be returned
-
-    cursor = cnx.cursor()
-
-    query = ("UPDATE server SET public_key = %s WHERE uid = %s") #to update private_key
-
-    cursor.execute(query, (publickey, uid))
-
-    cnx.commit()
-
-    query = ("SELECT * FROM server WHERE uid = %s") #write query to get user data
-
-    cursor.execute(query, (uid,))
-
-    for (uid, private_key, public_key) in cursor: #populate user_data
-        user_data.append([uid, private_key, public_key])
-
-    cursor.close()
-    cnx.close()
-
-    if user_data == []:
-        return None
-    return user_data[0] #returning first element of user_data
-
-def getPrivateKey(uid):
+def get_user_server(uid):
     cnx = mysql.connector.connect( # connecting to database
       host="localhost",
       user="root",
@@ -390,40 +327,15 @@ def getPrivateKey(uid):
 
     cursor.execute(query, (uid,))
 
-    for (uid, private_key, public_key) in cursor: #populate user_data
-        user_data.append([uid, private_key, public_key])
+    for (uid, private_key, public_key, ip) in cursor: #populate user_data
+        user_data.append([uid, private_key, public_key, ip])
 
     cursor.close()
     cnx.close()
 
     if user_data == []:
         return None
-    return user_data[0][1] #returning the private key
-
-def getPublicKey(uid):
-    cnx = mysql.connector.connect( # connecting to database
-      host="localhost",
-      user="root",
-      password="password",
-      database="wireguard"
-    )
-    user_data = [] # initializing list, first element will be returned
-
-    cursor = cnx.cursor()
-
-    query = ("SELECT * FROM server WHERE uid = %s") #find a user by username
-
-    cursor.execute(query, (uid,))
-
-    for (uid, private_key, public_key) in cursor: #populate user_data
-        user_data.append([uid, private_key, public_key])
-
-    cursor.close()
-    cnx.close()
-
-    if user_data == []:
-        return None
-    return user_data[0][2] #returning the private key
+    return user_data[0] 
 
 #deletes all entries from the database
 def deleteAllTuples():
@@ -450,6 +362,5 @@ def deleteAllTuples():
     cnx.close()
 
 if __name__ == "__main__":
-    deleteAllTuples()
     setup_db()
     create_database()
