@@ -312,6 +312,31 @@ def add_user_server(uid, priv, pub, ipadrr):
 
     return True
 
+def get_max_ip():
+    cnx = mysql.connector.connect( # connecting to database
+      host="localhost",
+      user="root",
+      password="password",
+      database="wireguard"
+    )
+    user_data = [] # initializing list, first element will be returned
+
+    cursor = cnx.cursor()
+
+    query = ("SELECT max(ip) FROM server") #find a user by username
+
+    cursor.execute(query,)
+
+    for (ip) in cursor: #populate user_data
+        user_data.append(ip)
+
+    cursor.close()
+    cnx.close()
+
+    if user_data == []:
+        return None
+    return user_data[0][0] 
+
 def get_user_server(uid):
     cnx = mysql.connector.connect( # connecting to database
       host="localhost",

@@ -63,6 +63,24 @@ def test_add_server_user():
     db.deleteAllTuples()
     assert test15 is not None
 
+def test_get_max_ip():
+    test16=db.get_max_ip()
+    assert test16 is None
+
+    db.add_users("1", "any@any.com", "username", bcrypt.hashpw(b"pwd", bcrypt.gensalt()), 1, 0)
+    db.add_user_server("1", "testPubKey", "testPrivKey", 1060)
+
+    db.add_users("2", "any2@any.com", "username3", bcrypt.hashpw(b"pwd", bcrypt.gensalt()), 1, 0)
+    db.add_user_server("2", "testPubKey", "testPrivKey", 1080)
+    
+    db.add_users("3", "any3@any.com", "username2", bcrypt.hashpw(b"pwd", bcrypt.gensalt()), 1, 0)
+    db.add_user_server("3", "testPubKey", "testPrivKey", 1070)
+
+
+    test17 = db.get_max_ip()
+    db.deleteAllTuples()
+    assert test17 == 1080
+
 """
 def test_add_priv_key():
     db.add_users("1", "any@any.com", "username", bcrypt.hashpw(b"pwd", bcrypt.gensalt()), 1, 0)
