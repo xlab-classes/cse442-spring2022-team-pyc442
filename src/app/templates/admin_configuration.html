@@ -20,8 +20,11 @@
         </p>
         <form action="/config" method="POST" class="configBox">
             <label for="vpnprotocal">VPN protocol:</label>
-            <input id="vpnprotocal" type="text" name="VPN protocol"><br/>
-            <label for="Hostname">Hostname:</label>
+            <input id="vpnprotocal" name="VPN protocol" list="protocols"><br/>
+            <datalist id="protocols">
+                <option value="wireguard">
+            </datalist>
+            <label for="Hostname" value="test">Hostname:</label>
             <input id="Hostname" type="text" name="Hostname"><br/>
        
             <label for="username">Username:</label>

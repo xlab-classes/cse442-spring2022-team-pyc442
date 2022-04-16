@@ -54,3 +54,27 @@ def test_delete_user():
     assert test12 is True
     test13 = db.deleteUserByName("username3")
     assert test13 is False
+
+def test_add_server_user():
+    db.add_users("1", "any@any.com", "username", bcrypt.hashpw(b"pwd", bcrypt.gensalt()), 1, 0)
+    test14 = db.add_user_server("1")
+    db.deleteAllTuples()
+    assert test14 is True
+
+def test_add_priv_key():
+    db.add_users("1", "any@any.com", "username", bcrypt.hashpw(b"pwd", bcrypt.gensalt()), 1, 0)
+    db.add_user_server("1")
+    key = "testKey"
+    db.addPrivateKey("1", key)
+    test15 = db.getPrivateKey("1")
+    db.deleteAllTuples()
+    assert test15 == key
+
+def test_add_pub_key():
+    db.add_users("1", "any@any.com", "username", bcrypt.hashpw(b"pwd", bcrypt.gensalt()), 1, 0)
+    db.add_user_server("1")
+    key = "testKey"
+    db.addPublicKey("1", key)
+    test15 = db.getPublicKey("1")
+    db.deleteAllTuples()
+    assert test15 == key
