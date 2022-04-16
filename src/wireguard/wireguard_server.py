@@ -43,7 +43,7 @@ class Wireguard_Server():
 
         wasnotrunning = False
 
-        if not self.is_running:
+        if not self.is_running():
             self.start()
             wasnotrunning = True
         # generate keys for user
