@@ -3,7 +3,19 @@ import ipaddress
 from src.database import wireguard_db
 
 class Wireguard_Server():
-    _running = False
+
+    _running: bool = False
+    _public_key: str = ""
+
+    def __init__(self):
+        # set the running bool to false
+        self._running = False
+
+        #get public key and save
+        pubkey = subprocess.run(['sudo', 'cat', '/etc/wireguard/public.key'], capture_output=True)
+
+        self._public_key = pubkey.stdout.decode().strip()
+
 
     def start(self) -> None:
         if not self._running:
@@ -11,14 +23,19 @@ class Wireguard_Server():
             subprocess.run(['sudo', 'wg-quick', 'up', 'wg0'])
             self._running = True
 
+
     def stop(self) -> None:
         if self._running:
             subprocess.run(['sudo', 'sysctl', '-w', 'net.ipv4.ip_forward=0'])
             subprocess.run(['sudo', 'wg-quick', 'down', 'wg0'])
             self._running = False
 
-    def is_running(self) -> None:
+
+    def is_running(self) -> bool:
         return self._running
+
+    def get_pubkey(self) -> str:
+        return self._public_key
 
     def add_user_new(self, uid: str) -> bool:
 
@@ -50,3 +67,4 @@ class Wireguard_Server():
         subprocess.run(['sudo', 'wg', 'set', 'wg0', 'peer', pubkey.stdout.decode().strip(), 'allowed-ips', str(ipaddress.ip_address('10.8.0.0')) + '/24'])
 
         return True
+
