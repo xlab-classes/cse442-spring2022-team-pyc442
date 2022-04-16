@@ -68,7 +68,7 @@ class Wireguard_Server():
         # add users key pair into database
         wireguard_db.add_user_server(uid, privkey.stdout.decode(), pubkey.stdout.decode(), ip)
 
-        subprocess.run(['sudo', 'wg', 'set', 'wg0', 'peer', pubkey.stdout.decode().strip(), 'allowed-ips', str(ipaddress.ip_address('10.8.0.0')) + '/24'])
+        subprocess.run(['sudo', 'wg', 'set', 'wg0', 'peer', pubkey.stdout.decode().strip(), 'allowed-ips', str(ipaddress.ip_address(ip))])
 
         if wasnotrunning:
             self.stop()
