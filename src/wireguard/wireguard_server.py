@@ -40,6 +40,12 @@ class Wireguard_Server():
         # error checking, uid must exist in and not have a public private key pair already
         if wireguard_db.getUserById(uid) == None or wireguard_db.get_user_server(uid) != None:
             return False
+
+        wasnotrunning = False
+
+        if not self.is_running:
+            self.start()
+            wasnotrunning = True
         # generate keys for user
         # create private key
         privkey = subprocess.run(['wg', 'genkey'], capture_output=True)
@@ -63,6 +69,9 @@ class Wireguard_Server():
         wireguard_db.add_user_server(uid, privkey.stdout.decode(), pubkey.stdout.decode(), ip)
 
         subprocess.run(['sudo', 'wg', 'set', 'wg0', 'peer', pubkey.stdout.decode().strip(), 'allowed-ips', str(ipaddress.ip_address('10.8.0.0')) + '/24'])
+
+        if wasnotrunning:
+            self.stop()
 
         return True
 
