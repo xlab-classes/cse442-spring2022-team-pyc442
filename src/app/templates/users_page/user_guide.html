@@ -15,36 +15,58 @@
         <p style="text-align: center;">
             Help
         </p>
-        <ul style="text-align: left;">
-            <li>
-                <a href="#connection"><b>How to connect to server: </b></a>
-            </li>
-            <li>
-                <a href="#manageuser"><b>How to add/block a user: </b></a>
-            </li>
-            <li>
-                <a href="#blocked"><b>Why can't I join the server: </b></a>
-            </li>
-        </ul><hr>
-        <div>
-            <div style="margin-right: 5%;">
-                <h1 id="connection">How to connection to server</h>
-                <p class="text_body">The start button located on the admin's dashboard page will directly 
-                    start the connection. As a basic user, 
+            <div>
+                <h1 id="connectuser" >How to Connect to the wireguard server:</h1>
+                <i>Step 1:</i>
+                <p class="test_body" >
+                    To connect as a user first go to <a href="https://www.wireguard.com/install/">Wireguards Website</a> and install the correct client for your operating system.
                 </p>
-                <p class="text_body">
-                    you must ask the admin to start the server. 
-                    All setting are already set by your admin.
+                <i>Step 2:</i>
+                <p class="test_body" >
+                    Create a new text file (the name of the text file should contain no spaces or special characters) and copy and paste the information in the collapsible below into the text file. Please note that you have to change &ltserver ip&gt to the actual server ip address otherwise you will not be able to connect.<br>
+                    <button type="button" id="collapsible">click to display configuration file</button>
+                    <div id="config" style="display: none; overflow: hidden; border:1px solid black">
+                        <p>
+                            [Interface]<br>
+                            PrivateKey = {{ private_key }}<br>
+                            Address = {{ ipaddrs }}<br><br>
+                            [Peer]<br>
+                            PublicKey = {{ server_public }}<br>
+                            AllowedIPs = 0.0.0.0/0<br>
+                            Endpoint = &ltserver ip&gt:51820<br>
+                            PersistentKeepalive = 25<br>
+                        </p>
+                    </div>
+                    <script>
+                     document.getElementById("collapsible").addEventListener("click", function() {
+                         if (document.getElementById("config").style.display === "block") {
+                             document.getElementById("config").style.display = "none";
+                         }
+                         else {
+                             document.getElementById("config").style.display = "block";
+                         }
+                     })
+                    </script>
                 </p>
-                <div class="" style="margin-left: 20%;">
-                    <img src="../../static/example_start_button.png">
-                </div>
-                <p class="text_body">The data usage graph shows your recent use of data
+                <i>Step 3:</i>
+                <p>Change the file extension from .txt to .conf otherwise you will not be able to import the file later</p>
+                <i>Step 4:</i>
+                <p>
+                    You should now import the configuration file. This guide will go over how to do it in windows, please refer to the documentation on how to do it for other operating systems.<br>
+                        <dl>
+                            <dt>Step 1:</dt>
+                            <dd>Open the wireguard application</dd>
+                            <dt>Step 2:</dt>
+                            <dd>click on Add Tunnel at the bottom left corner</dd>
+                            <dt>Step 3:</dt>
+                            <dd>Navigate to file and click import</dd>
+                        </dl>
                 </p>
-                <div class="example" style="width: 75%;">
-                    <img src="../../static/data_usage.png">
-                </div>
-            </div><hr>
+                <i>Step 5:</i>
+                <p>
+                    To activate the tunnel you should click on the name of the tunnel on the left hand side. Then you should click on the activate button under the Interface:&ltname&gt on the right hand side
+                </p>
+            </div>
             <div>
                 <h1 id="blocked">Why can't I join the server: </h1>
                 <p class="text_body">If you can't join the server, it's probably the server admin banned you
@@ -54,7 +76,6 @@
             <br><br>
         </div>
     </div>
-    
 </body>
 </html>
 {% endblock %}

@@ -33,8 +33,7 @@
         <div>
             <div>
                 <h1 id="configuration">How to set up my server</h>
-                <p class="text_body">The start button located on the dashboard page will direct you to configuration page, where
-                     you can configure your setting.
+                <p class="text_body">The start button is located on the dashboard page and will start the server, you can also go to the configuration page to configure the server.
                 </p>
                 <div class="example">
                     <img src="../static/example_start_button.png">
@@ -65,7 +64,7 @@
                 <div class="example">
                     <img src="../static/example_add_user_page.png" style="width: 75%;">
                 </div>
-                <p class="text_body">Enter the username and password in your decision. 
+                <p class="text_body">Enter the username and password in your decision.
                     The server will create a user who can connect to your server.
                 </p>
                 <div class="example">
@@ -74,18 +73,69 @@
             </div><hr>
             <div>
                 <h1 id="blockuser">How to block a user:</h1>
-                <p class="text_body">Enter the username of the user you want to block. 
+                <p class="text_body">Enter the username of the user you want to block.
                     The server will block and kick the user from your server. And he
                     can't join the server again.
                 </p>
                 <div class="example">
                     <img src="../static/example_block_user.png">
                 </div>
+            </div><hr>
+            <div>
+                <h1 id="connectuser" >How to Connect to the wireguard server:</h1>
+                <i>Step 1:</i>
+                <p class="test_body" >
+                    To connect as a user first go to <a href="https://www.wireguard.com/install/">Wireguards Website</a> and install the correct client for your operating system.
+                </p>
+                <i>Step 2:</i>
+                <p class="test_body" >
+                    Create a new text file (the name of the text file should contain no spaces or special characters) and copy and paste the information in the collapsible below into the text file. Please note that you have to change &ltserver ip&gt to the actual server ip address otherwise you will not be able to connect.<br>
+                    <button type="button" id="collapsible">click to display configuration file</button>
+                    <div id="config" style="display: none; overflow: hidden; border:1px solid black">
+                        <p>
+                            [Interface]<br>
+                            PrivateKey = {{ private_key }}<br>
+                            Address = {{ ipaddrs }}<br><br>
+                            [Peer]<br>
+                            PublicKey = {{ server_public }}<br>
+                            AllowedIPs = 0.0.0.0/0<br>
+                            Endpoint = &ltserver ip&gt:51820<br>
+                            PersistentKeepalive = 25<br>
+                        </p>
+                    </div>
+                    <script>
+                     document.getElementById("collapsible").addEventListener("click", function() {
+                         if (document.getElementById("config").style.display === "block") {
+                             document.getElementById("config").style.display = "none";
+                         }
+                         else {
+                             document.getElementById("config").style.display = "block";
+                         }
+                     })
+                    </script>
+                </p>
+                <i>Step 3:</i>
+                <p>Change the file extension from .txt to .conf otherwise you will not be able to import the file later</p>
+                <i>Step 4:</i>
+                <p>
+                    You should now import the configuration file. This guide will go over how to do it in windows, please refer to the documentation on how to do it for other operating systems.<br><br>
+                        <dl>
+                            <dt>Step 1:</dt>
+                            <dd>Open the wireguard application</dd>
+                            <dt>Step 2:</dt>
+                            <dd>click on Add Tunnel at the bottom left corner</dd>
+                            <dt>Step 3:</dt>
+                            <dd>Navigate to file and click import</dd>
+                        </dl>
+                </p>
+                <i>Step 5:</i>
+                <p>
+                    To activate the tunnel you should click on the name of the tunnel on the left hand side. Then you should click on the activate button under the Interface:&ltname&gt on the right hand side
+                </p>
             </div>
             <br><br>
         </div>
     </div>
-    
 </body>
 </html>
 {% endblock %}
