@@ -1,24 +1,29 @@
 import random
-import re
 import bcrypt
 from flask import Flask, render_template, request, redirect, flash, abort
 from flask_login import LoginManager, login_required, login_user, current_user, logout_user
 from src.authentication.user import User
 from src.authentication.auth import authenticate
-from src.database.wireguard_db import changeBannedStatus, getUserById, add_users, getUserByName, modifyUsername
+from src.database.wireguard_db import changeBannedStatus, getUserById, add_users, getUserByName, modifyUsername, get_user_server
 from src.wireguard import wireguard_server as wg
+import ipaddress
 
 def createApp():
     app = Flask(__name__)
-    # sets secret key
+    # sets secret key must set to new random key later on
     app.secret_key = b'f4d3d3349255d55d17dcec79f4b63395'
+
     #flask login information
     loginManager = LoginManager()
+
+    # create wireguard server management class
+    wireguard_server = wg.Wireguard_Server()
+
     #add default admin user
     if(getUserByName("admin") == None):
-        add_users(1,"admin@admin.com", "admin", bcrypt.hashpw(b"password", bcrypt.gensalt()),1,0)
+        add_users("1","admin@admin.com", "admin", bcrypt.hashpw(b"password", bcrypt.gensalt()),1,0)
+        wireguard_server.add_user_new("1")
 
-    wireguard_server = wg.Wireguard_Server()
 
 
     loginManager.init_app(app)
@@ -67,9 +72,15 @@ def createApp():
         #determine the path and return the correct user page
         if path == "dashboard":
             return render_template("users_page/user_dashboard.html", username=current_user.get_username(), title="Dashboard")
-        if path == "guide":
-            print(path)
-            return render_template("users_page/user_guide.html", username=current_user.get_username(), title="Guide")
+        if path == "help":
+            keys = get_user_server(current_user.get_id())
+            return render_template("users_page/user_guide.html",
+                                   username=current_user.get_username(),
+                                   title="Guide",
+                                   private_key = keys[1],
+                                   ipaddrs = str(ipaddress.ip_address(keys[3])),
+                                   server_public = wireguard_server.get_pubkey()
+                                   )
         if path == "settings":
             return render_template("users_page/user_settings.html", username=current_user.get_username(), title="Settings")
         abort(404)
@@ -102,13 +113,14 @@ def createApp():
                 uid = random.randint(1,100)
             password = request.form["password"]
             add_users(str(uid),"user@user.com", request.form.get("username"), bcrypt.hashpw(bytes(request.form.get("password"), "utf-8"), bcrypt.gensalt()),0,0) #adding user to db
+            wireguard_server.add_user_new(str(uid))
         return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username())
 
     @app.route("/blockuser", methods=["POST"])
     def blockuserRoute():
         user_name = request.form["blockuser"]
         if (getUserByName(user_name) != None): # makes sure the user exists
-            uid = getUserByName(user_name)[0] #gets user's uid 
+            uid = getUserByName(user_name)[0] #gets user's uid
             changeBannedStatus(uid, 1) #change banned status to true
         return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username())
 
@@ -124,6 +136,7 @@ def createApp():
             modifyUsername(current_user.get_id(), request.form["username"])
         if request.form.get("password"):
             print("Change password")
+
     # route for enabling 2 factor authentication, will most likely not be done during semester
     @app.route("/2fa")
     def twofactorRoute():
@@ -142,7 +155,11 @@ def createApp():
             elif path == "settings":
                 return render_template("admin_settings.html", title="Settings", information="Server information goes here", username=current_user.get_username())
             elif path == "help":
-                return render_template("admin_help.html", username=current_user.get_username())
+                keys = get_user_server(current_user.get_id())
+                return render_template("admin_help.html", username=current_user.get_username(),
+                                       private_key=keys[1],
+                                       server_public=wireguard_server.get_pubkey(),
+                                       ipaddrs=str(ipaddress.ip_address(keys[3])))
             elif path == "add_users":
                 return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username())
             elif path == "dashboard":
