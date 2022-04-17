@@ -19,34 +19,26 @@
         <p class="header">
             <b>Manage Users</b>
         </p>
+        {% if error %}
+        <p style="color:red" class=error> <strong>Error: </strong> {{ error }}
+        {% endif %}
         <div class="manage_user_box">
             <div class="users_box" style="background-color: rgb(70, 245, 35);"> 
                 <p class="box_title">Added Users</p>
                 <!-- Maximum display 9 users. User can use "search" to find other users. This function will be added later -->
                 <!-- The below part show be hosted using dynamic method. -->
                 {{loop_added_user}}
-                <form action="/{{username}}" method="POST" class="user_form">
-                    <button class="user_box">
-                        User1
-                    </button>
+                <form action="/adduser/remove/{{addedUser}}" method="POST" class="user_box_form">
+                    <div class="user_box">
+                        <big class="">addedUser</big>
+                        <button class="fa-solid fa-xmark x_button">
+                        </button>
+                    </div>
+                    
                 </form>
                 {{end_loop_added_user}}
                 <!-- This is just a example showing what it looks like when we have multiple added users -->
-                <form action="/{{username}}" method="POST" class="user_form">
-                    <button class="user_box button">
-                        User2
-                    </button>
-                </form>
-                <form action="/{{username}}" method="POST" class="user_form">
-                    <button class="user_box button">
-                        User2
-                    </button>
-                </form>
-                <form action="/{{username}}" method="POST" class="user_form">
-                    <button class="user_box button">
-                        User2
-                    </button>
-                </form>
+                
                 <form action="/adduser" method="POST" class="user_form" style="margin:auto; width:auto;">
                     <H2 style="text-align: center;">Add User</H2>
                     <label for="username" style="margin-left: 0%;">Username: </label>
@@ -67,23 +59,16 @@
             <div class="users_box" style="background-color: rgb(236, 91, 171);">
                 <p class="box_title">Blocked Users</p>
                 <!--{{loop_blocked_user}} -->
-                <form action="/{{username}}" method="POST" class="user_form">
-                    <button class="user_box button">
-                        User2
-                    </button>
+                <form action="/block/remove/{{blockedUser}}" method="POST" class="user_box_form">
+                    <div class="user_box">
+                        <big class="">blockeduser</big>
+                        <button class="fa-solid fa-xmark x_button">
+                        </button>
+                    </div>
+                    
                 </form>
                 <!--{{end_loop_blocked_user}}-->
-                <!-- This is just a example showing what it looks like when we have multiple added users -->
-                <form action="/{{username}}" method="POST" class="user_form">
-                    <button class="user_box button">
-                        User2
-                    </button>
-                </form>
-                <form action="/{{username}}" method="POST" class="user_form">
-                    <button class="user_box button">
-                        User2
-                    </button>
-                </form>
+
                 <form action="/blockuser" method="POST" class="user_form" style="margin:auto; width:auto;">
                     <label for="blockuser">Block User: </label>
                     <input type="text" name="blockuser" id="blockuser">

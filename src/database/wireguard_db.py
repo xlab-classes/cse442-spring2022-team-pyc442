@@ -1,12 +1,14 @@
 import mysql.connector
 from mysql.connector import errorcode
 
+DB_PASSWORD="password"
+
 #Sets up the database
 def setup_db():
     mydb = mysql.connector.connect(
           host="localhost",
           user="root",
-          password="password"
+          password=DB_PASSWORD
           )
 
     if mydb:
@@ -35,6 +37,7 @@ def create_database():
       "   `uid` varchar(9) NOT NULL,"
       "   `private_key` varchar(256) NOT NULL,"
       "   `public_key` varchar(256) NOT NULL,"
+      "   `ip` int(32),"
       "   PRIMARY KEY (`uid`),"
       "   CONSTRAINT `server_id` FOREIGN KEY (`uid`)"
       "        REFERENCES `wireguard` (`user_id`) ON DELETE CASCADE"
@@ -42,7 +45,7 @@ def create_database():
     cnx = mysql.connector.connect(
         host="localhost",
         user="root",
-        password="password")
+        password=DB_PASSWORD)
 
     cursor = cnx.cursor()
 
@@ -86,7 +89,7 @@ def add_users(uid, email, username, password, is_admin, is_banned):
     cnx = mysql.connector.connect( # connceting to database
       host="localhost",
       user="root",
-      password="password",
+      password=DB_PASSWORD,
       database="wireguard"
       )
 
@@ -110,7 +113,7 @@ def general_query():
     cnx = mysql.connector.connect(
       host="localhost",
       user="root",
-      password="password",
+      password=DB_PASSWORD,
       database="wireguard"
       )
 
@@ -136,7 +139,7 @@ def getUserById(uid):
     cnx = mysql.connector.connect( #connecting to database
         host="localhost",
         user="root",
-        password="password",
+        password=DB_PASSWORD,
         database="wireguard"
       )
 
@@ -165,7 +168,7 @@ def getUserByName(uname):
     cnx = mysql.connector.connect( #connecting to database
         host="localhost",
         user="root",
-        password="password",
+        password=DB_PASSWORD,
         database="wireguard"
       )
 
@@ -191,7 +194,7 @@ def modifyUsername(uid, newUname):
     cnx = mysql.connector.connect( # connecting to database
         host="localhost",
         user="root",
-        password="password",
+        password=DB_PASSWORD,
         database="wireguard"
       )
 
@@ -223,7 +226,7 @@ def changeBannedStatus(uid, newBanStatus):
     cnx = mysql.connector.connect( # connecting to database
       host="localhost",
       user="root",
-      password="password",
+      password=DB_PASSWORD,
       database="wireguard"
     )
     user_data = [] # initializing list, first element will be returned
@@ -254,7 +257,7 @@ def changePassword(uname, newp):
     cnx = mysql.connector.connect( # connecting to database
       host="localhost",
       user="root",
-      password="password",
+      password=DB_PASSWORD,
       database="wireguard"
     )
     user_data = [] # initializing list, first element will be returned
@@ -285,7 +288,7 @@ def deleteUserByName(name):
     cnx = mysql.connector.connect(
         host="localhost",
         user="root",
-        password="password",
+        password=DB_PASSWORD,
         database="wireguard"
       )
 
@@ -317,21 +320,21 @@ def deleteUserByName(name):
 
     return True
 
-def add_user_server(uid):
+def add_user_server(uid, priv, pub, ipadrr):
     cnx = mysql.connector.connect( # connceting to database
       host="localhost",
       user="root",
-      password="password",
+      password=DB_PASSWORD,
       database="wireguard"
       )
 
     cursor = cnx.cursor()
 
     add_user = ("INSERT INTO server "
-                "(uid, private_key, public_key) "
-                "VALUES (%s, %s, %s)") # query to add user
+                "(uid, private_key, public_key, ip) "
+                "VALUES (%s, %s, %s, %s)") # query to add user
 
-    data_user = (uid, "0", "0")
+    data_user = (uid, priv, pub, ipadrr)
 
     cursor.execute(add_user, data_user)
 
@@ -342,74 +345,36 @@ def add_user_server(uid):
 
     return True
 
-
-def addPrivateKey(uid, privatekey):
+def get_max_ip():
     cnx = mysql.connector.connect( # connecting to database
       host="localhost",
       user="root",
-      password="password",
+      password=DB_PASSWORD,
       database="wireguard"
     )
     user_data = [] # initializing list, first element will be returned
 
     cursor = cnx.cursor()
 
-    query = ("UPDATE server SET private_key = %s WHERE uid = %s") #to update private_key
+    query = ("SELECT max(ip) FROM server") #find a user by username
 
-    cursor.execute(query, (privatekey, uid))
+    cursor.execute(query,)
 
-    cnx.commit()
-
-    query = ("SELECT * FROM server WHERE uid = %s") #write query to get user data
-
-    cursor.execute(query, (uid,))
-
-    for (uid, private_key, public_key) in cursor: #populate user_data
-        user_data.append([uid, private_key, public_key])
+    for (ip) in cursor: #populate user_data
+        user_data.append(ip)
 
     cursor.close()
     cnx.close()
 
     if user_data == []:
         return None
-    return user_data[0] #returning first element of user_data
+    return user_data[0][0] 
 
-def addPublicKey(uid, publickey):
+def get_user_server(uid):
     cnx = mysql.connector.connect( # connecting to database
       host="localhost",
       user="root",
-      password="password",
-      database="wireguard"
-    )
-    user_data = [] # initializing list, first element will be returned
-
-    cursor = cnx.cursor()
-
-    query = ("UPDATE server SET public_key = %s WHERE uid = %s") #to update private_key
-
-    cursor.execute(query, (publickey, uid))
-
-    cnx.commit()
-
-    query = ("SELECT * FROM server WHERE uid = %s") #write query to get user data
-
-    cursor.execute(query, (uid,))
-
-    for (uid, private_key, public_key) in cursor: #populate user_data
-        user_data.append([uid, private_key, public_key])
-
-    cursor.close()
-    cnx.close()
-
-    if user_data == []:
-        return None
-    return user_data[0] #returning first element of user_data
-
-def getPrivateKey(uid):
-    cnx = mysql.connector.connect( # connecting to database
-      host="localhost",
-      user="root",
-      password="password",
+      password=DB_PASSWORD,
       database="wireguard"
     )
     user_data = [] # initializing list, first element will be returned
@@ -420,47 +385,22 @@ def getPrivateKey(uid):
 
     cursor.execute(query, (uid,))
 
-    for (uid, private_key, public_key) in cursor: #populate user_data
-        user_data.append([uid, private_key, public_key])
+    for (uid, private_key, public_key, ip) in cursor: #populate user_data
+        user_data.append([uid, private_key, public_key, ip])
 
     cursor.close()
     cnx.close()
 
     if user_data == []:
         return None
-    return user_data[0][1] #returning the private key
-
-def getPublicKey(uid):
-    cnx = mysql.connector.connect( # connecting to database
-      host="localhost",
-      user="root",
-      password="password",
-      database="wireguard"
-    )
-    user_data = [] # initializing list, first element will be returned
-
-    cursor = cnx.cursor()
-
-    query = ("SELECT * FROM server WHERE uid = %s") #find a user by username
-
-    cursor.execute(query, (uid,))
-
-    for (uid, private_key, public_key) in cursor: #populate user_data
-        user_data.append([uid, private_key, public_key])
-
-    cursor.close()
-    cnx.close()
-
-    if user_data == []:
-        return None
-    return user_data[0][2] #returning the private key
+    return user_data[0] 
 
 #deletes all entries from the database
 def deleteAllTuples():
     cnx = mysql.connector.connect(
       host="localhost",
       user="root",
-      password="password",
+      password=DB_PASSWORD,
       database="wireguard"
     )
 
@@ -480,6 +420,5 @@ def deleteAllTuples():
     cnx.close()
 
 if __name__ == "__main__":
-    deleteAllTuples()
     setup_db()
     create_database()
