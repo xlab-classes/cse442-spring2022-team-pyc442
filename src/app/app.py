@@ -4,7 +4,7 @@ from flask import Flask, render_template, request, redirect, flash, abort
 from flask_login import LoginManager, login_required, login_user, current_user, logout_user
 from src.authentication.user import User
 from src.authentication.auth import authenticate
-from src.database.wireguard_db import changeBannedStatus, getUserById, add_users, getUserByName, modifyUsername, get_user_server
+from src.database.wireguard_db import changeBannedStatus, getUserById, add_users, getUserByName, modifyUsername, changePassword, get_user_server
 from src.wireguard import wireguard_server as wg
 import ipaddress
 
@@ -65,6 +65,15 @@ def createApp():
         else:
             return redirect("/user/dashboard")
 
+    @app.route("/changepwd", methods=["POST"])
+    @login_required
+    def changepwdRoute():
+        user = authenticate(current_user.get_username(),request.form.get("pwd"))
+        if(user != None):
+            changePassword(current_user.get_username(), bcrypt.hashpw(bytes(request.form.get("newpwd"), "utf-8"), bcrypt.gensalt()))
+            return render_template("users_page/user_settings.html", username = current_user.get_username(), passwordStatus = "Successfully changed password")
+        return render_template("users_page/user_settings.html", username = current_user.get_username(), passwordStatus = "Incorrect password")
+
     # route used to serve webpages to normal users
     @app.route("/user/<path>")
     @login_required
@@ -84,6 +93,8 @@ def createApp():
         if path == "settings":
             return render_template("users_page/user_settings.html", username=current_user.get_username(), title="Settings")
         abort(404)
+
+    @app.route("/user")
 
     #Route to authenticate a user
     @app.route("/login", methods=["POST"])
