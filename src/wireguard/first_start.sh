@@ -19,8 +19,22 @@ PRIVKEY=$(cat /etc/wireguard/private.key)
 DEV=$(ip route list default | awk '{print $5}')
 
 # the base configuration for the server
-# sorry for how hard this is to read but bash wasnt letting me do muliline strings
-CONFIG_FILE="[Interface]\nAddress = 10.8.0.1/32\nSaveConfig = true\nPostUp = ufw enable\nPostUp = sysctl -w net.ipv4.ip_forward=1\nPostUp = iptables -t nat -I POSTROUTING -o eth0 -j MASQUERADE\nPostUp = ufw route allow in on wg0 out on $DEV\nPreDown = ufw route delete allow in on wg0 out on $DEV\nPreDown = iptables -t nat -D POSTROUTING -o $DEV -j MASQUERADE\nPreDown = sysctl -w net.ipv4.ip_forward=0\nListenPort = 51820\nPrivateKey = $PRIVKEY\n"
 # write the config out to file
-echo -e $CONFIG_FILE > /etc/wireguard/wg0.conf
+cat > /etc/wireguard/wg0.conf << EOL
+[Interface]\n
+Address = 10.8.0.1/24\n
+SaveConfig = true\n
+PostUp = ufw route allow in on wg0 out on $DEV\n
+PostUp = ufw route allow in on $DEV out on wg0\n
+PostUp =  ufw allow proto udp from any to any port 51820\n
+PostUp = sysctl -w net.ipv4.ip_forward=1\n
+PostUp = iptables -t nat -I POSTROUTING -o $DEV -j MASQUERADE\n
+PreDown = iptables -t nat -D POSTROUTING -o $DEV -j MASQUERADE\n
+PostDown = ufw route delete allow in on wg0 out on eth0\n
+PostDown = ufw route delete allow in on eth0 out on wg0\n
+PostDown = ufw delete allow proto udp from any to any port 51820\n
+PreDown = sysctl -w net.ipv4.ip_forward=0\n
+ListenPort = 51820\n
+PrivateKey = $PRIVKEY\n
+EOL
 
