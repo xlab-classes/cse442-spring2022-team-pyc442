@@ -24,16 +24,8 @@ cat > /etc/wireguard/wg0.conf << EOL
 [Interface]
 Address = 10.8.0.1/24
 SaveConfig = true
-PostUp = ufw route allow in on wg0 out on $DEV
-PostUp = ufw route allow in on $DEV out on wg0
-PostUp =  ufw allow proto udp from any to any port 51820
-PostUp = sysctl -w net.ipv4.ip_forward=1
-PostUp = iptables -t nat -I POSTROUTING -o $DEV -j MASQUERADE
-PreDown = iptables -t nat -D POSTROUTING -o $DEV -j MASQUERADE
-PostDown = ufw route delete allow in on wg0 out on eth0
-PostDown = ufw route delete allow in on eth0 out on wg0
-PostDown = ufw delete allow proto udp from any to any port 51820
-PreDown = sysctl -w net.ipv4.ip_forward=0
+PostUp = iptables -A FORWARD -i $DEV -o wg0 -j ACCEPT; iptables -A FORWARD -i wg0 -j ACCEPT; iptables -t nat -A POSTROUTING -o $DEV -j MASQUERADE; ip6tables -A FORWARD -i wg0 -j ACCEPT; ip6tables -t nat -A POSTROUTING -o $DEV -j MASQUERADE; ufw route allow in on wg0 out on $DEV; ufw route allow in on $DEV out on wg0; ufw allow proto udp from any to any port 51820
+PostDown = iptables -D FORWARD -i $DEV -o wg0 -j ACCEPT; iptables -D FORWARD -i wg0 -j ACCEPT; iptables -t nat -D POSTROUTING -o $DEV -j MASQUERADE; ip6tables -D FORWARD -i wg0 -j ACCEPT; ip6tables -t nat -D POSTROUTING -o $DEV -j MASQUERADE; ufw route delete allow in on wg0 out on $DEV; ufw route delete allow in on $DEV out on wg0; ufw delete allow proto udp from any to any port 51820
 ListenPort = 51820
 PrivateKey = $PRIVKEY
 EOL
