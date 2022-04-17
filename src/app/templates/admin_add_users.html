@@ -56,6 +56,9 @@
                     <div class="wrapper" style="text-align: center;">
                     <button value="add" style="text-align: center;">Add</button><br>
                     </div>
+                    {% if error %}
+                    <p style="color:red" class=error> <strong>Error: </strong> {{ error }}
+                    {% endif %}
                 </form>  
                 <!-- <form action="/{{username}}" method="GET" class="">
                     <label for="search">Search:</label>

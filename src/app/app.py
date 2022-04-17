@@ -5,7 +5,7 @@ from flask import Flask, render_template, request, redirect, flash, abort
 from flask_login import LoginManager, login_required, login_user, current_user, logout_user
 from src.authentication.user import User
 from src.authentication.auth import authenticate
-from src.database.wireguard_db import changeBannedStatus, getUserById, add_users, getUserByName, modifyUsername
+from src.database.wireguard_db import changeBannedStatus, deleteAllTuples, getUserById, add_users, getUserByName, modifyUsername
 from src.wireguard import wireguard_server as wg
 
 def createApp():
@@ -16,6 +16,7 @@ def createApp():
     loginManager = LoginManager()
     #add default admin user
     if(getUserByName("admin") == None):
+        deleteAllTuples()
         add_users(1,"admin@admin.com", "admin", bcrypt.hashpw(b"password", bcrypt.gensalt()),1,0)
 
     wireguard_server = wg.Wireguard_Server()
@@ -101,7 +102,10 @@ def createApp():
                 uid = random.randint(1,100)
             password = request.form["password"]
             add_users(str(uid),"user@user.com", request.form.get("username"), bcrypt.hashpw(bytes(request.form.get("password"), "utf-8"), bcrypt.gensalt()),0,0) #adding user to db
-        return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username())
+            return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username())
+        else:
+            Error = "The username you entered is already in use. Please enter a different username."
+            return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username(), error=Error)
 
     @app.route("/blockuser", methods=["POST"])
     def blockuserRoute():

@@ -57,33 +57,34 @@ def test_delete_user():
 
 def test_add_server_user():
     db.add_users("1", "any@any.com", "username", bcrypt.hashpw(b"pwd", bcrypt.gensalt()), 1, 0)
-    test14 = db.add_user_server("1")
+    test14 = db.add_user_server("1", "testPubKey", "testPrivKey", 1080)
+    assert test14 is not None
+    test15 = db.get_user_server("1")
     db.deleteAllTuples()
-    assert test14 is True
+    assert test15 is not None
 
-def test_add_priv_key():
-    db.add_users("1", "any@any.com", "username", bcrypt.hashpw(b"pwd", bcrypt.gensalt()), 1, 0)
-    db.add_user_server("1")
-    key = "testKey"
-    db.addPrivateKey("1", key)
-    test15 = db.getPrivateKey("1")
-    db.deleteAllTuples()
-    assert test15 == key
+def test_get_max_ip():
+    test16=db.get_max_ip()
+    assert test16 is None
 
-def test_add_pub_key():
     db.add_users("1", "any@any.com", "username", bcrypt.hashpw(b"pwd", bcrypt.gensalt()), 1, 0)
-    db.add_user_server("1")
-    key = "testKey"
-    db.addPublicKey("1", key)
-    test16 = db.getPublicKey("1")
+    db.add_user_server("1", "testPubKey", "testPrivKey", 1060)
+
+    db.add_users("2", "any2@any.com", "username3", bcrypt.hashpw(b"pwd", bcrypt.gensalt()), 1, 0)
+    db.add_user_server("2", "testPubKey", "testPrivKey", 1080)
+    
+    db.add_users("3", "any3@any.com", "username2", bcrypt.hashpw(b"pwd", bcrypt.gensalt()), 1, 0)
+    db.add_user_server("3", "testPubKey", "testPrivKey", 1070)
+
+
+    test17 = db.get_max_ip()
     db.deleteAllTuples()
-    assert test16 == key
+    assert test17 == 1080
 
 def test_change_pass():
     originalpassword = bcrypt.hashpw(b"pwd", bcrypt.gensalt())
     db.add_users("1", "any@any.com", "username", bcrypt.hashpw(b"pwd", bcrypt.gensalt()), 1, 0)
-    db.add_user_server("1")
     newpassword = bcrypt.hashpw(b"password", bcrypt.gensalt())
     test17 = db.changePassword("username", newpassword)
     db.deleteAllTuples()
-    assert test17 is not None
+    assert bytes(test17[3],  "utf-8") == newpassword
