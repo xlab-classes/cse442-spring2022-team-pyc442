@@ -95,7 +95,9 @@
                         <p>
                             [Interface]<br>
                             PrivateKey = {{ private_key }}<br>
-                            Address = {{ ipaddrs }}<br><br>
+                            Address = {{ ipaddrs }}<br>
+                            DNS = 8.8.8.8<br><br>
+
                             [Peer]<br>
                             PublicKey = {{ server_public }}<br>
                             AllowedIPs = 0.0.0.0/0<br>
