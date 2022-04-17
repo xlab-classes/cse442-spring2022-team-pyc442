@@ -257,7 +257,7 @@ def changePassword(uname, newp):
     cnx = mysql.connector.connect( # connecting to database
       host="localhost",
       user="root",
-      password="password",
+      password=DB_PASSWORD,
       database="wireguard"
     )
     user_data = [] # initializing list, first element will be returned
