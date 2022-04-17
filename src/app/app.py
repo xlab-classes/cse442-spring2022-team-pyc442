@@ -95,6 +95,9 @@ def createApp():
 
     @app.route("/adduser", methods=["POST"])
     def adduserRoute():
+        if (request.form["username"] == "" or request.form["password"] == ""):
+            Error = "Please enter a valid username/password."
+            return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username(), error=Error)
         user_name = request.form["username"]
         if (getUserByName(user_name) == None): # checks to see if username already exists
             uid = random.randint(1,100) # using random number generator to get user id
@@ -109,11 +112,17 @@ def createApp():
 
     @app.route("/blockuser", methods=["POST"])
     def blockuserRoute():
-        user_name = request.form["blockuser"]
+        if (request.form["username"] == ""):
+            Error = "Please enter a valid username."
+            return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username(), error=Error)
+        user_name = request.form["username"]
         if (getUserByName(user_name) != None): # makes sure the user exists
             uid = getUserByName(user_name)[0] #gets user's uid 
             changeBannedStatus(uid, 1) #change banned status to true
-        return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username())
+            return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username())
+        else:
+            Error = "Please enter a valid username."
+            return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username(), error=Error)
 
     #route used to configure the server
     @app.route("/config")
