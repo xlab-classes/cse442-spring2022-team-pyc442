@@ -38,7 +38,7 @@ def create_database():
       "   `private_key` varchar(256) NOT NULL,"
       "   `public_key` varchar(256) NOT NULL,"
       "   `ip` int(32),"
-      "   PRIMARY KEY (`uid`, `ip`),"
+      "   PRIMARY KEY (`uid`),"
       "   CONSTRAINT `server_id` FOREIGN KEY (`uid`)"
       "        REFERENCES `wireguard` (`user_id`) ON DELETE CASCADE"
       ") ENGINE=InnoDB")
@@ -242,6 +242,37 @@ def changeBannedStatus(uid, newBanStatus):
     query = ("SELECT * FROM wireguard WHERE user_id = %s") #write query to get user data
 
     cursor.execute(query, (uid,))
+
+    for (user_id, email, username, password, admin, banned) in cursor: #populate user_data
+        user_data.append([user_id, email, username, password, admin, banned])
+
+    cursor.close()
+    cnx.close()
+
+    if user_data == []:
+        return None
+    return user_data[0] #returning first element of user_data
+
+def changePassword(uname, newp):
+    cnx = mysql.connector.connect( # connecting to database
+      host="localhost",
+      user="root",
+      password=DB_PASSWORD,
+      database="wireguard"
+    )
+    user_data = [] # initializing list, first element will be returned
+
+    cursor = cnx.cursor()
+
+    query = ("UPDATE wireguard SET password = %s WHERE username = %s") #to update ban status
+
+    cursor.execute(query, (newp, uname))
+
+    cnx.commit()
+
+    query = ("SELECT * FROM wireguard WHERE username = %s") #write query to get user data
+
+    cursor.execute(query, (uname,))
 
     for (user_id, email, username, password, admin, banned) in cursor: #populate user_data
         user_data.append([user_id, email, username, password, admin, banned])

@@ -81,13 +81,10 @@ def test_get_max_ip():
     db.deleteAllTuples()
     assert test17 == 1080
 
-"""
-def test_add_priv_key():
+def test_change_pass():
+    originalpassword = bcrypt.hashpw(b"pwd", bcrypt.gensalt())
     db.add_users("1", "any@any.com", "username", bcrypt.hashpw(b"pwd", bcrypt.gensalt()), 1, 0)
-    db.add_user_server("1")
-    key = "testKey"
-    db.addPrivateKey("1", key)
-    test15 = db.getPrivateKey("1")
+    newpassword = bcrypt.hashpw(b"password", bcrypt.gensalt())
+    test17 = db.changePassword("username", newpassword)
     db.deleteAllTuples()
-    assert test15 == key
-"""
+    assert bytes(test17[3],  "utf-8") == newpassword
