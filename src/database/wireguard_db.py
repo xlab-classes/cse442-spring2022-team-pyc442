@@ -253,6 +253,37 @@ def changeBannedStatus(uid, newBanStatus):
         return None
     return user_data[0] #returning first element of user_data
 
+def changePassword(uname, newp):
+    cnx = mysql.connector.connect( # connecting to database
+      host="localhost",
+      user="root",
+      password="password",
+      database="wireguard"
+    )
+    user_data = [] # initializing list, first element will be returned
+
+    cursor = cnx.cursor()
+
+    query = ("UPDATE wireguard SET password = %s WHERE username = %s") #to update ban status
+
+    cursor.execute(query, (newp, uname))
+
+    cnx.commit()
+
+    query = ("SELECT * FROM wireguard WHERE username = %s") #write query to get user data
+
+    cursor.execute(query, (uname,))
+
+    for (user_id, email, username, password, admin, banned) in cursor: #populate user_data
+        user_data.append([user_id, email, username, password, admin, banned])
+
+    cursor.close()
+    cnx.close()
+
+    if user_data == []:
+        return None
+    return user_data[0] #returning first element of user_data
+
 def deleteUserByName(name):
     cnx = mysql.connector.connect(
         host="localhost",
