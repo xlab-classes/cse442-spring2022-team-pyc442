@@ -144,7 +144,7 @@ def createApp():
             changeBannedStatus(uid, 1) #change banned status to true
             return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username())
         else:
-            Error = "Please enter a valid username."
+            Error = "User not found. Please enter a valid username."
             return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username(), error=Error)
 
     #route used to configure the server
