@@ -87,4 +87,4 @@ def test_change_pass():
     newpassword = bcrypt.hashpw(b"password", bcrypt.gensalt())
     test17 = db.changePassword("username", newpassword)
     db.deleteAllTuples()
-    assert bytes(test17[3],  "utf-8") == newpassword 
+    assert bytes(test17[3],  "utf-8") == newpassword
