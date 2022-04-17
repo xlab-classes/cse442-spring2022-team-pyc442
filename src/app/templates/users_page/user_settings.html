@@ -20,7 +20,7 @@
                 <div class="liquid">Starts</div>
             </button> -->
             <p style="text-align: center;">
-                Settings
+                <b><u>Settings</b></u>
             </p>
             <p>{{ information }}</p>
             <!-- The below parts are just used to show the menu bar function. Can be edeleted -->
@@ -34,18 +34,21 @@
             Username: {{ username }}
             <br><br>
             Change Password:<br>
+            {{ passwordStatus }}
+            <form action="/changepwd" method="POST" style="margin-left:20px">
             Old Password:
             <input type="password" id="pwd" name="pwd"><br>
             New Password:
             <input type="password" id="newpwd" name="newpwd"><br>
             <input type="submit" value="Confirm">
+            </form>
 
             <p>
 
             </p>
         </div>
-        <div class="dataUsage" style="background-color: rgb(88, 11, 230);">
-            <img src="#" alt="Data Usage" title="Data Usage">
+        <!-- <div class="dataUsage" style="background-color: rgb(88, 11, 230);"> -->
+            <!-- <img src="#" alt="Data Usage" title="Data Usage"> -->
         </div>
 
     </div>
