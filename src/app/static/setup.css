@@ -9,9 +9,6 @@
     margin-right: 25%;
     position: absolute;
 }
-p{
-    margin-left: 20px
-}
 .header{
     text-align: center;
     font-size: larger;
@@ -59,12 +56,6 @@ li{
     padding-bottom: 10px;
     padding-top: 5px;
     list-style-type: none;
-}
-.example{
-    text-align: center;
-}
-.text_body{
-    font-size: 15px;
 }
 div{
     clear: both;
@@ -173,6 +164,7 @@ label{
 }
 input {
     text-align: left;
+    width: 60%;
 }
 form {
     margin-left: 10%;
@@ -247,15 +239,6 @@ button:hover .liquid {
     top: -120px;
 }
    
-@keyframes animate {
-    0% {
-        transform: translate(-50%, -75%) rotate(0deg);
-    }
-   
-    100% {
-        transform: translate(-50%, -75%) rotate(360deg);
-    }
-}  
 @keyframes animate {
     0% {
         transform: translate(-50%, -75%) rotate(0deg);
