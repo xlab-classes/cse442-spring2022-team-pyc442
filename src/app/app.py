@@ -5,10 +5,7 @@ from flask import Flask, render_template, request, redirect, flash, abort
 from flask_login import LoginManager, login_required, login_user, current_user
 from src.authentication.user import User
 from src.authentication.auth import authenticate
-from src.database.wireguard_db import changeBannedStatus, getUserById, add_users, getUserByName, modifyUsername, changePassword, get_user_server
-from src.wireguard import wireguard_server as wg
-import ipaddress
-
+from src.database.wireguard_db import changeBannedStatus, getUserById, add_users, getUserByName, modifyUsername
 
 def createApp():
     app = Flask(__name__)
@@ -58,15 +55,6 @@ def createApp():
         else:
             return render_template("user.html", title=current_user.get_username())
 
-    @app.route("/changepwd", methods=["POST"])
-    @login_required
-    def changepwdRoute():
-        user = authenticate(current_user.get_username(),request.form.get("pwd"))
-        if(user != None):
-            changePassword(current_user.get_username(), bcrypt.hashpw(bytes(request.form.get("newpwd"), "utf-8"), bcrypt.gensalt()))
-            return render_template("users_page/user_settings.html", username = current_user.get_username(), passwordStatus = "Successfully changed password")
-        return render_template("users_page/user_settings.html", username = current_user.get_username(), passwordStatus = "Incorrect password")
-
     # route used to serve webpages to normal users
     @app.route("/user/<path>")
     @login_required
@@ -79,8 +67,6 @@ def createApp():
         if path == "settings":
             return render_template("users_page/user_settings.html", username=current_user.get_username(), title="Settings")
         abort(404)
-
-    @app.route("/user")
 
     #Route to authenticate a user
     @app.route("/login", methods=["POST"])
@@ -102,9 +88,6 @@ def createApp():
 
     @app.route("/adduser", methods=["POST"])
     def adduserRoute():
-        if (request.form["username"] == "" or request.form["password"] == ""):
-            Error = "Please enter a valid username/password."
-            return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username(), error=Error)
         user_name = request.form["username"]
         if (getUserByName(user_name) == None): # checks to see if username already exists
             uid = random.randint(1,100) # using random number generator to get user id
@@ -112,26 +95,15 @@ def createApp():
                 uid = random.randint(1,100)
             password = request.form["password"]
             add_users(str(uid),"user@user.com", request.form.get("username"), bcrypt.hashpw(bytes(request.form.get("password"), "utf-8"), bcrypt.gensalt()),0,0) #adding user to db
-            wireguard_server.add_user_new(str(uid))
-            return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username())
-        else:
-            Error = "The username you entered is already in use. Please enter a different username."
-            return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username(), error=Error)
-
+        return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username())
 
     @app.route("/blockuser", methods=["POST"])
     def blockuserRoute():
-        if (request.form["username"] == ""):
-            Error = "Please enter a valid username."
-            return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username(), error=Error)
-        user_name = request.form["username"]
+        user_name = request.form["blockuser"]
         if (getUserByName(user_name) != None): # makes sure the user exists
             uid = getUserByName(user_name)[0] #gets user's uid 
             changeBannedStatus(uid, 1) #change banned status to true
-            return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username())
-        else:
-            Error = "User not found. Please enter a valid username."
-            return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username(), error=Error)
+        return 
 
     #route used to configure the server
     @app.route("/config")

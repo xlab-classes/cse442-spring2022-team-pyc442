@@ -13,21 +13,6 @@
     text-align: center;
     font-size: larger;
 }
-.signoutForm{
-    cursor: pointer;
-    float: right;
-    border-radius: 10px;
-    align-items: right;
-}
-.signout{
-    cursor: pointer;
-    float: right;
-    border: solid;
-}
-.x_button{
-    cursor: pointer;
-    float: right;
-}
 .text_body{
     margin-left: 10%;
     margin-right: 10%;
@@ -120,17 +105,12 @@ div{
 }
 .user_box{
     margin: 0 auto 10px auto;
-    /* padding: 20px; */
+    padding: 20px;
     background-color: #30b7ec;
     border-radius: 20px;
-    width: 70%;
+    width: 50%;
     text-align: center;
-    position: relative;
-}
-.user_box > big{
-    top: 30%;
-    left:20%;
-    position: absolute;
+    cursor: pointer;
 }
 .add_users{
     height: 900px;
@@ -143,12 +123,6 @@ div{
 .user_form{
     margin-left: 20%;
     width: 120%;
-}
-.user_box_form{
-    width: 80%;
-    text-align: center;
-    align-items: right;
-    position: relative;
 }
 a{
     text-decoration: none;
