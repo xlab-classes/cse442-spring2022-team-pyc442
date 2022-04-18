@@ -1,9 +1,25 @@
-{% extends "admin_boilerplate.html" %}
-{% block head %}
-{% endblock %}
-
-
-{% block menubar %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1,user-scalable=no">
+    <!-- Change this to the title you want -->
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href= {{ url_for('static', filename='setup.css')}}>
+</head>
+<body style='background-image: url({{ url_for("static", filename="cool-background.png") }});'>
+    <!-- If you wanna change the top's background color, change the "background-color" in CSS -->
+    <h1>
+        <!-- Change our icon "#" here. You must have a picture first. A sample path is "/myImages/myIcon.png" -->
+        <img src="#" alt="My icon" class="icon" title="Wirguard Icon">
+        <span class="title">{{ username }}</span>
+        <br>
+        <!-- <span class="title">This black background is used for test</span> -->
+    </h1>
+    <!-- style="background-color: rgb(223, 18, 18);" this is used for test -->
+    <div class="menuBar"> 
+        <ul class="menuBar">
             <!-- Each option will direct the user to corresponded page via http link -->
             <li><a href="/admin/dashboard">Dashboard:</a></li>
             <li><a href="/admin/configuration">Configuration:</a></li>
@@ -11,10 +27,9 @@
             <li><a href="/admin/add_users"><b>Add users:</b></a></li>
             <li><a href="/admin/help">Help:</a></li>
         </ul>
-    </div>
-{% endblock %}
+        
 
-{% block content %}
+    </div>
     <div class="content add_users">                
         <p class="header">
             <b>Manage Users</b>
@@ -41,10 +56,10 @@
                 
                 <form action="/adduser" method="POST" class="user_form" style="margin:auto; width:auto;">
                     <H2 style="text-align: center;">Add User</H2>
-                    <label for="username" style="margin-left: 0%;">Username: </label>
-                    <input type="text" name="username" id="username" style="margin-left:0%;" class="searchBox">
-                    <label for="password" style="margin-left: 0%;">Password:</label>
-                    <input type="password" name="password" id="password" class="searchBox"><br>
+                    <label for="username" style="margin-left: 0%;">Username</label>
+                    <input type="text" name="username" id="username" style="margin-left:0%;">
+                    <label for="password" style="margin-left: 0%;">Password</label>
+                    <input type="password" name="password" id="password"><br>
                     <div class="wrapper" style="text-align: center;">
                     <button value="add" style="text-align: center;">Add</button><br>
                     </div>
@@ -75,7 +90,7 @@
                     <div class="wrapper" style="text-align:center;">
                     <button value="Search">Block</button><br>
                     </div>
-                </form>  
+                </form>
             </div>
         </div>
     </div>
@@ -83,4 +98,3 @@
     
 </body>
 </html>
-{% endblock %}

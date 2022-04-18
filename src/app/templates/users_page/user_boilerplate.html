@@ -4,33 +4,34 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Change this to the title you want -->
     <title>{{ title }}</title>
-    <link rel="stylesheet" href={{ url_for("static", filename='setup.css') }}>
-    <script src="https://kit.fontawesome.com/befe61a94b.js" crossorigin="anonymous"></script>
-    {% block head %}{% endblock %}
+    <link rel="stylesheet" href={{ url_for("static", filename="setup.css")}}>
 </head>
-<body style="background-image: url({{ url_for('static', filename='cool-background.png') }});">
+<body style="background-color: aqua; background-image: url({{ url_for('static', filename='cool-background.png')}});">
     <!-- If you wanna change the top's background color, change the "background-color" in CSS -->
     <h1>
         <!-- Change our icon "#" here. You must have a picture first. A sample path is "/myImages/myIcon.png" -->
         <img src="#" alt="My icon" class="icon" title="Wirguard Icon">
         <span class="title">{{ username }}</span>
-        <!-- This logout button will send GET request with path "/logout" to the server. -->
-            <form action="/logout" method="POST" class="signoutForm">
-                <button type="submit" name="signout" class="fa-solid fa-arrow-right-from-bracket signout">
-                    <small>Log out</small>
-                </button>
-            </form>
         <br>
         <!-- <span class="title">This black background is used for test</span> -->
     </h1>
     <!-- The brown color is used for test.  -->
     <div style="background-color: brown;" class="menuBar"> 
-        <div class="menuBar"> 
-            <ul class="menuBar">
-                {% block menubar %}{% endblock %}
-            </ul>
-            
-    
+        <ul class="menuBar">
+            <li><a href="/user/dashboard"><b>Dashboard:</b></a></li>
+            <li><a href="/user/guide">Guide:</a></li>
+            <li><a href="/user/settings">Setting:</a></li>
+        </ul>
+        
+
+    </div>
+    <div class="content">
+        {% block content %}{% endblock %}
+        <div class="configuration" style="background-color: blueviolet;"> 
         </div>
-    {% block content %}{% endblock %}
+    </div>
+    
+</body>
+</html>

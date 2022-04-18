@@ -1,29 +1,24 @@
 import random
+import re
 import bcrypt
 from flask import Flask, render_template, request, redirect, flash, abort
-from flask_login import LoginManager, login_required, login_user, current_user, logout_user
+from flask_login import LoginManager, login_required, login_user, current_user
 from src.authentication.user import User
 from src.authentication.auth import authenticate
 from src.database.wireguard_db import changeBannedStatus, getUserById, add_users, getUserByName, modifyUsername, changePassword, get_user_server
 from src.wireguard import wireguard_server as wg
 import ipaddress
 
+
 def createApp():
     app = Flask(__name__)
-    # sets secret key must set to new random key later on
+    # sets secret key
     app.secret_key = b'f4d3d3349255d55d17dcec79f4b63395'
-
     #flask login information
     loginManager = LoginManager()
-
-    # create wireguard server management class
-    wireguard_server = wg.Wireguard_Server()
-
     #add default admin user
     if(getUserByName("admin") == None):
-        add_users("1","admin@admin.com", "admin", bcrypt.hashpw(b"password", bcrypt.gensalt()),1,0)
-        wireguard_server.add_user_new("1")
-
+        add_users(1,"admin@admin.com", "admin", bcrypt.hashpw(b"password", bcrypt.gensalt()),1,0)
 
 
     loginManager.init_app(app)
@@ -39,7 +34,7 @@ def createApp():
         #formate of init for User is username: str, userid: str, isAdmin: bool, isBanned: bool
         return User(userInfo[2], userInfo[0], userInfo[4], userInfo[5])
 
-    # error 404 handleing
+    # error 404 handleing 
     @app.errorhandler(404)
     def fourzerofour(error):
         return render_template("404.html"), 404
@@ -47,23 +42,21 @@ def createApp():
     # route is used to server login pages
     @app.route("/")
     def rootRoute():
-        if current_user.is_authenticated:
-            return redirect("/user")
         return render_template('login.html', title="Login")
 
 
-    # route used to server user interface
+    # route used to server user interface 
     @app.route("/user")
     # checks for auth and redirect to root if not
     @login_required
     def userRoute():
         #checks for if admin
         # return tempate page for admin and sets its title to the admins name
-        if current_user.is_admin():
+        if current_user.is_admin:
             return redirect("/admin/dashboard")
         # returns redirect to correct location of user dashboard
         else:
-            return redirect("/user/dashboard")
+            return render_template("user.html", title=current_user.get_username())
 
     @app.route("/changepwd", methods=["POST"])
     @login_required
@@ -81,15 +74,8 @@ def createApp():
         #determine the path and return the correct user page
         if path == "dashboard":
             return render_template("users_page/user_dashboard.html", username=current_user.get_username(), title="Dashboard")
-        if path == "help":
-            keys = get_user_server(current_user.get_id())
-            return render_template("users_page/user_guide.html",
-                                   username=current_user.get_username(),
-                                   title="Guide",
-                                   private_key = keys[1],
-                                   ipaddrs = str(ipaddress.ip_address(keys[3])),
-                                   server_public = wireguard_server.get_pubkey()
-                                   )
+        if path == "guide":
+            return render_template("users_page/user_guide.html", username=current_user.get_username(), title="Guide")
         if path == "settings":
             return render_template("users_page/user_settings.html", username=current_user.get_username(), title="Settings")
         abort(404)
@@ -101,19 +87,18 @@ def createApp():
     def loginRoute():
         # authenticates the user or returns none if invalid
         user =  authenticate(request.form.get("username"), request.form.get("password"))
-
+        
         # Checks to make sure user was authenticated
         if(user != None):
             if(request.form.get("rememberUser")):
-                print("here")
                 login_user(user, remember=True)
                 return redirect("/user")
             else:
                 login_user(user, remember=False)
                 return redirect("/user")
         else:
-            Error = "Invalid username and/or password"
-            return render_template('login.html', title="Login", error=Error)
+            flash("Invalid password", "error")
+            return
 
     @app.route("/adduser", methods=["POST"])
     def adduserRoute():
@@ -133,6 +118,7 @@ def createApp():
             Error = "The username you entered is already in use. Please enter a different username."
             return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username(), error=Error)
 
+
     @app.route("/blockuser", methods=["POST"])
     def blockuserRoute():
         if (request.form["username"] == ""):
@@ -140,7 +126,7 @@ def createApp():
             return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username(), error=Error)
         user_name = request.form["username"]
         if (getUserByName(user_name) != None): # makes sure the user exists
-            uid = getUserByName(user_name)[0] #gets user's uid
+            uid = getUserByName(user_name)[0] #gets user's uid 
             changeBannedStatus(uid, 1) #change banned status to true
             return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username())
         else:
@@ -159,7 +145,7 @@ def createApp():
             modifyUsername(current_user.get_id(), request.form["username"])
         if request.form.get("password"):
             print("Change password")
-
+    
     # route for enabling 2 factor authentication, will most likely not be done during semester
     @app.route("/2fa")
     def twofactorRoute():
@@ -171,43 +157,24 @@ def createApp():
     @login_required
     def adminPages(path):
         #check if the user is an admin
-        if current_user.is_admin():
+        if current_user.is_admin(): 
             #if user is an admin send them to the correct page
             if(path == "configuration"):
                 return render_template("admin_configuration.html", title="Configuartion")
             elif path == "settings":
                 return render_template("admin_settings.html", title="Settings", information="Server information goes here", username=current_user.get_username())
             elif path == "help":
-                keys = get_user_server(current_user.get_id())
-                return render_template("admin_help.html", username=current_user.get_username(),
-                                       private_key=keys[1],
-                                       server_public=wireguard_server.get_pubkey(),
-                                       ipaddrs=str(ipaddress.ip_address(keys[3])))
+                return render_template("admin_help.html", username=current_user.get_username())
             elif path == "add_users":
                 return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username())
             elif path == "dashboard":
-                return render_template("admin_dashboard.html", username=current_user.get_username(), information="Server information goes here", title="Dashboard", start_button=("Stop" if wireguard_server.is_running() else "Start"))
+                return render_template("admin_dashboard.html", username=current_user.get_username(), information="Server information goes here", title="Dashboard" )
             else:
                 #abort if path is not found and send back error 404
                 abort(404)
         #if user is not an admin send them back to normal user space
-        return redirect("/user") # render_template("user.html", username=current_user.get_username(), information="Server information goes here", title="Dashboard" )
+        return redirect("/user")
 
-    @app.route("/logout", methods=["POST"])
-    def logoutRoute():
-        if current_user.is_authenticated:
-           logout_user() 
-        return redirect("/")
-
-    @app.route("/togglewg", methods=["POST"])
-    @login_required
-    def toggle_wg_route():
-        if current_user.is_admin():
-            if wireguard_server.is_running():
-                wireguard_server.stop()
-            else:
-                wireguard_server.start()
-            return redirect("/admin/dashboard")
 
     return app
 
