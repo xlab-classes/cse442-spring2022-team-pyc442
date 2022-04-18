@@ -1,25 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Change this to the title you want -->
-    <title>Help</title>
-    <link rel="stylesheet" href={{ url_for("static", filename='setup.css') }}>
-</head>
-<body style="background-color: aqua; background-image: url({{ url_for('static', filename='cool-background.png') }});">
-    <!-- If you wanna change the top's background color, change the "background-color" in CSS -->
-    <h1>
-        <!-- Change our icon "#" here. You must have a picture first. A sample path is "/myImages/myIcon.png" -->
-        <img src="#" alt="My icon" class="icon" title="Wirguard Icon">
-        <span class="title">{{ username }}</span>
-        <br>
-        <!-- <span class="title">This black background is used for test</span> -->
-    </h1>
-    <!-- The brown color is used for test.  -->
-    <div class="menuBar"> 
-        <ul class="menuBar">
+{% extends "admin_boilerplate.html" %}
+{% block head %}
+{% endblock %}
+
+
+{% block menubar %}
             <!-- Each option will direct the user to corresponded page via http link -->
             <li><a href="/admin/dashboard">Dashboard:</a></li>
             <li><a href="/admin/configuration">Configuration:</a></li>
@@ -27,24 +11,133 @@
             <li><a href="/admin/add_users">Add users:</a></li>
             <li><a href="/admin/help"><b>Help:</b></a></li>
         </ul>
-        
-
     </div>
+{% endblock %}
+
+{% block content %}
     <div class="content">
         <p style="text-align: center;">
             Help
         </p>
-        <p>Helpful information will Go here</p>
-        <!-- The below parts are just used to show the menu bar function. Can be edeleted -->
-        <p style="height: 300px;">1</p>
-        <p style="height: 300px;">1</p>
-        <p style="height: 300px;">1</p>
-        <p style="height: 300px;">1</p>
-        <p style="height: 300px;">1</p>
-        <p style="height: 300px;">1</p>
-        <p style="height: 300px;">1</p>
-        <p style="height: 300px;">1</p>
+        <ul style="text-align: left;">
+            <li>
+                <a href="#configuration"><b>How to set up my server: </b></a>
+            </li>
+            <li>
+                <a href="#adduser"><b>How to add a user: </b></a>
+            </li>
+            <li>
+                <a href="#blockuser"><b>How to block a user: </b></a>
+            </li>
+        </ul><hr>
+        <div>
+            <div>
+                <h1 id="configuration">How to set up my server</h>
+                <p class="text_body">The start button is located on the dashboard page and will start the server, you can also go to the configuration page to configure the server.
+                </p>
+                <div class="example">
+                    <img src="../static/example_start_button.png">
+                </div>
+                <p class="text_body">
+                    On the configuration page, follow the steps below to setup your configuration.
+                </p>
+                <i>Step 1:</i>
+                <p class="text_body">
+                    Click the down arrow right beside the VPN protocol input box and select "wireguard"
+                </p>
+                <div class="example">
+                    <img src="../static/example_vpn_protocol.png">
+                </div>
+                <i>Step 2:</i>
+                <p class="text_body">
+                    Create a hostname in your favor. This hostname will be displayed as the name of server.
+                </p>
+                <i>Step 3:</i>
+                <p class="text_body">
+                    Create a username and password for your self. You will need them to login your admin page.
+                </p>
+                <p style="text-align: left;">You're done!</p>
+            </div><hr>
+            <div>
+                <h1 id="adduser">How to add a user:</h1>
+                <p class="text_body">Navigate to "add users" page. You will see all the added users and blocked users</p>
+                <div class="example">
+                    <img src="../static/example_add_user_page.png" style="width: 75%;">
+                </div>
+                <p class="text_body">Enter the username and password in your decision.
+                    The server will create a user who can connect to your server.
+                </p>
+                <div class="example">
+                    <img src="../static/example_add_user.png">
+                </div>
+            </div><hr>
+            <div>
+                <h1 id="blockuser">How to block a user:</h1>
+                <p class="text_body">Enter the username of the user you want to block.
+                    The server will block and kick the user from your server. And he
+                    can't join the server again.
+                </p>
+                <div class="example">
+                    <img src="../static/example_block_user.png">
+                </div>
+            </div><hr>
+            <div>
+                <h1 id="connectuser" >How to Connect to the wireguard server:</h1>
+                <i>Step 1:</i>
+                <p class="test_body" >
+                    To connect as a user first go to <a href="https://www.wireguard.com/install/">Wireguards Website</a> and install the correct client for your operating system. Please note this guide will go over how to do it in windows, please refer to the documentation on how to do it for other operating systems.
+                </p>
+                <i>Step 2:</i>
+                <p class="test_body" >
+                    Create a new text file (the name of the text file should contain no spaces or special characters) and copy and paste the information in the collapsible below into the text file. Please note that you have to change &ltserver ip&gt to the actual server ip address otherwise you will not be able to connect.<br>
+                    <button type="button" id="collapsible">click to display configuration file</button>
+                    <div id="config" style="display: none; overflow: hidden; border:1px solid black">
+                        <p>
+                            [Interface]<br>
+                            PrivateKey = {{ private_key }}<br>
+                            Address = {{ ipaddrs }}<br>
+                            DNS = 8.8.8.8<br><br>
+
+                            [Peer]<br>
+                            PublicKey = {{ server_public }}<br>
+                            AllowedIPs = 0.0.0.0/0<br>
+                            Endpoint = &ltserver ip&gt:51820<br>
+                            PersistentKeepalive = 25<br>
+                        </p>
+                    </div>
+                    <script>
+                     document.getElementById("collapsible").addEventListener("click", function() {
+                         if (document.getElementById("config").style.display === "block") {
+                             document.getElementById("config").style.display = "none";
+                         }
+                         else {
+                             document.getElementById("config").style.display = "block";
+                         }
+                     })
+                    </script>
+                </p>
+                <i>Step 3:</i>
+                <p>Change the file extension from .txt to .conf otherwise you will not be able to import the file later</p>
+                <i>Step 4:</i>
+                <p>
+                    You should now import the configuration file. <br><br>
+                        <dl>
+                            <dt>Step 1:</dt>
+                            <dd>Open the wireguard application</dd>
+                            <dt>Step 2:</dt>
+                            <dd>click on Add Tunnel at the bottom left corner</dd>
+                            <dt>Step 3:</dt>
+                            <dd>Navigate to file and click import</dd>
+                        </dl>
+                </p>
+                <i>Step 5:</i>
+                <p>
+                    To activate the tunnel you should click on the name of the tunnel on the left hand side. Then you should click on the activate button under the Interface:&ltname&gt on the right hand side
+                </p>
+            </div>
+            <br><br>
+        </div>
     </div>
-    
 </body>
 </html>
+{% endblock %}

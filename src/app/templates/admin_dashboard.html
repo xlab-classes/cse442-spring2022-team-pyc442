@@ -1,55 +1,42 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Change this to the title you want -->
-    <title>{{ title }}</title>
-    <link rel="stylesheet" href={{ url_for("static", filename='setup.css') }}>
-</head>
-<body style="background-image: url({{ url_for('static', filename='cool-background.png') }});">
-    <!-- If you wanna change the top's background color, change the "background-color" in CSS -->
-    <h1>
-        <!-- Change our icon "#" here. You must have a picture first. A sample path is "/myImages/myIcon.png" -->
-        <img src="#" alt="My icon" class="icon" title="Wirguard Icon">
-        <span class="title">{{ username }}</span>
-        <br>
-        <!-- <span class="title">This black background is used for test</span> -->
-    </h1>
-    <!-- style="background-color: rgb(223, 18, 18);" this is used for test -->
-    <div class="menuBar"> 
-        <ul class="menuBar">
-            <!-- Each option will direct the user to corresponded page via http link -->
-            <li><a href="/admin/dashboard"><b>Dashboard:</b></a></li>
-            <li><a href="/admin/configuration">Configuration:</a></li>
-            <li><a href="/admin/settings">Setting:</a></li>
-            <li><a href="/admin/add_users">Add users:</a></li>
-            <li><a href="/admin/help">Help:</a></li>
-        </ul>
-        
+{% extends "admin_boilerplate.html" %}
+{% block head %}
+{% endblock %}
 
-    </div>
+
+{% block menubar %}
+<!-- Each option will direct the user to corresponded page via http link -->
+<li><a href="/admin/dashboard"><b>Dashboard:</b></a></li>
+<li><a href="/admin/configuration">Configuration:</a></li>
+<li><a href="/admin/settings">Setting:</a></li>
+<li><a href="/admin/add_users">Add users:</a></li>
+<li><a href="/admin/help">Help:</a></li>
+{% endblock %}
+
+{% block content %}
     <div class="content">
-        <!--  style=""background-color: blueviolet; This comment is used for test-->
         <div class="configurationInfo">
             <div style="display: inline-block;" class="buttonBox">
-                <button class="button start_button">
+                <form action="/togglewg" method="POST"><!--  class="user_form"> -->
+                    <button class="button start_button">
+                        <span>{{ start_button }}</span>
+                        <div class="liquid">Starts</div>
+                    </button>
+                </form>
+                <!-- <button class="button start_button"> -->
                     <!-- this button will redirect the user to configuration page. -->
-                    <a href="/admin/configuration"><span>Starts</span></a>
-                    <div class="liquid">Starts</div>
-                </button>
+                <!-- <a href="/admin/configuration"><span>Starts</span></a> -->
+                <!-- <div class="liquid">Starts</div> -->
+                <!-- </button> -->
             </div>
             <div class="dataUsage" style="background-color: rgb(88, 11, 230);">
                 <img src={{ url_for("static", filename="data_usage.png") }} alt="Data Usage" title="Data Usage" style="justify-self: right;" class="dataGraph">
-            </div> -->
+            </div>
 
             <p>
 
             </p>
         </div>
-        
-        
+
         <p class="header">
             <b>Configuration</b>
         </p>
@@ -64,6 +51,7 @@
         <p style="height: 300px;">1</p>
         <p style="height: 300px;">1</p>
     </div>
-    
+
 </body>
 </html>
+{% endblock %}
