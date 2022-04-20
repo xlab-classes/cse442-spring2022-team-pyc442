@@ -75,3 +75,48 @@ class Wireguard_Server():
 
         return True
 
+    def remove_user(self, uid: str) -> bool:
+
+        # get user information to remove
+        user = wireguard_db.get_user_server(uid)
+
+        # error checking to see if user exist
+        if wireguard_db.getUserById(uid) == None or user == None:
+            return False
+
+        was_running = self.is_running()
+
+        # start server if it was not running
+        if not was_running:
+            self.start()
+
+        subprocess.run(['sudo', 'wg', 'set', 'wg0', 'peer', user[2], 'remove'])
+
+        # stop the server if it was not running in the first place
+        if not was_running:
+            self.stop()
+
+        return True
+
+    def add_user(self, uid: str) -> bool:
+
+        # get user information to remove
+        user = wireguard_db.get_user_server(uid)
+
+        # error checking to see if user exist
+        if wireguard_db.getUserById(uid) == None or user == None:
+            return False
+
+        was_running = self.is_running()
+
+        # start server if it was not running
+        if not was_running:
+            self.start()
+
+        subprocess.run(['sudo', 'wg', 'set', 'wg0', 'peer', user[2], 'allowed-ips', str(ipaddress.ip_address(user[3]))])
+
+        #stop server if it was not running
+        if not was_running:
+            self.stop()
+
+        return True
