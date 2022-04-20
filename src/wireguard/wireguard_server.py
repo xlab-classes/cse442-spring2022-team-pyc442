@@ -90,7 +90,7 @@ class Wireguard_Server():
         if not was_running:
             self.start()
 
-        subprocess.run(['sudo', 'wg', 'set', 'wg0', 'peer', user[2], 'removed'])
+        subprocess.run(['sudo', 'wg', 'set', 'wg0', 'peer', user[2], 'remove'])
 
         # stop the server if it was not running in the first place
         if not was_running:
