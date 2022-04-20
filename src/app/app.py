@@ -4,7 +4,7 @@ from flask import Flask, render_template, request, redirect, flash, abort
 from flask_login import LoginManager, login_required, login_user, current_user, logout_user
 from src.authentication.user import User
 from src.authentication.auth import authenticate
-from src.database.wireguard_db import changeBannedStatus, getUserById, add_users, getUserByName, modifyUsername, changePassword, get_user_server
+from src.database.wireguard_db import changeBannedStatus, getUserById, add_users, getUserByName, listBlockedUsers, modifyUsername, changePassword, get_user_server
 from src.wireguard import wireguard_server as wg
 import ipaddress
 
@@ -142,7 +142,23 @@ def createApp():
         if (getUserByName(user_name) != None): # makes sure the user exists
             uid = getUserByName(user_name)[0] #gets user's uid
             changeBannedStatus(uid, 1) #change banned status to true
-            return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username())
+            bu_list = listBlockedUsers()
+            return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username(), blockedUserList=bu_list)
+        else:
+            Error = "User not found. Please enter a valid username."
+            return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username(), error=Error)
+
+    @app.route("/unblockuser", methods=["POST"])
+    def unblockuserRoute():
+        if (request.form["unblockuser"] == ""):
+            Error = "Please enter a valid username."
+            return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username(), error=Error)
+        user_name = request.form["unblockuser"]
+        if (getUserByName(user_name) != None): # makes sure the user exists
+            uid = getUserByName(user_name)[0] #gets user's uid
+            changeBannedStatus(uid, 0) #change banned status to false
+            bu_list = listBlockedUsers()
+            return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username(), blockedUserList=bu_list)
         else:
             Error = "User not found. Please enter a valid username."
             return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username(), error=Error)
