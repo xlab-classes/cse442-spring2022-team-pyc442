@@ -143,7 +143,7 @@ def createApp():
             uid = getUserByName(user_name)[0] #gets user's uid
             changeBannedStatus(uid, 1) #change banned status to true
             bu_list = listBlockedUsers()
-            return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username(), blockedUserList=bu_list)
+            return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username(), blist=bu_list)
         else:
             Error = "User not found. Please enter a valid username."
             return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username(), error=Error)
@@ -158,7 +158,7 @@ def createApp():
             uid = getUserByName(user_name)[0] #gets user's uid
             changeBannedStatus(uid, 0) #change banned status to false
             bu_list = listBlockedUsers()
-            return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username(), blockedUserList=bu_list)
+            return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username(), blist=bu_list)
         else:
             Error = "User not found. Please enter a valid username."
             return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username(), error=Error)
@@ -200,7 +200,8 @@ def createApp():
                                        server_public=wireguard_server.get_pubkey(),
                                        ipaddrs=str(ipaddress.ip_address(keys[3])))
             elif path == "add_users":
-                return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username())
+                bu_list = listBlockedUsers()
+                return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username(), blist=bu_list)
             elif path == "dashboard":
                 return render_template("admin_dashboard.html", username=current_user.get_username(), information="Server information goes here", title="Dashboard", start_button=("Stop" if wireguard_server.is_running() else "Start"))
             else:
