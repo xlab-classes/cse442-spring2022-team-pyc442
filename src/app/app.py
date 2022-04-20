@@ -135,10 +135,10 @@ def createApp():
 
     @app.route("/blockuser", methods=["POST"])
     def blockuserRoute():
-        if (request.form["username"] == ""):
+        if (request.form["blockuser"] == ""):
             Error = "Please enter a valid username."
             return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username(), error=Error)
-        user_name = request.form["username"]
+        user_name = request.form["blockuser"]
         if (getUserByName(user_name) != None): # makes sure the user exists
             uid = getUserByName(user_name)[0] #gets user's uid
             changeBannedStatus(uid, 1) #change banned status to true
