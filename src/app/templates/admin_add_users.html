@@ -42,7 +42,7 @@
                 <form action="/adduser" method="POST" class="user_form" style="margin:auto; width:auto;">
                     <H2 style="text-align: center;">Add User</H2>
                     <label for="username" style="margin-left: 0%;">Username: </label>
-                    <input type="text" name="username" id="username" style="margin-left:0%;" class="searchBox">
+                    <input type="text" name="username" id="username" style="margin-left:0%;" class="searchBox"><br>
                     <label for="password" style="margin-left: 0%;">Password:</label>
                     <input type="password" name="password" id="password" class="searchBox"><br>
                     <div class="wrapper" style="text-align: center;">
@@ -58,6 +58,16 @@
             
             <div class="users_box" style="background-color: rgb(236, 91, 171);">
                 <p class="box_title">Blocked Users</p>
+                <!--{{loop_blocked_user}} -->
+                <form action="/block/remove/{{blockedUser}}" method="POST" class="user_box_form">
+                    <div class="user_box">
+                        <big class="">blockeduser</big>
+                        <button class="fa-solid fa-xmark x_button">
+                        </button>
+                    </div>
+                    
+                </form>
+                <!--{{end_loop_blocked_user}}-->
 
                 <form action="/blockuser" method="POST" class="user_form" style="margin:auto; width:auto;">
                     <label for="blockuser">Block User: </label>
@@ -67,25 +77,18 @@
                     </div>
                 </form>   
                 <br>
+                {% if blist != [] %}
                 <form action="/unblockuser" method="POST" class="user_form" style="margin:auto; width:auto;">
                     <div class="wrapper" style="text-align:center;">
-                    <input name="unblockuser" list="unblockuser"><br/>
-                    <datalist id="unblockuser">
-                        {% for unblockuser in blist %}
-                            <option value= "{{unblockuser}}"></option>
-                        {% endfor %}
-                        <option value="exampleUser"></option>
-                    </datalist>
-                    <!-- <select name ="unblockuser">
+                    <select name ="unblockuser">
                         {% for unblockuser in blist %}
                             <option value= "{{unblockuser}} ">{{unblockuser}}</option>
                         {% endfor %}
-                        <option value= "{{unblockuser}} ">exampleUser</option>
-                    </select> -->
+                    </select>
                     <input type="submit" value="Unblock" class="submitButton">
                     </div>
                 </form>
-                
+                {% endif %}
                 <!--<form action="/unblockuser" method="POST" class="user_form" style="margin:auto; width:auto;">
                     <label for="unblockuser">Unblock User: </label>
                     <input type="text" name="unblockuser" id="blockuser">

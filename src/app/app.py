@@ -61,6 +61,8 @@ def createApp():
         # return tempate page for admin and sets its title to the admins name
         if current_user.is_admin():
             return redirect("/admin/dashboard")
+        if getUserByName(current_user.get_username())[5] == 1:
+            return render_template('login.html', title="Login", error="You have been blocked! Please contact admin for more info")
         # returns redirect to correct location of user dashboard
         else:
             return redirect("/user/dashboard")
