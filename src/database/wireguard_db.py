@@ -431,12 +431,12 @@ def listBlockedUsers():
 
     cursor = cnx.cursor()
 
-    query = ("SELECT username FROM wireguard WHERE banned_status = 1")
+    query = ("SELECT username FROM wireguard WHERE banned = 1")
 
     cursor.execute(query)
 
-    for name in cursor: #populate user_data
-        banned_users.append(banned_users)
+    for username in cursor: #populate user_data
+        banned_users.append(username[0])
 
     
     cnx.commit()
