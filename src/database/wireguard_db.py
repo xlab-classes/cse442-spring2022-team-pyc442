@@ -419,6 +419,30 @@ def deleteAllTuples():
     cursor.close()
     cnx.close()
 
-if __name__ == "__main__":
-    setup_db()
-    create_database()
+def listBlockedUsers():
+    cnx = mysql.connector.connect(
+      host="localhost",
+      user="root",
+      password=DB_PASSWORD,
+      database="wireguard"
+    )
+
+    banned_users = []
+
+    cursor = cnx.cursor()
+
+    query = ("SELECT username FROM wireguard WHERE banned = 1")
+
+    cursor.execute(query)
+
+    for username in cursor: #populate user_data
+        banned_users.append(username[0])
+
+    
+    cnx.commit()
+
+    cursor.close()
+    cnx.close()
+
+    return banned_users
+
