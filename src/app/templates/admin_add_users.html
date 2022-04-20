@@ -1,5 +1,6 @@
 {% extends "admin_boilerplate.html" %}
 {% block head %}
+<script src="{{url_for('static', filename='userList.js')}}"></script>
 {% endblock %}
 
 
@@ -15,6 +16,7 @@
 {% endblock %}
 
 {% block content %}
+    <body onload="welcome();">
     <div class="content add_users">                
         <p class="header">
             <b>Manage Users</b>
@@ -59,23 +61,38 @@
             <div class="users_box" style="background-color: rgb(236, 91, 171);">
                 <p class="box_title">Blocked Users</p>
                 <!--{{loop_blocked_user}} -->
-                <form action="/block/remove/{{blockedUser}}" method="POST" class="user_box_form">
+                <!-- <form action="/block/remove/{{blockedUser}}" method="POST" class="user_box_form">
                     <div class="user_box">
                         <big class="">blockeduser</big>
                         <button class="fa-solid fa-xmark x_button">
                         </button>
                     </div>
                     
+                </form> -->
+                <form action="/block/remove" method="POST" class="user_box_form">
+                    <label for="blockedUser">Blocked Users:</label>
+                    <input id="blockedUser" name="blockedUser" list="blockedUserList"><br/>
+                    <datalist id="blockedUserList">
+                        <option value="exampleUser"></option>
+                    </datalist>
+                    <button value="Search">Block</button><br>
                 </form>
                 <!--{{end_loop_blocked_user}}-->
 
-                <form action="/blockuser" method="POST" class="user_form" style="margin:auto; width:auto;">
-                    <label for="blockuser">Block User: </label>
+                <!-- <form action="/blockuser" method="POST" class="user_form" style="margin:auto; width:auto;">
+                    <label for="username">Block User: </label>
                     <input type="text" name="blockuser" id="blockuser">
                     <div class="wrapper" style="text-align:center;">
                     <button value="Search">Block</button><br>
                     </div>
-                </form>  
+                </form> -->
+                <form action="/unblockuser" method="POST" class="user_form" style="margin:auto; width:auto;">
+                    <label for="username">Unblock User: </label>
+                    <input type="text" name="blockuser" id="blockuser">
+                    <div class="wrapper" style="text-align:center;">
+                    <button value="Search">Unblock</button><br>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
