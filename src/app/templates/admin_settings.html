@@ -16,31 +16,51 @@
 
 {% block content %}
     <div class="content">
-        <div class="configuration" style="background-color: blueviolet;">
+        <div class="configuration" style="background-color: #99FF99;">
             <!-- <button class="button">
                 <span>button</span>
                 <div class="liquid">Starts</div>
             </button> -->
-            <p>
+            <p style="text-align: center;">
+                <b><u>Settings</b></u>
+            </p>
+            <p>{{ information }}</p>
+            <!-- The below parts are just used to show the menu bar function. Can be edeleted -->
+            <p><b><u>Theme:</u></b><br>
+            <input type="radio" id="dark" name="theme" value="dark" width=100%>
+            Dark Mode<br>
+            <input type="radio" id="light" name="theme" value="light">
+            Light Mode<br></p>
+            <p><b><u>Profile:</u></b>
+            <br>
+            Username: {{ username }}
+            <br><br>
+            Change Password:<br>
+            {{ passwordStatus }}
+            <form action="/changepwd" method="POST" style="margin-left:20px">
+                Old Password:
+                <input type="password" id="pwd" name="pwd"><br>
+                New Password:
+                <input type="password" id="newpwd" name="newpwd"><br>
+                <input type="submit" value="Confirm">
+            </form>
+
+            <p><b><u>Advanced Settings:</u></b></p>
+            <form action="/changedns" method="POST" style="margin-left:20px">
+                DNS:
+                <input type="text" id="dns" name="dns" value="8.8.8.8"><br>
+                Listening Port:
+                <input type="text" id="lport" name="lport" value="51820"><br>
+                <input type="submit" value="Confirm">
+                </form>
+            
 
             </p>
         </div>
-        <div class="dataUsage" style="background-color: rgb(88, 11, 230);">
-            <img src="#" alt="Data Usage" title="Data Usage">
+        <!-- <div class="dataUsage" style="background-color: rgb(88, 11, 230);"> -->
+            <!-- <img src="#" alt="Data Usage" title="Data Usage"> -->
         </div>
-        <p style="text-align: center;">
-            Configuration
-        </p>
-        <p>{{ information }}</p>
-        <!-- The below parts are just used to show the menu bar function. Can be edeleted -->
-        <p style="height: 300px;">1</p>
-        <p style="height: 300px;">1</p>
-        <p style="height: 300px;">1</p>
-        <p style="height: 300px;">1</p>
-        <p style="height: 300px;">1</p>
-        <p style="height: 300px;">1</p>
-        <p style="height: 300px;">1</p>
-        <p style="height: 300px;">1</p>
+
     </div>
     
 </body>
