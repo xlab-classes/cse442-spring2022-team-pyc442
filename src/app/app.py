@@ -1,3 +1,4 @@
+from os import remove
 import random
 import bcrypt
 from flask import Flask, render_template, request, redirect, flash, abort
@@ -81,6 +82,8 @@ def createApp():
     @login_required
     def serveRoute(path):
         #determine the path and return the correct user page
+        if getUserByName(current_user.get_username())[5] == 1:
+            return render_template('login.html', title="Login", error="You have been blocked! Please contact admin for more info")
         if path == "dashboard":
             return render_template("users_page/user_dashboard.html", username=current_user.get_username(), title="Dashboard")
         if path == "help":
@@ -144,6 +147,7 @@ def createApp():
         if (getUserByName(user_name) != None): # makes sure the user exists
             uid = getUserByName(user_name)[0] #gets user's uid
             changeBannedStatus(uid, 1) #change banned status to true
+            wireguard_server.remove_user(uid)
             bu_list = listBlockedUsers()
             return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username(), blist=bu_list)
         else:
@@ -159,6 +163,7 @@ def createApp():
         if (getUserByName(user_name) != None): # makes sure the user exists
             uid = getUserByName(user_name)[0] #gets user's uid
             changeBannedStatus(uid, 0) #change banned status to false
+            wireguard_server.add_user(uid)
             bu_list = listBlockedUsers()
             return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username(), blist=bu_list)
         else:
