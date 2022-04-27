@@ -45,11 +45,19 @@
             <div class="users_box" style="background-color: rgb(236, 91, 171);">
 
                 <form action="/blockuser" method="POST" class="user_form" style="margin:auto; width:auto;">
-                    <H2 style="text-align: center;">Block/Unblock Users</H2>
+                    <H2 style="text-align: center;">Block/Unblock/Kick Users</H2>
                     <label for="blockuser">Block User: </label>
                     <input type="text" name="blockuser" id="blockuser">
                     <div class="wrapper" style="text-align:center;">
                     <button value="Search">Block</button><br>
+                    </div>
+                </form>   
+                <br>
+                <form action="/kickuser" method="POST" class="user_form" style="margin:auto; width:auto;">
+                    <label for="blockuser">Kick User: </label>
+                    <input type="text" name="kickuser" id="kickuser">
+                    <div class="wrapper" style="text-align:center;">
+                    <button value="Search">Kick</button><br>
                     </div>
                 </form>   
                 <br>
