@@ -9,6 +9,9 @@ mysql_secure_installation -u root --use-default
 
 USER_PASSWD=$(gpg --gen-random --armor 1 14)
 
+echo "{\"username\": \"wireguard\", \"password\": \"$USER_PASSWD\"}" > database.cfg
+
+
 mysql -u root -e "CREATE USER IF NOT EXISTS 'wireguard'@'localhost' IDENTIFIED BY '$USER_PASSWD';"
 mysql -u root -e "CREATE DATABASE IF NOT EXISTS wireguard DEFAULT CHARACTER SET 'utf8';"
 mysql -u root -e "GRANT SELECT, INSERT, UPDATE, DELETE ON wireguard.* TO 'wireguard'@'localhost';"
