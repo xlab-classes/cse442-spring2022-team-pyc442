@@ -8,7 +8,7 @@ chown -R wireguard /var/www/wireguard
 read -p "what is the ip/domain name of the server: " IP
 read -p "what is the admin email address [webmaster@localhost]: " EMAIL
 
-EMAIL=$(EMAIL:-webmaster@localhost)
+
 
 systemctl enable apache2
 systemctl start apache2
@@ -27,7 +27,7 @@ cat > /etc/apache2/sites-available/wireguard.conf << EOF
 	# However, you must set it for any further virtual host explicitly.
 	#ServerName www.example.com
 
-	ServerAdmin $EMAIL
+	ServerAdmin ${EMAIL:-webmaster@localhost}
 
 	WSGIDaemonProcess wireguard user=wireguard group=wireguard threads=5
 	WSGIScriptAlias / /var/www/wireguard/wireguard.wsgi
