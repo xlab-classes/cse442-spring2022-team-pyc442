@@ -69,7 +69,7 @@ email = input("Please input the email address of the admin user: ")
 
 
 
-add_users("1", email, username, bcrypt.hashpw(bytes(password), bcrypt.gensalt()), True, False)
+add_users(str(1), email, username, bcrypt.hashpw(bytes(password), bcrypt.gensalt()), True, False)
 # create private key
 privkey = subprocess.run(['wg', 'genkey'], capture_output=True)
 # make private key pipeable so that wg pubkey | echo <private key> works as expected
@@ -81,4 +81,4 @@ subprocess.run(['sudo', 'wg-quick', 'up', 'wg0'])
 subprocess.run(['sudo', 'wg', 'set', 'wg0', 'peer', pubkey.stdout.decode().strip(), 'allowed-ips', ip])
 subprocess.run(['sudo', 'wg-quick', 'down', 'wg0'])
 ip = int(ipaddress.ip_address('10.8.0.2'))
-add_user_server("1", privkey, pubkey, ip)
+add_user_server(str(1), privkey, pubkey, ip)
