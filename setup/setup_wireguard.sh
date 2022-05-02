@@ -30,3 +30,4 @@ ListenPort = 51820
 PrivateKey = $PRIVKEY
 EOL
 
+chown -R wireguard /etc/wireguard

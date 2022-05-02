@@ -9,6 +9,6 @@ sys.path.append('/var/www/wireguard')
 from src.app.app import createApp
 
 
-application = createApp()
+application = createApp(False)
 
 

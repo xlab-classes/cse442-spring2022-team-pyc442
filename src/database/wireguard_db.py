@@ -1,13 +1,24 @@
 import mysql.connector
 from mysql.connector import errorcode
+import json
 
+DB_HOST = "localhost"
+DB_USERNAME="root"
 DB_PASSWORD="password"
+
+def setup_con_db(debug=False):
+    if not debug:
+        with open("/var/www/wireguard/database.cfg", "r") as f:
+            config = json.load(f)
+            DB_USERNAME = config["username"]
+            DB_PASSWORD = config["password"]
+
 
 #Sets up the database
 def setup_db():
     mydb = mysql.connector.connect(
-          host="localhost",
-          user="root",
+          host=DB_HOST,
+          user=DB_USERNAME,
           password=DB_PASSWORD
           )
 
@@ -43,8 +54,8 @@ def create_database():
       "        REFERENCES `wireguard` (`user_id`) ON DELETE CASCADE"
       ") ENGINE=InnoDB")
     cnx = mysql.connector.connect(
-        host="localhost",
-        user="root",
+        host=DB_HOST,
+        user=DB_USERNAME,
         password=DB_PASSWORD)
 
     cursor = cnx.cursor()
@@ -87,8 +98,8 @@ def create_database():
 #Adds users to the server
 def add_users(uid, email, username, password, is_admin, is_banned):
     cnx = mysql.connector.connect( # connceting to database
-      host="localhost",
-      user="root",
+      host=DB_HOST,
+      user=DB_USERNAME,
       password=DB_PASSWORD,
       database="wireguard"
       )
@@ -111,8 +122,8 @@ def add_users(uid, email, username, password, is_admin, is_banned):
     #Execute the general query
 def general_query():
     cnx = mysql.connector.connect(
-      host="localhost",
-      user="root",
+      host=DB_HOST,
+      user=DB_USERNAME,
       password=DB_PASSWORD,
       database="wireguard"
       )
@@ -137,8 +148,8 @@ def general_query():
 #Gets a user entry by user id, returns user data as first element of list user_data
 def getUserById(uid):
     cnx = mysql.connector.connect( #connecting to database
-        host="localhost",
-        user="root",
+        host=DB_HOST,
+        user=DB_USERNAME,
         password=DB_PASSWORD,
         database="wireguard"
       )
@@ -166,8 +177,8 @@ def getUserById(uid):
 #Gets a user entry by username, returns user data as first element of list user_data
 def getUserByName(uname):
     cnx = mysql.connector.connect( #connecting to database
-        host="localhost",
-        user="root",
+        host=DB_HOST,
+        user=DB_USERNAME,
         password=DB_PASSWORD,
         database="wireguard"
       )
@@ -192,8 +203,8 @@ def getUserByName(uname):
 #change a user's username to newUname, returns user data as first element of list user_data
 def modifyUsername(uid, newUname):
     cnx = mysql.connector.connect( # connecting to database
-        host="localhost",
-        user="root",
+        host=DB_HOST,
+        user=DB_USERNAME,
         password=DB_PASSWORD,
         database="wireguard"
       )
@@ -224,8 +235,8 @@ def modifyUsername(uid, newUname):
 #change a user's ban status, returns user data as first element of list user_data
 def changeBannedStatus(uid, newBanStatus):
     cnx = mysql.connector.connect( # connecting to database
-      host="localhost",
-      user="root",
+      host=DB_HOST,
+      user=DB_USERNAME,
       password=DB_PASSWORD,
       database="wireguard"
     )
@@ -255,8 +266,8 @@ def changeBannedStatus(uid, newBanStatus):
 
 def changePassword(uname, newp):
     cnx = mysql.connector.connect( # connecting to database
-      host="localhost",
-      user="root",
+      host=DB_HOST,
+      user=DB_USERNAME,
       password=DB_PASSWORD,
       database="wireguard"
     )
@@ -286,8 +297,8 @@ def changePassword(uname, newp):
 
 def deleteUserByName(name):
     cnx = mysql.connector.connect(
-        host="localhost",
-        user="root",
+        host=DB_HOST,
+        user=DB_USERNAME,
         password=DB_PASSWORD,
         database="wireguard"
       )
@@ -322,8 +333,8 @@ def deleteUserByName(name):
 
 def add_user_server(uid, priv, pub, ipadrr):
     cnx = mysql.connector.connect( # connceting to database
-      host="localhost",
-      user="root",
+      host=DB_HOST,
+      user=DB_USERNAME,
       password=DB_PASSWORD,
       database="wireguard"
       )
@@ -347,8 +358,8 @@ def add_user_server(uid, priv, pub, ipadrr):
 
 def get_max_ip():
     cnx = mysql.connector.connect( # connecting to database
-      host="localhost",
-      user="root",
+      host=DB_HOST,
+      user=DB_USERNAME,
       password=DB_PASSWORD,
       database="wireguard"
     )
@@ -372,8 +383,8 @@ def get_max_ip():
 
 def get_user_server(uid):
     cnx = mysql.connector.connect( # connecting to database
-      host="localhost",
-      user="root",
+      host=DB_HOST,
+      user=DB_USERNAME,
       password=DB_PASSWORD,
       database="wireguard"
     )
@@ -398,8 +409,8 @@ def get_user_server(uid):
 #deletes all entries from the database
 def deleteAllTuples():
     cnx = mysql.connector.connect(
-      host="localhost",
-      user="root",
+      host=DB_HOST,
+      user=DB_USERNAME,
       password=DB_PASSWORD,
       database="wireguard"
     )
@@ -421,8 +432,8 @@ def deleteAllTuples():
 
 def listBlockedUsers():
     cnx = mysql.connector.connect(
-      host="localhost",
-      user="root",
+      host=DB_HOST,
+      user=DB_USERNAME,
       password=DB_PASSWORD,
       database="wireguard"
     )

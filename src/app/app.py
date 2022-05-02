@@ -5,14 +5,18 @@ from flask import Flask, render_template, request, redirect, flash, abort
 from flask_login import LoginManager, login_required, login_user, current_user, logout_user
 from src.authentication.user import User
 from src.authentication.auth import authenticate
+from src.database import wireguard_db
 from src.database.wireguard_db import changeBannedStatus, getUserById, add_users, getUserByName, listBlockedUsers, modifyUsername, changePassword, get_user_server
 from src.wireguard import wireguard_server as wg
 import ipaddress
 
-def createApp():
+def createApp(dev: bool):
     app = Flask(__name__)
+    if not dev:
+        wireguard_db.setup_con_db()
     # sets secret key must set to new random key later on
     app.secret_key = b'f4d3d3349255d55d17dcec79f4b63395'
+
 
     #flask login information
     loginManager = LoginManager()
