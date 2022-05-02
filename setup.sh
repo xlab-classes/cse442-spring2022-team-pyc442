@@ -10,8 +10,15 @@ fi
 
 # download and install all the packages necessary
 apt update
-apt install -y mysql-server virtualenv python3 python-is-python3 apache2 openssl wireguard
+apt install -y mysql-server virtualenv python3 python-is-python3 apache2 openssl wireguard libapache2-mod-wsgi-py3
 
-sh setup/setup_database.sh
+USER_PASSWD=$(gpg --gen-random --armor 1 14)
+
+sh setup/setup_database.sh $USER_PASSWD
 sh setup/setup_user.sh
-python setup_admin_user.py
+sh setup/setup_python.sh
+sh setup/setup_wireguard.sh
+source venv/bin/activate
+python setup/setup_admin_user.py $USER_PASSWD
+
+sh setup/setup_apache.sh
