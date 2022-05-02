@@ -22,3 +22,4 @@ sh setup/setup_wireguard.sh
 python setup/setup_admin_user.py $USER_PASSWD
 
 sh setup/setup_apache.sh
+

@@ -39,7 +39,7 @@ cat > /etc/apache2/sites-available/wireguard.conf << EOF
 	</Directory>
 
 	Alias /static /var/www/wireguard/src/app/static
-	<Directory /var/www/FlaskApp/FlaskApp/static/>
+	<Directory /var/www/wireguard/src/app/static/>
 		Require all granted
 	</Directory>
 
@@ -73,3 +73,6 @@ openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/apa
 
 a2dissite 000-default.conf
 a2ensite wireguard.conf
+
+cp -r * /var/www/wireguard/
+systemctl reload apache2
