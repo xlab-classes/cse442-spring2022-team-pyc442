@@ -3,7 +3,7 @@
 mkdir /var/www/wireguard
 cp -r * /var/www/wireguard
 
-chown -r wireguard /var/www/wireguard
+chown -R wireguard /var/www/wireguard
 
 read -p "what is the ip/domain name of the server: " IP
 read -p "what is the admin email address [webmaster@localhost]: " EMAIL
