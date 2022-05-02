@@ -18,7 +18,7 @@ sh setup/setup_database.sh $USER_PASSWD
 sh setup/setup_user.sh
 sh setup/setup_python.sh
 sh setup/setup_wireguard.sh
-source venv/bin/activate
+. venv/bin/activate
 python setup/setup_admin_user.py $USER_PASSWD
 
 sh setup/setup_apache.sh

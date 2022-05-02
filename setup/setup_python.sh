@@ -2,8 +2,8 @@
 
 virtualenv venv
 
-source venv/bin/activate
+. venv/bin/activate
 
-pip install -r requirments.txt
+pip install -r requirements.txt
 
 deactivate
