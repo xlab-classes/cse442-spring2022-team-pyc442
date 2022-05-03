@@ -6,6 +6,7 @@ from flask_login import LoginManager, login_required, login_user, current_user, 
 from src.authentication.user import User
 from src.authentication.auth import authenticate
 from src.database.wireguard_db import changeBannedStatus, getUserById, add_users, getUserByName, listBlockedUsers, modifyUsername, changePassword, get_user_server, listUsers
+from src.database import wireguard_db
 from src.wireguard import wireguard_server as wg
 import ipaddress
 
