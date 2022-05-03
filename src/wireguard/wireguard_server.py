@@ -19,7 +19,12 @@ class Wireguard_Server():
 
         self._public_key = pubkey.stdout.decode().strip()
         self.dns = "8.8.8.8"
-        self.listen_port = "51820"
+        
+        configFile = configparser.ConfigParser()
+        configFile.read('/etc/wireguard/wg0.conf')
+
+        interface = configFile['Interface']
+        self.listen_port = interface['listenport']
 
 
     def start(self) -> None:
