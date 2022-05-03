@@ -127,10 +127,11 @@ def createApp(dev: bool):
 
     @app.route("/adduser", methods=["POST"])
     def adduserRoute():
+        user_list = listUsers()
         if (request.form["username"] == "" or request.form["password"] == ""):
             Error = "Please enter a valid username/password."
             bu_list = listBlockedUsers()
-            return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username(), blist=bu_list, error=Error)
+            return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username(), blist=bu_list, addedlist=user_list, error=Error)
         user_name = request.form["username"]
         if (getUserByName(user_name) == None): # checks to see if username already exists
             uid = random.randint(1,100) # using random number generator to get user id
@@ -140,11 +141,11 @@ def createApp(dev: bool):
             add_users(str(uid),"user@user.com", request.form.get("username"), bcrypt.hashpw(bytes(request.form.get("password"), "utf-8"), bcrypt.gensalt()),0,0) #adding user to db
             wireguard_server.add_user_new(str(uid))
             bu_list = listBlockedUsers()
-            return render_template("admin_add_users.html", title="Add Users", blist=bu_list, username=current_user.get_username())
+            return render_template("admin_add_users.html", title="Add Users", blist=bu_list, addedlist=user_list, username=current_user.get_username())
         else:
             Error = "The username you entered is already in use. Please enter a different username."
             bu_list = listBlockedUsers()
-            return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username(), blist=bu_list, error=Error)
+            return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username(), blist=bu_list, addedlist=user_list, error=Error)
 
     @app.route("/blockuser", methods=["POST"])
     def blockuserRoute():
