@@ -5,7 +5,7 @@ from flask import Flask, render_template, request, redirect, flash, abort
 from flask_login import LoginManager, login_required, login_user, current_user, logout_user
 from src.authentication.user import User
 from src.authentication.auth import authenticate
-from src.database.wireguard_db import changeBannedStatus, getUserById, add_users, getUserByName, listBlockedUsers, modifyUsername, changePassword, get_user_server
+from src.database.wireguard_db import changeBannedStatus, getUserById, add_users, getUserByName, listBlockedUsers, modifyUsername, changePassword, get_user_server, listUsers
 from src.wireguard import wireguard_server as wg
 import ipaddress
 
@@ -149,7 +149,8 @@ def createApp():
             changeBannedStatus(uid, 1) #change banned status to true
             wireguard_server.remove_user(uid)
             bu_list = listBlockedUsers()
-            return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username(), blist=bu_list, addedlist=[])
+            user_list = listUsers()
+            return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username(), blist=bu_list, addedlist=user_list)
         else:
             Error = "User not found. Please enter a valid username."
             return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username(), error=Error)
@@ -165,7 +166,8 @@ def createApp():
             changeBannedStatus(uid, 0) #change banned status to false
             wireguard_server.add_user(uid)
             bu_list = listBlockedUsers()
-            return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username(), blist=bu_list, addedlist=[])
+            user_list = listUsers()
+            return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username(), blist=bu_list, addedlist=user_list)
         else:
             Error = "User not found. Please enter a valid username."
             return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username(), error=Error)
@@ -208,7 +210,8 @@ def createApp():
                                        ipaddrs=str(ipaddress.ip_address(keys[3])))
             elif path == "add_users":
                 bu_list = listBlockedUsers()
-                return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username(), blist=bu_list, addedlist=[])
+                user_list = listUsers()
+                return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username(), blist=bu_list, addedlist=user_list)
             elif path == "dashboard":
                 return render_template("admin_dashboard.html", username=current_user.get_username(), information="Server information goes here", title="Dashboard", start_button=("Stop" if wireguard_server.is_running() else "Start"))
             else:
