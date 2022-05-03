@@ -15,16 +15,16 @@ class Wireguard_Server():
         self._running = False
 
         #get public key and save
-        # pubkey = subprocess.run(['sudo', 'cat', '/etc/wireguard/public.key'], capture_output=True)
+        pubkey = subprocess.run(['sudo', 'cat', '/etc/wireguard/public.key'], capture_output=True)
 
-        # self._public_key = pubkey.stdout.decode().strip()
-        # self.dns = "8.8.8.8"
+        self._public_key = pubkey.stdout.decode().strip()
+        self.dns = "8.8.8.8"
 
-        # configFile = configparser.ConfigParser()
-        # configFile.read('/etc/wireguard/wg0.conf')
+        configFile = configparser.ConfigParser()
+        configFile.read('/etc/wireguard/wg0.conf')
 
-        # interface = configFile['Interface']
-        # self.listen_port = interface['ListenPort']
+        interface = configFile['Interface']
+        self.listen_port = interface['ListenPort']
 
 
     def start(self) -> None:
