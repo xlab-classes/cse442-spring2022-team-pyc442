@@ -35,6 +35,43 @@
                     <button value="add" style="text-align: center;">Add</button><br>
                     </div>
                 </form>  
+                {% if addedlist != [] %}
+                <!-- Added users are displayed here. If you want to change the height of the scrollbar,
+                    go to setup.css and search for "user_box". adjust "height" to whatever you want -->
+                    ceshi
+                <div id="userlist" class="user_box scrollBar">
+                    <ul>
+                        {% for user in addedlist %}
+                            <li value= "{{addedUser}}">{{user}}</li> 
+                        {% endfor %}
+                        <!-- <li value= "{{addedUser}}">asdas</li>
+                        <li value= "{{addedUser}}">asdas</li>
+                        <li value= "{{addedUser}}">asdas</li>
+                        <li value= "{{addedUser}}">asdas</li> -->
+                    </ul>
+                </div>
+                {% endif %}
+                {% if addedlist != [] %}
+                cehsi
+                <!-- This is form to remove a user. It works the same as unblock a user -->
+                <form action="/removeuser" method="POST" class="user_form" style="margin:auto; width:auto;">
+                    <div class="wrapper scrollBar" style="text-align:center;">
+                        <label for="removeuser1">Remove User</label>
+                        <input type="text" list="removeuserlist" id="removeuser1" placeholder="Enter or select a user"/>
+                        
+                        <dataddedlist id ="removeuserlist">
+                            {% for user in addedlist %}
+                                <option>{{user}}</option> 
+                            {% endfor %}
+                            <!-- <option>user1</option>
+                            <option>user2</option>
+                            <option>user3</option>
+                            <option>user4</option> -->
+                        </dataddedlist>
+                        <input type="submit" value="Remove" class="submitButton">
+                    </div>
+                </form>
+                {% endif %}
                 <!-- <form action="/{{username}}" method="GET" class="">
                     <label for="search">Search:</label>
                     <input id="search" type="text" name="search"><br/>
@@ -45,7 +82,7 @@
             <div class="users_box" style="background-color: rgb(236, 91, 171);">
 
                 <form action="/blockuser" method="POST" class="user_form" style="margin:auto; width:auto;">
-                    <H2 style="text-align: center;">Block/Unblock Users</H2>
+                    <H2 style="text-align: center;">Block/Unblock/Kick Users</H2>
                     <label for="blockuser">Block User: </label>
                     <input type="text" name="blockuser" id="blockuser">
                     <div class="wrapper" style="text-align:center;">
@@ -53,7 +90,16 @@
                     </div>
                 </form>   
                 <br>
+                <form action="/kickuser" method="POST" class="user_form" style="margin:auto; width:auto;">
+                    <label for="blockuser">Kick User: </label>
+                    <input type="text" name="kickuser" id="kickuser">
+                    <div class="wrapper" style="text-align:center;">
+                    <button value="Search">Kick</button><br>
+                    </div>
+                </form>   
+                <br>
                 {% if blist != [] %}
+                cehsiasdnqkwjdnkjas
                 <form action="/unblockuser" method="POST" class="user_form" style="margin:auto; width:auto;">
                     <div class="wrapper" style="text-align:center;">
                     <select name ="unblockuser">
