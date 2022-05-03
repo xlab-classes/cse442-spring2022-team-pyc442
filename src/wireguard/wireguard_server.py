@@ -1,11 +1,14 @@
 import subprocess
 import ipaddress
+import configparser
 from src.database import wireguard_db
 
 class Wireguard_Server():
 
     _running: bool = False
     _public_key: str = ""
+    dns: str = ""
+    listen_port: str = ""
 
     def __init__(self):
         # set the running bool to false
@@ -15,6 +18,13 @@ class Wireguard_Server():
         pubkey = subprocess.run(['sudo', 'cat', '/etc/wireguard/public.key'], capture_output=True)
 
         self._public_key = pubkey.stdout.decode().strip()
+        self.dns = "8.8.8.8"
+
+        configFile = configparser.ConfigParser()
+        configFile.read('/etc/wireguard/wg0.conf')
+
+        interface = configFile['Interface']
+        self.listen_port = interface['ListenPort']
 
 
     def start(self) -> None:
@@ -120,3 +130,30 @@ class Wireguard_Server():
             self.stop()
 
         return True
+
+    def change_listen_port(self, lport: str)-> bool:
+        was_running = self.is_running()
+        #start server if it was not running
+        if was_running:
+            self.stop()
+        configFile = configparser.ConfigParser()
+        configFile.read('/etc/wireguard/wg0.conf')
+
+        interface = configFile['Interface']
+        interface['PostUp'] = interface['PostUp'].replace(self.listen_port, lport)
+        interface['PostDown'] = interface['PostDown'].replace(self.listen_port, lport)
+        interface['ListenPort'] = lport
+
+        with open('/etc/wireguard/wg0.conf', 'w') as conf:
+            configFile.write(conf)
+
+        #stop server if it was not running
+        self.listen_port = lport
+        if was_running:
+            self.start()
+        return True
+    
+    def change_DNS(self, DNS)->bool:
+        self.dns = DNS
+        return True
+        

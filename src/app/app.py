@@ -93,8 +93,9 @@ def createApp():
                                    title="Guide",
                                    private_key = keys[1],
                                    ipaddrs = str(ipaddress.ip_address(keys[3])),
-                                   server_public = wireguard_server.get_pubkey()
-                                   )
+                                   server_public = wireguard_server.get_pubkey(),
+                                   dns = wireguard_server.dns,
+                                    listen_port = wireguard_server.listen_port)
         if path == "settings":
             return render_template("users_page/user_settings.html", username=current_user.get_username(), title="Settings")
         abort(404)
@@ -195,6 +196,15 @@ def createApp():
             bu_list = listBlockedUsers()
             return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username(), blist=bu_list, error=Error)
 
+    @app.route("/advancedsettings", methods=["POST"])
+    def advancedsettingsRoute():
+        lport = request.form["lport"]
+        wireguard_server.change_listen_port(lport)
+
+        dns = request.form["dns"]
+        wireguard_server.change_DNS(dns)
+        return render_template("admin_settings.html", title="Settings", username=current_user.get_username())
+
     #route used to configure the server
     @app.route("/config")
     def configRoute():
@@ -230,7 +240,9 @@ def createApp():
                 return render_template("admin_help.html", username=current_user.get_username(),
                                        private_key=keys[1],
                                        server_public=wireguard_server.get_pubkey(),
-                                       ipaddrs=str(ipaddress.ip_address(keys[3])))
+                                       ipaddrs=str(ipaddress.ip_address(keys[3])),
+                                       dns=wireguard_server.dns,
+                                       listen_port=wireguard_server.listen_port)
             elif path == "add_users":
                 bu_list = listBlockedUsers()
                 return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username(), blist=bu_list, addedlist=[])
