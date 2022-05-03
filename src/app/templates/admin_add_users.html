@@ -38,7 +38,6 @@
                 {% if addedlist != [] %}
                 <!-- Added users are displayed here. If you want to change the height of the scrollbar,
                     go to setup.css and search for "user_box". adjust "height" to whatever you want -->
-                    ceshi
                 <div id="userlist" class="user_box scrollBar">
                     <ul>
                         {% for user in addedlist %}
@@ -52,22 +51,13 @@
                 </div>
                 {% endif %}
                 {% if addedlist != [] %}
-                cehsi
                 <!-- This is form to remove a user. It works the same as unblock a user -->
                 <form action="/removeuser" method="POST" class="user_form" style="margin:auto; width:auto;">
                     <div class="wrapper scrollBar" style="text-align:center;">
                         <label for="removeuser1">Remove User</label>
                         <input type="text" list="removeuserlist" id="removeuser1" placeholder="Enter or select a user"/>
                         
-                        <dataddedlist id ="removeuserlist">
-                            {% for user in addedlist %}
-                                <option>{{user}}</option> 
-                            {% endfor %}
-                            <!-- <option>user1</option>
-                            <option>user2</option>
-                            <option>user3</option>
-                            <option>user4</option> -->
-                        </dataddedlist>
+
                         <input type="submit" value="Remove" class="submitButton">
                     </div>
                 </form>
