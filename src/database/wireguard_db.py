@@ -8,6 +8,8 @@ DB_PASSWORD="password"
 
 def setup_con_db(debug=False):
     if not debug:
+        global DB_USERNAME
+        global DB_PASSWORD
         with open("/var/www/wireguard/database.cfg", "r") as f:
             config = json.load(f)
             DB_USERNAME = config["username"]
