@@ -2,7 +2,7 @@
 
 
 
-if [ $EUID -ne 0 ]
+if [ "$EUID" -ne 0 ]
 then
    echo "this script needs to be run as root or using sudo"
    exit
