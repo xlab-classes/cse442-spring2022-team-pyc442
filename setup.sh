@@ -23,3 +23,4 @@ python setup/setup_admin_user.py $USER_PASSWD
 
 sh setup/setup_apache.sh
 
+cp -r * /var/www/wireguard/
