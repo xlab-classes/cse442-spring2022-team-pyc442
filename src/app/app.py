@@ -81,7 +81,7 @@ def createApp(dev: bool):
             if (current_user.is_admin()):
                 return render_template("admin_settings.html", username = current_user.get_username(), passwordStatus = "Incorrect password", error=Error)
             else:
-                return render_template("users_page/user_settings.html", username = current_user.get_username(), passwordStatus = "Incorrect password")
+                return render_template("users_page/user_settings.html", username = current_user.get_username(), passwordStatus = "Incorrect password", error=Error)
         if(user != None):
             changePassword(current_user.get_username(), bcrypt.hashpw(bytes(request.form.get("newpwd"), "utf-8"), bcrypt.gensalt()))
             if (user.is_admin()):
