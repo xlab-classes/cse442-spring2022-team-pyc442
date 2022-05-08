@@ -8,7 +8,11 @@ from src.authentication.auth import authenticate
 from src.database.wireguard_db import changeBannedStatus, getUserById, add_users, getUserByName, listBlockedUsers, modifyUsername, changePassword, get_user_server, listUsers
 from src.database import wireguard_db
 from src.wireguard import wireguard_server as wg
+from flask_wtf import CSRFProtect
 import ipaddress
+
+
+csrf = CSRFProtect()
 
 def createApp(dev: bool):
     app = Flask(__name__)
@@ -21,6 +25,7 @@ def createApp(dev: bool):
     #flask login information
     loginManager = LoginManager()
 
+    csrf.init_app(app)
     # create wireguard server management class
     wireguard_server = wg.Wireguard_Server()
 
@@ -76,10 +81,22 @@ def createApp(dev: bool):
     @login_required
     def changepwdRoute():
         user = authenticate(current_user.get_username(),request.form.get("pwd"))
+        if (request.form.get("pwd") == "" or request.form.get("newpwd") == ""):
+            Error = "Please enter a valid password"
+            if (current_user.is_admin()):
+                return render_template("admin_settings.html", username = current_user.get_username(), passwordStatus = "Incorrect password", error=Error)
+            else:
+                return render_template("users_page/user_settings.html", username = current_user.get_username(), passwordStatus = "Incorrect password", error=Error)
         if(user != None):
             changePassword(current_user.get_username(), bcrypt.hashpw(bytes(request.form.get("newpwd"), "utf-8"), bcrypt.gensalt()))
-            return render_template("users_page/user_settings.html", username = current_user.get_username(), passwordStatus = "Successfully changed password")
-        return render_template("users_page/user_settings.html", username = current_user.get_username(), passwordStatus = "Incorrect password")
+            if (user.is_admin()):
+                return render_template("admin_settings.html", username = current_user.get_username(), passwordStatus = "password changed")
+            else:
+                return render_template("users_page/user_settings.html", username = current_user.get_username(), passwordStatus = "password changed")
+        if (current_user.is_admin()):
+            return render_template("admin_settings.html", username = current_user.get_username(), passwordStatus = "Incorrect password", error="password change unsuccessful. please check your password")
+        else:
+            return render_template("users_page/user_settings.html", username = current_user.get_username(), passwordStatus = "Incorrect password", error="password change unsuccessful. please check your password")
 
     # route used to serve webpages to normal users
     @app.route("/user/<path>")
@@ -127,11 +144,9 @@ def createApp(dev: bool):
 
     @app.route("/adduser", methods=["POST"])
     def adduserRoute():
-        user_list = listUsers()
         if (request.form["username"] == "" or request.form["password"] == ""):
             Error = "Please enter a valid username/password."
-            bu_list = listBlockedUsers()
-            return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username(), blist=bu_list, addedlist=user_list, error=Error)
+            return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username(), blist=listBlockedUsers(), addedlist=listUsers(), error=Error)
         user_name = request.form["username"]
         if (getUserByName(user_name) == None): # checks to see if username already exists
             uid = random.randint(1,100) # using random number generator to get user id
@@ -140,68 +155,55 @@ def createApp(dev: bool):
             password = request.form["password"]
             add_users(str(uid),"user@user.com", request.form.get("username"), bcrypt.hashpw(bytes(request.form.get("password"), "utf-8"), bcrypt.gensalt()),0,0) #adding user to db
             wireguard_server.add_user_new(str(uid))
-            bu_list = listBlockedUsers()
-            return render_template("admin_add_users.html", title="Add Users", blist=bu_list, addedlist=user_list, username=current_user.get_username())
+            return render_template("admin_add_users.html", title="Add Users", blist=listBlockedUsers(), addedlist=listUsers(), username=current_user.get_username())
         else:
             Error = "The username you entered is already in use. Please enter a different username."
-            bu_list = listBlockedUsers()
-            return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username(), blist=bu_list, addedlist=user_list, error=Error)
+            return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username(), blist=listBlockedUsers(), addedlist=listUsers(), error=Error)
 
     @app.route("/blockuser", methods=["POST"])
     def blockuserRoute():
         if (request.form["blockuser"] == ""):
             Error = "Please enter a valid username."
-            bu_list = listBlockedUsers()
-            return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username(), blist=bu_list, error=Error)
+            return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username(), blist=listBlockedUsers(), addedlist=listUsers(), error=Error)
         user_name = request.form["blockuser"]
         if (getUserByName(user_name) != None): # makes sure the user exists
             uid = getUserByName(user_name)[0] #gets user's uid
             changeBannedStatus(uid, 1) #change banned status to true
             wireguard_server.remove_user(uid)
-            bu_list = listBlockedUsers()
-            user_list = listUsers()
-            return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username(), blist=bu_list, addedlist=user_list)
+            return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username(), blist=listBlockedUsers(), addedlist=listUsers())
         else:
             Error = "User not found. Please enter a valid username."
-            bu_list = listBlockedUsers()
-            return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username(), blist=bu_list, error=Error)
+            return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username(), blist=listBlockedUsers(), addedlist=listUsers(), error=Error)
 
     @app.route("/unblockuser", methods=["POST"])
     def unblockuserRoute():
         if (request.form["unblockuser"] == ""):
             Error = "Please enter a valid username."
-            bu_list = listBlockedUsers()
-            return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username(), blist=bu_list, error=Error)
+            return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username(), blist=listBlockedUsers(), addedlist=listUsers(), error=Error)
         user_name = request.form["unblockuser"]
         if (getUserByName(user_name) != None): # makes sure the user exists
             uid = getUserByName(user_name)[0] #gets user's uid
             changeBannedStatus(uid, 0) #change banned status to false
             wireguard_server.add_user(uid)
-            bu_list = listBlockedUsers()
-            user_list = listUsers()
-            return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username(), blist=bu_list, addedlist=user_list)
+            return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username(), blist=listBlockedUsers(), addedlist=listUsers())
         else:
             Error = "User not found. Please enter a valid username."
-            bu_list = listBlockedUsers()
-            return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username(), blist=bu_list, error=Error)
+            return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username(), blist=listBlockedUsers(), addedlist=listUsers(), error=Error)
     
     @app.route("/kickuser", methods=["POST"])
     def kickuserRoute():
         if (request.form["kickuser"] == ""):
             Error = "Please enter a valid username."
-            bu_list = listBlockedUsers()
-            return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username(), blist=bu_list, error=Error)
+            return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username(), blist=listBlockedUsers(), addedlist=listUsers(), error=Error)
         user_name = request.form["kickuser"]    
         if (getUserByName(user_name) != None): # makes sure the user exists
             uid = getUserByName(user_name)[0] #gets user's uid
             wireguard_server.remove_user(uid)
             wireguard_server.add_user(uid)
-            bu_list = listBlockedUsers()
-            return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username(), blist=bu_list)
+            return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username(), blist=listBlockedUsers(), addedlist=listUsers())
         else:
             Error = "User not found. Please enter a valid username."
-            bu_list = listBlockedUsers()
-            return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username(), blist=bu_list, error=Error)
+            return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username(), blist=listBlockedUsers(), addedlist=listUsers(), error=Error)
 
     @app.route("/advancedsettings", methods=["POST"])
     def advancedsettingsRoute():
@@ -251,9 +253,7 @@ def createApp(dev: bool):
                                        dns=wireguard_server.dns,
                                        listen_port=wireguard_server.listen_port)
             elif path == "add_users":
-                bu_list = listBlockedUsers()
-                user_list = listUsers()
-                return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username(), blist=bu_list, addedlist=user_list)
+                return render_template("admin_add_users.html", title="Add Users", username=current_user.get_username(), blist=listBlockedUsers(), addedlist=listUsers())
             elif path == "dashboard":
                 return render_template("admin_dashboard.html", username=current_user.get_username(), information="Server information goes here", title="Dashboard", start_button=("Stop" if wireguard_server.is_running() else "Start"))
             else:

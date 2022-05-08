@@ -19,6 +19,7 @@
             <b>Configuration</b>
         </p>
         <form action="/config" method="POST" class="configBox">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
             <label for="vpnprotocal">VPN protocol:</label>
             <input id="vpnprotocal" name="VPN protocol" list="protocols"><br/>
             <datalist id="protocols">
@@ -36,6 +37,7 @@
             <input class= "buttonSubmit" type="submit" value="Apply">
         </form>
         <form action="/2fa" method="GET">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
             <button type="submit" class="FAbutton">
                 Enable 2FA Authenticator
             </button>

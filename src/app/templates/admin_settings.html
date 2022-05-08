@@ -6,7 +6,6 @@
 {% block menubar %}
             <!-- Each option will direct the user to corresponded page via http link -->
             <li><a href="/admin/dashboard">Dashboard:</a></li>
-            <li><a href="/admin/configuration">Configuration:</a></li>
             <li><a href="/admin/settings"><b>Setting:</b></a></li>
             <li><a href="/admin/add_users">Add users:</a></li>
             <li><a href="/admin/help">Help:</a></li>
@@ -24,13 +23,11 @@
             <p style="text-align: center;">
                 <b><u>Settings</b></u>
             </p>
-            <p>{{ information }}</p>
+            {% if error %}
+            <p style="color:red" class=error> <strong>Error: </strong> {{ error }}
+            {% endif %}
+            <!-- <p>{{ information }}</p> -->
             <!-- The below parts are just used to show the menu bar function. Can be edeleted -->
-            <p><b><u>Theme:</u></b><br>
-            <input type="radio" id="dark" name="theme" value="dark" width=100%>
-            Dark Mode<br>
-            <input type="radio" id="light" name="theme" value="light">
-            Light Mode<br></p>
             <p><b><u>Profile:</u></b>
             <br>
             Username: {{ username }}
@@ -38,6 +35,7 @@
             Change Password:<br>
             {{ passwordStatus }}
             <form action="/changepwd" method="POST" style="margin-left:20px">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                 Old Password:
                 <input type="password" id="pwd" name="pwd"><br>
                 New Password:
@@ -47,6 +45,7 @@
 
             <p><b><u>Advanced Settings:</u></b></p>
             <form action="/advancedsettings" method="POST" style="margin-left:20px">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                 DNS:
                 <input type="text" id="dns" name="dns" value="8.8.8.8"><br>
                 Listening Port:

@@ -461,8 +461,8 @@ def listBlockedUsers():
 
 def listUsers():
     cnx = mysql.connector.connect(
-      host="localhost",
-      user="root",
+      host=DB_HOST,
+      user=DB_USERNAME,
       password=DB_PASSWORD,
       database="wireguard"
     )
@@ -471,7 +471,7 @@ def listUsers():
 
     cursor = cnx.cursor()
 
-    query = ("SELECT username FROM wireguard WHERE banned = 0")
+    query = ("SELECT username FROM wireguard WHERE banned = 0 AND admin = 0")
 
     cursor.execute(query)
 

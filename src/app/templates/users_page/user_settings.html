@@ -22,13 +22,11 @@
             <p style="text-align: center;">
                 <b><u>Settings</b></u>
             </p>
-            <p>{{ information }}</p>
+            {% if error %}
+            <p style="color:red" class=error> <strong>Error: </strong> {{ error }}
+            {% endif %}
+            <!-- <p>{{ information }}</p> -->
             <!-- The below parts are just used to show the menu bar function. Can be edeleted -->
-            <p><b><u>Theme:</u></b><br>
-            <input type="radio" id="dark" name="theme" value="dark" width=100%>
-            Dark Mode<br>
-            <input type="radio" id="light" name="theme" value="light">
-            Light Mode<br></p>
             <p><b><u>Profile:</u></b>
             <br>
             Username: {{ username }}
@@ -36,6 +34,7 @@
             Change Password:<br>
             {{ passwordStatus }}
             <form action="/changepwd" method="POST" style="margin-left:20px">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
             Old Password:
             <input type="password" id="pwd" name="pwd"><br>
             New Password:
