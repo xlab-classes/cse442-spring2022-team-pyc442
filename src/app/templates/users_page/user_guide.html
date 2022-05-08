@@ -30,11 +30,11 @@
                             [Interface]<br>
                             PrivateKey = {{ private_key }}<br>
                             Address = {{ ipaddrs }}<br>
-                            DNS = 8.8.8.8<br><br>
+                            DNS = {{ dns }}<br><br>
                             [Peer]<br>
                             PublicKey = {{ server_public }}<br>
                             AllowedIPs = 0.0.0.0/0<br>
-                            Endpoint = &ltserver ip&gt:51820<br>
+                            Endpoint = &ltserver ip&gt:{{ listen_port }}<br>
                             PersistentKeepalive = 25<br>
                         </p>
                     </div>

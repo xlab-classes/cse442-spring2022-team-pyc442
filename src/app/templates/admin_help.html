@@ -6,7 +6,6 @@
 {% block menubar %}
             <!-- Each option will direct the user to corresponded page via http link -->
             <li><a href="/admin/dashboard">Dashboard:</a></li>
-            <li><a href="/admin/configuration">Configuration:</a></li>
             <li><a href="/admin/settings">Setting:</a></li>
             <li><a href="/admin/add_users">Add users:</a></li>
             <li><a href="/admin/help"><b>Help:</b></a></li>
@@ -96,12 +95,12 @@
                             [Interface]<br>
                             PrivateKey = {{ private_key }}<br>
                             Address = {{ ipaddrs }}<br>
-                            DNS = 8.8.8.8<br><br>
+                            DNS = {{ dns }}<br><br>
 
                             [Peer]<br>
                             PublicKey = {{ server_public }}<br>
                             AllowedIPs = 0.0.0.0/0<br>
-                            Endpoint = &ltserver ip&gt:51820<br>
+                            Endpoint = &ltserver ip&gt:{{ listen_port }}<br>
                             PersistentKeepalive = 25<br>
                         </p>
                     </div>

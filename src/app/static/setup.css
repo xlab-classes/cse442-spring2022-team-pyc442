@@ -128,13 +128,18 @@ div{
     text-align: center;
 }
 .user_box{
-    margin: 0 auto 10px auto;
+    margin: 10px auto 10px auto;
     /* padding: 20px; */
     background-color: #30b7ec;
     border-radius: 20px;
     width: 70%;
     text-align: center;
     position: relative;
+    height: 20%;
+    overflow-y: scroll;
+}
+.user_box ul{
+    text-align: center;
 }
 .user_box > big{
     top: 30%;
@@ -152,6 +157,7 @@ div{
 .user_form{
     margin-left: 20%;
     width: 120%;
+    margin-bottom: 10%;
 }
 .user_box_form{
     width: 80%;
@@ -290,4 +296,21 @@ button:hover .liquid {
     100% {
         transform: translate(-50%, -75%) rotate(360deg);
     }
+}
+
+/* Scroll bar */
+.scrollBar::-webkit-scrollbar{
+    width: 15px;
+}
+.scrollBar::-webkit-scrollbar-track{
+    box-shadow: inset 0 0 5px grey; 
+    border-radius: 10px;
+}
+.scrollBar::-webkit-scrollbar-thumb{
+    background: rgb(107, 109, 107); 
+    border-radius: 10px;
+    /* height: 10px */
+}
+.scrollBar::-webkit-scrollbar-thumb:hover {
+    background: #0e0e0e; 
 }

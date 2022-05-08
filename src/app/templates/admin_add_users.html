@@ -6,7 +6,6 @@
 {% block menubar %}
             <!-- Each option will direct the user to corresponded page via http link -->
             <li><a href="/admin/dashboard">Dashboard:</a></li>
-            <li><a href="/admin/configuration">Configuration:</a></li>
             <li><a href="/admin/settings">Setting:</a></li>
             <li><a href="/admin/add_users"><b>Add users:</b></a></li>
             <li><a href="/admin/help">Help:</a></li>
@@ -24,31 +23,33 @@
         {% endif %}
         <div class="manage_user_box">
             <div class="users_box" style="background-color: rgb(70, 245, 35);"> 
-                <p class="box_title">Added Users</p>
-                <!-- Maximum display 9 users. User can use "search" to find other users. This function will be added later -->
-                <!-- The below part show be hosted using dynamic method. -->
-                {{loop_added_user}}
-                <form action="/adduser/remove/{{addedUser}}" method="POST" class="user_box_form">
-                    <div class="user_box">
-                        <big class="">addedUser</big>
-                        <button class="fa-solid fa-xmark x_button">
-                        </button>
-                    </div>
-                    
-                </form>
-                {{end_loop_added_user}}
-                <!-- This is just a example showing what it looks like when we have multiple added users -->
                 
                 <form action="/adduser" method="POST" class="user_form" style="margin:auto; width:auto;">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                     <H2 style="text-align: center;">Add User</H2>
                     <label for="username" style="margin-left: 0%;">Username: </label>
-                    <input type="text" name="username" id="username" style="margin-left:0%;" class="searchBox">
+                    <input type="text" name="username" id="username" style="margin-left:0%;" class="searchBox"><br>
                     <label for="password" style="margin-left: 0%;">Password:</label>
                     <input type="password" name="password" id="password" class="searchBox"><br>
                     <div class="wrapper" style="text-align: center;">
                     <button value="add" style="text-align: center;">Add</button><br>
                     </div>
                 </form>  
+                {% if addedlist != [] %}
+                <!-- Added users are displayed here. If you want to change the height of the scrollbar,
+                    go to setup.css and search for "user_box". adjust "height" to whatever you want -->
+                <div id="userlist" class="user_box scrollBar">
+                    <ul>
+                        {% for user in addedlist %}
+                            <li value= "{{addedUser}}">{{user}}</li> 
+                        {% endfor %}
+                        <!-- <li value= "{{addedUser}}">asdas</li>
+                        <li value= "{{addedUser}}">asdas</li>
+                        <li value= "{{addedUser}}">asdas</li>
+                        <li value= "{{addedUser}}">asdas</li> -->
+                    </ul>
+                </div>
+                {% endif %}
                 <!-- <form action="/{{username}}" method="GET" class="">
                     <label for="search">Search:</label>
                     <input id="search" type="text" name="search"><br/>
@@ -57,25 +58,46 @@
             </div>
             
             <div class="users_box" style="background-color: rgb(236, 91, 171);">
-                <p class="box_title">Blocked Users</p>
-                <!--{{loop_blocked_user}} -->
-                <form action="/block/remove/{{blockedUser}}" method="POST" class="user_box_form">
-                    <div class="user_box">
-                        <big class="">blockeduser</big>
-                        <button class="fa-solid fa-xmark x_button">
-                        </button>
-                    </div>
-                    
-                </form>
-                <!--{{end_loop_blocked_user}}-->
 
                 <form action="/blockuser" method="POST" class="user_form" style="margin:auto; width:auto;">
-                    <label for="username">Block User: </label>
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                    <H2 style="text-align: center;">Block/Unblock/Kick Users</H2>
+                    <label for="blockuser">Block User: </label>
                     <input type="text" name="blockuser" id="blockuser">
                     <div class="wrapper" style="text-align:center;">
                     <button value="Search">Block</button><br>
                     </div>
-                </form>  
+                </form>   
+                <br>
+                <form action="/kickuser" method="POST" class="user_form" style="margin:auto; width:auto;">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                    <label for="blockuser">Kick User: </label>
+                    <input type="text" name="kickuser" id="kickuser">
+                    <div class="wrapper" style="text-align:center;">
+                    <button value="Search">Kick</button><br>
+                    </div>
+                </form>   
+                <br>
+                {% if blist != [] %}
+                <form action="/unblockuser" method="POST" class="user_form" style="margin:auto; width:auto;">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                    <div class="wrapper" style="text-align:center;">
+                    <select name ="unblockuser">
+                        {% for unblockuser in blist %}
+                            <option value= "{{unblockuser}}">{{unblockuser}}</option> 
+                        {% endfor %}
+                    </select>
+                    <input type="submit" value="Unblock" class="submitButton">
+                    </div>
+                </form>
+                {% endif %}
+                <!--<form action="/unblockuser" method="POST" class="user_form" style="margin:auto; width:auto;">
+                    <label for="unblockuser">Unblock User: </label>
+                    <input type="text" name="unblockuser" id="blockuser">
+                    <div class="wrapper" style="text-align:center;">
+                    <button value="Search">Unblock</button><br>
+                    </div>
+                </form>  -->
             </div>
         </div>
     </div>
