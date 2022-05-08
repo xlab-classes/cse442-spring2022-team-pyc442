@@ -5,3 +5,4 @@ bcrypt
 mysql-connector-python
 pylint
 yapf
+Flask_WTF
