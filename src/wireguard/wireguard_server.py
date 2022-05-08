@@ -135,7 +135,7 @@ class Wireguard_Server():
         was_running = self.is_running()
 
         if not was_running:
-udo           self.start()
+            self.start()
 
         subprocess.run(["sudo", "wg", "set", "wg0", "listen-port", lport])
         with subprocess.Popen(["echo", lport], stdout=subprocess.PIPE) as cmd:

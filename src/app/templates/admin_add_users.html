@@ -6,7 +6,6 @@
 {% block menubar %}
             <!-- Each option will direct the user to corresponded page via http link -->
             <li><a href="/admin/dashboard">Dashboard:</a></li>
-            <li><a href="/admin/configuration">Configuration:</a></li>
             <li><a href="/admin/settings">Setting:</a></li>
             <li><a href="/admin/add_users"><b>Add users:</b></a></li>
             <li><a href="/admin/help">Help:</a></li>
@@ -49,18 +48,6 @@
                         <li value= "{{addedUser}}">asdas</li> -->
                     </ul>
                 </div>
-                {% endif %}
-                {% if addedlist != [] %}
-                <!-- This is form to remove a user. It works the same as unblock a user -->
-                <form action="/removeuser" method="POST" class="user_form" style="margin:auto; width:auto;">
-                    <div class="wrapper scrollBar" style="text-align:center;">
-                        <label for="removeuser1">Remove User</label>
-                        <input type="text" list="removeuserlist" id="removeuser1" placeholder="Enter or select a user"/>
-                        
-
-                        <input type="submit" value="Remove" class="submitButton">
-                    </div>
-                </form>
                 {% endif %}
                 <!-- <form action="/{{username}}" method="GET" class="">
                     <label for="search">Search:</label>

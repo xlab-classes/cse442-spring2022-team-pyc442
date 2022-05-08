@@ -471,7 +471,7 @@ def listUsers():
 
     cursor = cnx.cursor()
 
-    query = ("SELECT username FROM wireguard WHERE banned = 0")
+    query = ("SELECT username FROM wireguard WHERE banned = 0 AND admin = 0")
 
     cursor.execute(query)
 
