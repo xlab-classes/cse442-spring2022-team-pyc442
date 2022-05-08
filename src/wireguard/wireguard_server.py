@@ -1,6 +1,5 @@
 import subprocess
 import ipaddress
-import configparser
 from src.database import wireguard_db
 
 class Wireguard_Server():
@@ -16,25 +15,24 @@ class Wireguard_Server():
 
         #get public key and save
         pubkey = subprocess.run(['sudo', 'cat', '/etc/wireguard/public.key'], capture_output=True)
+        listenPort = subprocess.run(['sudo', 'cat', '/etc/wireguard/port'], capture_output=True)
 
         self._public_key = pubkey.stdout.decode().strip()
         self.dns = "8.8.8.8"
-
-        configFile = configparser.ConfigParser()
-        configFile.read('/etc/wireguard/wg0.conf')
-
-        interface = configFile['Interface']
-        self.listen_port = interface['ListenPort']
+        self.listen_port = listenPort.stdout.decode().strip()
 
 
     def start(self) -> None:
         if not self._running:
+            subprocess.run(["sudo", "ufw","allow","proto","udp","from","any","to","any","port", self.listen_port])
+
             subprocess.run(['sudo', 'wg-quick', 'up', 'wg0'])
             self._running = True
 
 
     def stop(self) -> None:
         if self._running:
+            subprocess.run(["sudo", "ufw","delete","allow","proto","udp","from","any","to","any","port", self.listen_port])
             subprocess.run(['sudo', 'wg-quick', 'down', 'wg0'])
             self._running = False
 
@@ -132,26 +130,27 @@ class Wireguard_Server():
         return True
 
     def change_listen_port(self, lport: str)-> bool:
-        was_running = self.is_running()
         #start server if it was not running
-        if was_running:
-            self.stop()
-        configFile = configparser.ConfigParser()
-        configFile.read('/etc/wireguard/wg0.conf')
 
-        interface = configFile['Interface']
-        interface['PostUp'] = interface['PostUp'].replace(self.listen_port, lport)
-        interface['PostDown'] = interface['PostDown'].replace(self.listen_port, lport)
-        interface['ListenPort'] = lport
+        was_running = self.is_running()
 
-        with open('/etc/wireguard/wg0.conf', 'w') as conf:
-            configFile.write(conf)
+        if not was_running:
+udo           self.start()
 
-        #stop server if it was not running
+        subprocess.run(["sudo", "wg", "set", "wg0", "listen-port", lport])
+        with subprocess.Popen(["echo", lport], stdout=subprocess.PIPE) as cmd:
+            subprocess.run(["sudo", "tee", "/etc/wireguard/port"], stdin=cmd.stdout)
+
+
         self.listen_port = lport
+
+        self.stop
+
         if was_running:
             self.start()
+
         return True
+        
     
     def change_DNS(self, DNS)->bool:
         self.dns = DNS

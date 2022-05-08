@@ -17,6 +17,7 @@ PRIVKEY=$(cat /etc/wireguard/private.key)
 
 # get default device for routing internet traffic
 DEV=$(ip route list default | awk '{print $5}')
+echo 51820 > /etc/wireguard/port
 
 # the base configuration for the server
 # write the config out to file
@@ -24,8 +25,8 @@ cat > /etc/wireguard/wg0.conf << EOL
 [Interface]
 Address = 10.8.0.1/24
 SaveConfig = true
-PostUp = iptables -A FORWARD -i $DEV -o wg0 -j ACCEPT; iptables -A FORWARD -i wg0 -j ACCEPT; iptables -t nat -A POSTROUTING -o $DEV -j MASQUERADE; ip6tables -A FORWARD -i wg0 -j ACCEPT; ip6tables -t nat -A POSTROUTING -o $DEV -j MASQUERADE; ufw route allow in on wg0 out on $DEV; ufw route allow in on $DEV out on wg0; ufw allow proto udp from any to any port 51820
-PostDown = iptables -D FORWARD -i $DEV -o wg0 -j ACCEPT; iptables -D FORWARD -i wg0 -j ACCEPT; iptables -t nat -D POSTROUTING -o $DEV -j MASQUERADE; ip6tables -D FORWARD -i wg0 -j ACCEPT; ip6tables -t nat -D POSTROUTING -o $DEV -j MASQUERADE; ufw route delete allow in on wg0 out on $DEV; ufw route delete allow in on $DEV out on wg0; ufw delete allow proto udp from any to any port 51820
+PostUp = iptables -A FORWARD -i $DEV -o wg0 -j ACCEPT; iptables -A FORWARD -i wg0 -j ACCEPT; iptables -t nat -A POSTROUTING -o $DEV -j MASQUERADE; ip6tables -A FORWARD -i wg0 -j ACCEPT; ip6tables -t nat -A POSTROUTING -o $DEV -j MASQUERADE; ufw route allow in on wg0 out on $DEV; ufw route allow in on $DEV out on wg0
+PostDown = iptables -D FORWARD -i $DEV -o wg0 -j ACCEPT; iptables -D FORWARD -i wg0 -j ACCEPT; iptables -t nat -D POSTROUTING -o $DEV -j MASQUERADE; ip6tables -D FORWARD -i wg0 -j ACCEPT; ip6tables -t nat -D POSTROUTING -o $DEV -j MASQUERADE; ufw route delete allow in on wg0 out on $DEV; ufw route delete allow in on $DEV out on wg0;
 ListenPort = 51820
 PrivateKey = $PRIVKEY
 EOL
