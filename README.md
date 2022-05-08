@@ -7,8 +7,7 @@ Michael Traynor
 Brian Chen  
 Michael Lanurias  
 
-to run code use the command
-Create a virtual environment for python to run  
+to run code use the command Create a virtual environment for python to run  
 `python -m venv env`  
 Then install the proper libraries  
 `pip install -r requirements.txt`  
@@ -31,3 +30,12 @@ Note only tested on Ubuntu 20.04 server
 `cd cse442-spring2022-team-pyc442`  
 3. run setup script and follow prompts  
 `sudo sh setup.sh`  
+4. enable ufw  
+(Must be run as root)  
+`ufw allow ssh`  
+`ufw allow 'Apache Full'`  
+`ufw enable`  
+5. Allow ipv4 forwarding  
+(must be run as root)  
+`sysctl -w net.ipv4.ip_forward=1`  
+Warning you will have to run this command after every server restart or you will not have internet access
