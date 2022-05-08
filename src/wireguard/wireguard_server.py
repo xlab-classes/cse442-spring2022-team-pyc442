@@ -143,12 +143,13 @@ class Wireguard_Server():
         with subprocess.Popen(["echo", lport], stdout=subprocess.PIPE) as cmd:
             subprocess.run(["sudo", "tee", "/etc/wireguard/port"], stdin=cmd.stdout)
 
+        subprocess.run(["sudo", "ufw","delete","allow","proto","udp","from","any","to","any","port", self.listen_port])
 
         self.listen_port = lport
 
-        self.stop
 
         if was_running:
+            subprocess.run(["sudo", "ufw","allow","proto","udp","from","any","to","any","port", lport])
             self.start()
 
         return True
