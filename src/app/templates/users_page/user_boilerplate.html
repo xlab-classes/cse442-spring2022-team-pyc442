@@ -16,6 +16,7 @@
         <span class="title" >{{ username }}</span>
         <!-- This logout button will send GET request with path "/logout" to the server. -->
             <form action="/logout" method="POST" class="signoutForm" >
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                 <button type="submit" name="signout" class="fa-solid fa-arrow-right-from-bracket signout">
                     <small>Log out</small>
                 </button>
