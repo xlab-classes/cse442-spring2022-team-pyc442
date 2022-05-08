@@ -461,8 +461,8 @@ def listBlockedUsers():
 
 def listUsers():
     cnx = mysql.connector.connect(
-      host="localhost",
-      user="root",
+      host=DB_HOST,
+      user=DB_USERNAME,
       password=DB_PASSWORD,
       database="wireguard"
     )
