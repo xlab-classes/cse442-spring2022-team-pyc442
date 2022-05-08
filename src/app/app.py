@@ -93,7 +93,7 @@ def createApp(dev: bool):
                 return render_template("admin_settings.html", username = current_user.get_username(), passwordStatus = "password changed")
             else:
                 return render_template("users_page/user_settings.html", username = current_user.get_username(), passwordStatus = "password changed")
-        if (user.is_admin()):
+        if (current_user.is_admin()):
             return render_template("admin_settings.html", username = current_user.get_username(), passwordStatus = "Incorrect password", error="password change unsuccessful. please check your password")
         else:
             return render_template("users_page/user_settings.html", username = current_user.get_username(), passwordStatus = "Incorrect password", error="password change unsuccessful. please check your password")
