@@ -13,6 +13,8 @@ class Wireguard_Server():
         # set the running bool to false
         self._running = False
 
+        #make sure ipv4 forwarding is allowed
+        subprocess.run(["sysctl", "-w", "net.ipv4.ip_forward=1"])
         #get public key and save
         pubkey = subprocess.run(['sudo', 'cat', '/etc/wireguard/public.key'], capture_output=True)
         listenPort = subprocess.run(['sudo', 'cat', '/etc/wireguard/port'], capture_output=True)
