@@ -108,9 +108,9 @@ def test_banned_users():
     assert test18[2] == "username2"
 
 def test_user_list():
-    db.add_users("1", "any@any.com", "username", bcrypt.hashpw(b"pwd", bcrypt.gensalt()), 1, 0)
-    db.add_users("2", "any2@any.com", "username3", bcrypt.hashpw(b"pwd", bcrypt.gensalt()), 1, 0)
-    db.add_users("3", "any3@any.com", "username2", bcrypt.hashpw(b"pwd", bcrypt.gensalt()), 1, 0)
+    db.add_users("1", "any@any.com", "username", bcrypt.hashpw(b"pwd", bcrypt.gensalt()), 0, 0)
+    db.add_users("2", "any2@any.com", "username3", bcrypt.hashpw(b"pwd", bcrypt.gensalt()), 0, 0)
+    db.add_users("3", "any3@any.com", "username2", bcrypt.hashpw(b"pwd", bcrypt.gensalt()), 0, 0)
 
     test18 = []
     test18 = db.listUsers()
