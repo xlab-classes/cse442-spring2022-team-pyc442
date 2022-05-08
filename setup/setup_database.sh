@@ -5,7 +5,11 @@ apt install mysql-server -y
 systemctl enable mysql
 systemctl start mysql
 
-mysql_secure_installation -u root --use-default
+#mysql_secure_installation -u root --use-default
+mysql -e "DROP USER IF EXISTS ''@'localhost'; DELETE FROM mysql.user WHERE User='';
+DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
+mysql -e "DROP DATABASE IF EXISTS test; DELETE FROM mysql.db WHERE Db='test' or Db='test\\_%';"
+mysql -e "FLUSH PRIVILEGES"
 
 echo "{\"username\": \"wireguard\", \"password\": \"$1\"}" > database.cfg
 
