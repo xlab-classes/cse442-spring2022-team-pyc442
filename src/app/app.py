@@ -8,7 +8,11 @@ from src.authentication.auth import authenticate
 from src.database.wireguard_db import changeBannedStatus, getUserById, add_users, getUserByName, listBlockedUsers, modifyUsername, changePassword, get_user_server, listUsers
 from src.database import wireguard_db
 from src.wireguard import wireguard_server as wg
+from flask_wtf import CSRFProtect
 import ipaddress
+
+
+csrf = CSRFProtect()
 
 def createApp(dev: bool):
     app = Flask(__name__)
@@ -21,6 +25,7 @@ def createApp(dev: bool):
     #flask login information
     loginManager = LoginManager()
 
+    csrf.init_app(app)
     # create wireguard server management class
     wireguard_server = wg.Wireguard_Server()
 

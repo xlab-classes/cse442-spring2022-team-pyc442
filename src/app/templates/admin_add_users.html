@@ -25,6 +25,7 @@
             <div class="users_box" style="background-color: rgb(70, 245, 35);"> 
                 
                 <form action="/adduser" method="POST" class="user_form" style="margin:auto; width:auto;">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                     <H2 style="text-align: center;">Add User</H2>
                     <label for="username" style="margin-left: 0%;">Username: </label>
                     <input type="text" name="username" id="username" style="margin-left:0%;" class="searchBox"><br>
@@ -59,6 +60,7 @@
             <div class="users_box" style="background-color: rgb(236, 91, 171);">
 
                 <form action="/blockuser" method="POST" class="user_form" style="margin:auto; width:auto;">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                     <H2 style="text-align: center;">Block/Unblock/Kick Users</H2>
                     <label for="blockuser">Block User: </label>
                     <input type="text" name="blockuser" id="blockuser">
@@ -68,6 +70,7 @@
                 </form>   
                 <br>
                 <form action="/kickuser" method="POST" class="user_form" style="margin:auto; width:auto;">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                     <label for="blockuser">Kick User: </label>
                     <input type="text" name="kickuser" id="kickuser">
                     <div class="wrapper" style="text-align:center;">
@@ -77,6 +80,7 @@
                 <br>
                 {% if blist != [] %}
                 <form action="/unblockuser" method="POST" class="user_form" style="margin:auto; width:auto;">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                     <div class="wrapper" style="text-align:center;">
                     <select name ="unblockuser">
                         {% for unblockuser in blist %}

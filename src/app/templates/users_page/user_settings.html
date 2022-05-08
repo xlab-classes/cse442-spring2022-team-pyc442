@@ -34,6 +34,7 @@
             Change Password:<br>
             {{ passwordStatus }}
             <form action="/changepwd" method="POST" style="margin-left:20px">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
             Old Password:
             <input type="password" id="pwd" name="pwd"><br>
             New Password:

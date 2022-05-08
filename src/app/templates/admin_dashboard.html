@@ -16,6 +16,7 @@
         <div class="configurationInfo">
             <div style="display: inline-block;" class="buttonBox">
                 <form action="/togglewg" method="POST" ><!--  class="user_form"> -->
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                     <button class="button start_button">
                         <span>{{ start_button }}</span>
                         <div class="liquid">Starts</div>
