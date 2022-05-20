@@ -7,7 +7,7 @@ Michael Traynor
 Brian Chen  
 Michael Lanurias  
 
-# Warning does not work on school server, we deployed to and ubuntu 20.04 digital ocean droplet 
+# Warning does not work on school server, we deployed to an ubuntu 20.04 digital ocean droplet 
 
 ------
 # To Test:
