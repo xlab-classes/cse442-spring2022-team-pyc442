@@ -57,6 +57,11 @@ then change the line for DB_USERNAME and DB_PASSWORD to the correct username and
 To run the server  
 `python main.py`   
 
+6. Upon launching the application in your web browser, you can login as the admin using the credentials:
+    Username: admin
+    Password: password
+After logging in, you will be directed to the admin dashboard. From there you can use the sidebar to navigate the site.
+
 To run test you should run  
 `python -m pytest`  
 while in the same directory as main
